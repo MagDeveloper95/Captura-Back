@@ -35,7 +35,7 @@ public class Visita implements Serializable{
 	private List<Foto> fotos = new ArrayList<Foto>();
     @ManyToOne(fetch=FetchType.EAGER)
     private Obra obra;
-    
+
 	public Visita() {
 		this(-1L,"Por defecto",LocalDate.now(),"Por defecto", new ArrayList<Foto>(),new Obra());
 	}

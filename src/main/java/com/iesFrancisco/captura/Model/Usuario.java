@@ -36,9 +36,7 @@ public class Usuario implements Serializable {
 	@Column(name = "datos", length = 256)
 	private String datos;
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-	protected List<Registro> registro = new ArrayList<Registro>();
-	
-	
+	private List<Registro> registro = new ArrayList<Registro>();
 	@JoinTable(
 	        name = "usuarioObra",
 	        joinColumns = @JoinColumn(name = "idUsuario", nullable = false),
