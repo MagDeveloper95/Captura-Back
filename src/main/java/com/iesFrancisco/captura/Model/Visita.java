@@ -30,7 +30,7 @@ public class Visita implements Serializable{
     @Column(name = "nota", length = 256)
     private String nota;
     @OneToMany(mappedBy = "visita", cascade = CascadeType.ALL, orphanRemoval = true)
-	protected List<Foto> fotos = new ArrayList<Foto>();
+	private List<Foto> fotos = new ArrayList<Foto>();
     
 	public Visita() {
 		this(-1L,"Por defecto",LocalDate.now(),"Por defecto", new ArrayList<Foto>());
