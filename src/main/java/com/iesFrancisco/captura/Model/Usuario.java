@@ -10,6 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -34,6 +37,17 @@ public class Usuario implements Serializable {
 	private String datos;
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	protected List<Registro> registro = new ArrayList<Registro>();
+	
+	
+	@JoinTable(
+	        name = "usuarioObra",
+	        joinColumns = @JoinColumn(name = "idUsuario", nullable = false),
+	        inverseJoinColumns = @JoinColumn(name="idObra", nullable = false)
+	    )
+    	@ManyToMany(cascade = CascadeType.ALL)
+	    private List<Obra> obras;
+	
+
 	
 	public Usuario(Long id, String nombre, String email, String key, String foto, String datos, List<Registro> registro) {
 		this.id = id;
