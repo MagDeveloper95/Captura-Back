@@ -1,56 +1,108 @@
 package com.iesFrancisco.captura.Model;
 
-import javax.persistence.*;
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 
 @Entity
 @Table(name = "foto")
-public class Foto {
+public class Foto implements Serializable {
+	
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id", nullable = false)
     protected Long id;
-    @Column(name = "url", length = 255)
+    @Column(name = "url", length = 256)
     protected String url;
-    @Column(name = "comentario")
+    @Column(name = "comentario", length = 256)
     protected String comentario;
-    @Column(name = "idVisita")
-    protected Long idVisita;
+    @ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="idVisita")
+    private Visita visita;
+    
+	public Foto() {
+		this(-1L,"Por defecto", "Por defecto", new Visita());
+	}
 
-    public Foto() {
-    }
+	public Foto(Long id, String url, String comentario, Visita visita) {
+		super();
+		this.id = id;
+		this.url = url;
+		this.comentario = comentario;
+		this.visita = visita;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getComentario() {
-        return comentario;
-    }
+	public String getUrl() {
+		return url;
+	}
 
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
-    }
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-    public String getUrl() {
-        return url;
-    }
+	public String getComentario() {
+		return comentario;
+	}
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
 
-    public Long getIdVisita() {
-        return idVisita;
-    }
+	public Visita getVisita() {
+		return visita;
+	}
 
-    public void setIdVisita(Long idVisita) {
-        this.idVisita = idVisita;
-    }
+	public void setVisita(Visita visita) {
+		this.visita = visita;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Foto other = (Foto) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
 
+	@Override
+	public String toString() {
+		return "Foto [id=" + id + ", url=" + url + ", comentario=" + comentario + ", visita=" + visita + "]";
+	}
+	
+    
 }
