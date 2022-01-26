@@ -1,10 +1,14 @@
 package com.iesFrancisco.captura.Repositories;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@RestController
-@RequestMapping("/obra")
-public class ObraRepository {
+import com.iesFrancisco.captura.Model.Obra;
 
+
+@Repository
+public interface ObraRepository extends JpaRepository<Obra,Long> {
+	
+	//Aqui van métodos que no estén en el CRUD básico
 }
+
