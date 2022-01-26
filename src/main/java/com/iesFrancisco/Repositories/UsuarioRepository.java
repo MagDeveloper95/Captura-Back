@@ -1,10 +1,13 @@
 package com.iesFrancisco.Repositories;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@RestController
-@RequestMapping("/usuario")
-public class UsuarioRepository {
+import com.iesFrancisco.captura.Model.Usuario;
 
+@Repository
+public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
+	
+	//Aqui van métodos que no estén en el CRUD básico
 }
+
