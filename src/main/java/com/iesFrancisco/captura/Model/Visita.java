@@ -8,11 +8,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -33,25 +31,10 @@ public class Visita implements Serializable{
     private String nota;
     @OneToMany(mappedBy = "visita", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Foto> fotos = new ArrayList<Foto>();
-    @ManyToOne(fetch=FetchType.EAGER)
-    private Obra obra;
-
+    
 	public Visita() {
-		this(-1L,"Por defecto",LocalDate.now(),"Por defecto", new ArrayList<Foto>(),new Obra());
+		this(-1L,"Por defecto",LocalDate.now(),"Por defecto", new ArrayList<Foto>());
 	}
-	
-
-	public Visita(Long id, String header, LocalDate fecha, String nota, List<Foto> fotos, Obra obra) {
-		super();
-		this.id = id;
-		this.header = header;
-		this.fecha = fecha;
-		this.nota = nota;
-		this.fotos = fotos;
-		this.obra = obra;
-	}
-
-
 
 	public Visita(Long id, String header, LocalDate fecha, String nota, List<Foto> fotos) {
 		this.id = id;
@@ -109,16 +92,6 @@ public class Visita implements Serializable{
 	public void setFotos(List<Foto> fotos) {
 		this.fotos = fotos;
 	}
-
-	public Obra getObra() {
-		return obra;
-	}
-
-
-	public void setObra(Obra obra) {
-		this.obra = obra;
-	}
-
 
 	@Override
 	public int hashCode() {
