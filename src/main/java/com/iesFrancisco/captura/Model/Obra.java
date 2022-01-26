@@ -4,14 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -32,23 +30,15 @@ public class Obra implements Serializable {
 	
 	@ManyToMany(mappedBy = "obra")
 	private List<Usuario> usuario;
-	@OneToMany(mappedBy ="obra", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Visita> visita;
-	
-	
-	
 
-	protected Obra(Long id, String nombre, Coordenada latLong, String datos, List<Usuario> usuario,
-			List<Visita> visita) {
+	public Obra(Long id, String nombre, Coordenada latLong, String datos, List<Usuario> usuario) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.latLong = latLong;
 		this.datos = datos;
 		this.usuario = usuario;
-		this.visita = visita;
 	}
-
 
 	public Obra(Long id, String nombre, Coordenada latLong, String datos) {
 		super();
@@ -60,7 +50,7 @@ public class Obra implements Serializable {
 	}
 
 	public Obra() {
-		this(-1L,"Por defecto",new Coordenada(),"Por defecto",new ArrayList<Usuario>(), new ArrayList<Visita>());
+		this(-1L,"Por defecto",new Coordenada(),"Por defecto",new ArrayList<Usuario>());
 	}
 
 	public Long getId() {
@@ -103,17 +93,6 @@ public class Obra implements Serializable {
 	public void setLatLong(Coordenada latLong) {
 		this.latLong = latLong;
 	}
-	
-
-	public List<Visita> getVisita() {
-		return visita;
-	}
-
-
-	public void setVisita(List<Visita> visita) {
-		this.visita = visita;
-	}
-
 
 	@Override
 	public String toString() {
