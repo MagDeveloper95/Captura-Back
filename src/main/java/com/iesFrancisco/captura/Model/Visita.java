@@ -8,40 +8,46 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "visita")
-public class Visita implements Serializable{
-	
-    private static final long serialVersionUID = 1L;
-    @Id
+public class Visita implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private Long id;
-    @Column(name = "header", length = 256)
-    private String header;
-    @Column(name = "fecha")
-    private LocalDate fecha;
-    @Column(name = "nota", length = 256)
-    private String nota;
-    @OneToMany(mappedBy = "visita", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Column(name = "header", length = 256)
+	private String header;
+	@Column(name = "fecha")
+	private LocalDate fecha;
+	@Column(name = "nota", length = 256)
+	private String nota;
+	@OneToMany(mappedBy = "visita", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Foto> fotos = new ArrayList<Foto>();
-    
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Obra obra;
+
 	public Visita() {
-		this(-1L,"Por defecto",LocalDate.now(),"Por defecto", new ArrayList<Foto>());
+		this(-1L, "Por defecto", LocalDate.now(), "Por defecto", new ArrayList<Foto>(), new Obra());
 	}
 
-	public Visita(Long id, String header, LocalDate fecha, String nota, List<Foto> fotos) {
+	public Visita(Long id, String header, LocalDate fecha, String nota, List<Foto> fotos, Obra obra) {
+		super();
 		this.id = id;
 		this.header = header;
 		this.fecha = fecha;
 		this.nota = nota;
 		this.fotos = fotos;
+		this.obra = obra;
 	}
 
 	public Visita(Long id, String header, LocalDate fecha) {
@@ -51,6 +57,14 @@ public class Visita implements Serializable{
 		this.fecha = fecha;
 		this.nota = "Por defecto";
 		this.fotos = new ArrayList<Foto>();
+	}
+
+	public Obra getObra() {
+		return obra;
+	}
+
+	public void setObra(Obra obra) {
+		this.obra = obra;
 	}
 
 	public Long getId() {
@@ -122,6 +136,6 @@ public class Visita implements Serializable{
 	public String toString() {
 		return "Visita [id=" + id + ", header=" + header + ", fecha=" + fecha + ", nota=" + nota + ", fotos=" + fotos
 				+ "]";
-	}  
-    
+	}
+
 }
