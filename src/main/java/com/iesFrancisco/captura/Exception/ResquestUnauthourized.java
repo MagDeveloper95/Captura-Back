@@ -15,6 +15,10 @@ public class ResquestUnauthourized extends RuntimeException{
 		this.ex = ex;
 		this.f = f;
 	}
+	public ResquestUnauthourized(String ex) {
+		super(ex);
+		this.ex = ex;
+	}
 	
 	public String getExceptionDetail() {
 		return ex;
