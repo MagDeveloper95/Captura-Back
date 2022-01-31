@@ -15,6 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table (name="registro")
+
 public class Registro implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -23,7 +24,7 @@ public class Registro implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id", nullable = false)
 	private Long id;
-	@Column(name="titulo", length = 256)
+	@Column(name="descripcion", length = 256)
 	private String descripcion;
 	@Column(name="fecha")
 	private LocalDate fecha;

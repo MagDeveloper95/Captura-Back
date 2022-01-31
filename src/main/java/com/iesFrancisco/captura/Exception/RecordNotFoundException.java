@@ -15,13 +15,15 @@ public class RecordNotFoundException extends RuntimeException{
 		this.ex = ex;
 		this.f = f;
 	}
-	
+	public RecordNotFoundException(String ex) {
+		super(ex);
+		this.ex = ex;
+	}
 	public String getExceptionDetail() {
 		return ex;
 	}
 	public Object getFieldValue() {
 		return f;
 	}
-	
 }
 

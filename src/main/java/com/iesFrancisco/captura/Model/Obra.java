@@ -16,6 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table (name="obra")
+	
 public class Obra implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -25,7 +26,7 @@ public class Obra implements Serializable {
 	private Long id;	
 	@Column(name = "nombre", length = 256)
 	private String nombre;
-	@Column(name = "latlong", length = 256, nullable = false)
+	@Column(name = "latLong", length = 256, nullable = false)
 	private Coordenada latLong;
 	@Column(name = "datos", length = 256)
 	private String datos;
