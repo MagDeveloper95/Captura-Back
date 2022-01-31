@@ -34,11 +34,15 @@ public class RegistroService {
 
 	public Registro getRegistroById(Long id) throws RecordNotFoundException, ResquestUnauthourized, RecordOK {
 		// METER AQUI WATCHDOG
-		Optional<Registro> result = repository.findById(id);
-		if (result.isPresent()) {
-			return result.get();
-		} else {
-			throw new RecordNotFoundException("La nota no existe", id);
+		try {
+			Optional<Registro> result = repository.findById(id);
+			if (result.isPresent()) {
+				return result.get();
+			} else {
+				throw new RecordNotFoundException("La nota no existe", id);
+			}
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Nota no encontrada");
 		}
 	}
 
@@ -47,22 +51,27 @@ public class RegistroService {
 		// METER AQUI WATCHDOG
 		if (registro.getId() != null && registro.getId() > 0) {
 			Optional<Registro> dummy = repository.findById(registro.getId());
-			if (dummy.isPresent()) {
-				Registro returnRegistro = dummy.get();
-				return returnRegistro;
-			} else {
-				try {
-					nuevoRegistro = registro;
-					nuevoRegistro.setId(registro.getId());
-					nuevoRegistro.setDescripcion(registro.getDescripcion());
-					nuevoRegistro.setFecha(registro.getFecha());
-					nuevoRegistro.setUsuario(registro.getUsuario());
-					nuevoRegistro = repository.save(nuevoRegistro);
-					return nuevoRegistro;
-				} catch (Exception e) {
-				}
+			try {
 
-				throw new RecordNotFoundException("El registro no existe");
+				if (dummy.isPresent()) {
+					Registro returnRegistro = dummy.get();
+					return returnRegistro;
+				} else {
+					try {
+						nuevoRegistro = registro;
+						nuevoRegistro.setId(registro.getId());
+						nuevoRegistro.setDescripcion(registro.getDescripcion());
+						nuevoRegistro.setFecha(registro.getFecha());
+						nuevoRegistro.setUsuario(registro.getUsuario());
+						nuevoRegistro = repository.save(nuevoRegistro);
+						return nuevoRegistro;
+					} catch (Exception e) {
+					}
+
+					throw new RecordNotFoundException("El registro no existe");
+				}
+			} catch (Exception e) {
+				throw new IllegalArgumentException("Nota no encontrada");
 			}
 		}
 		// METER AQUI WATCHDOG
