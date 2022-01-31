@@ -74,6 +74,18 @@ public class Usuario implements Serializable {
 		return id;
 	}
 
+	public List<Obra> getObras() {
+		return obras;
+	}
+
+	public void setObras(List<Obra> obras) {
+		this.obras = obras;
+	}
+
+	public void setRegistro(List<Registro> registro) {
+		this.registro = registro;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
