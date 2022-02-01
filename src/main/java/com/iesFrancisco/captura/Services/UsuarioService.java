@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
-import com.iesFrancisco.captura.Model.Registro;
 import com.iesFrancisco.captura.Model.Usuario;
 import com.iesFrancisco.captura.Repositories.UsuarioRepository;
 
@@ -58,7 +57,7 @@ public class UsuarioService {
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
 	}
-	/**
+	
 	public Usuario getUsarioByNombre(String nombre)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (nombre != null) {
@@ -79,7 +78,7 @@ public class UsuarioService {
 		} else {
 			throw new NullPointerException("Error ---> El nombre introducido tiene un valor nulo");
 		}
-	}*/
+	}
 	
 	/**
 	 * Método del servicio que nos creará un usuario y en caso de que exista nos lo

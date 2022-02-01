@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
-import com.iesFrancisco.captura.Exception.RecordOK;
-import com.iesFrancisco.captura.Exception.ResquestUnauthourized;
 import com.iesFrancisco.captura.Model.Registro;
-import com.iesFrancisco.captura.Model.Usuario;
 import com.iesFrancisco.captura.Repositories.RegistroRepository;
 
 @Service
@@ -20,7 +17,7 @@ public class RegistroService {
 	@Autowired // instanciar el repositorio
 	RegistroRepository repository;
 	/**
-	 * Método del servicio que devuelve una lista con
+	 * Mï¿½todo del servicio que devuelve una lista con
 	 * @return la lista de los registros 	
 	 * @throws RecordNotFoundException en caso de que sea nulo
 	 */
@@ -33,11 +30,11 @@ public class RegistroService {
 		}
 	}
 	/**
-	 * Método del servicio que devuelve un registro introduciendo un id
+	 * Mï¿½todo del servicio que devuelve un registro introduciendo un id
 	 * @param id del registro
 	 * @return el registro
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
-	 * @throws NullPointerException     en caso de que algún objeto sea null
+	 * @throws NullPointerException     en caso de que algï¿½n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
 	public Registro getRegistroById(Long id)
@@ -58,15 +55,14 @@ public class RegistroService {
 		}
 	}
 	/**
-	 * Método del servicio que devuelve una lista de registros dependiendo del usuario introducido
+	 * Mï¿½todo del servicio que devuelve una lista de registros dependiendo del usuario introducido
 	 * @param id del usuario
 	 * @return la lista con los registros del usuario
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
-	 * @throws NullPointerException     en caso de que algún objeto sea null
+	 * @throws NullPointerException     en caso de que algï¿½n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	
-	/**
+		
 	public List<Registro> getRegistroPorUsuario(Long id)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (id != null) {
@@ -87,17 +83,15 @@ public class RegistroService {
 		} else {
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
-	}*/
+	}
 	/**
 	 * Metodo del servicio que devuelve un registro introduciendo una fecha
 	 * @param fecha por la que queremos filtrar
 	 * @return una listra con los registro con esa fecha
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
-	 * @throws NullPointerException     en caso de que algún objeto sea null
+	 * @throws NullPointerException     en caso de que algï¿½n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	
-	/**
 	public List<Registro> getRegistroPorFecha(LocalDate fecha)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (fecha != null) {
@@ -118,12 +112,12 @@ public class RegistroService {
 		} else {
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
-	}*/
+	}
 	/**
-	 * Método del servicio que crea un nuevo Registro
+	 * Mï¿½todo del servicio que crea un nuevo Registro
 	 * @param registro que queremos crear
 	 * @return el registro
-	 * @throws NullPointerException     en caso de que algún objeto sea null
+	 * @throws NullPointerException     en caso de que algï¿½n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
 	public Registro creaRegistro(Registro registro) throws NullPointerException, IllegalArgumentException {

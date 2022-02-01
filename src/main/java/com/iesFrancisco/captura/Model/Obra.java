@@ -40,14 +40,14 @@ public class Obra implements Serializable {
 	
 	@OneToMany(mappedBy ="obra", cascade = {CascadeType.ALL},orphanRemoval = true)
 	private List<Visita> visita;
-	
+	/**
     public void addVisita(Visita author){
         if(this.visita == null){
             this.visita = new ArrayList<>();
         }
         
         this.visita.add(author);
-    }
+    }*/
 	
 	private Obra(Long id, String nombre, Point2D.Float latLong, String datos, List<Usuario> usuario,
 			List<Visita> visita) {
@@ -106,15 +106,7 @@ public class Obra implements Serializable {
 	public void setUsuario(List<Usuario> usuario) {
 		this.usuario = usuario;
 	}
-/**
-	public Coordenada getLatLong() {
-		return latLong;
-	}
 
-	public void setLatLong(Coordenada latLong) {
-		this.latLong = latLong;
-	}
-*/	
 	public List<Visita> getVisita() {
 		return visita;
 	}
