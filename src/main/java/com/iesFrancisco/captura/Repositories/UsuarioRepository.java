@@ -9,7 +9,7 @@ import com.iesFrancisco.captura.Model.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 	/**
-	//Aqui van métodos que no estén en el CRUD básico
+	//Aqui van mï¿½todos que no estï¿½n en el CRUD bï¿½sico
 	@Query("SELECT US FROM usuario US WHERE US.nombre = ?1")
 	Usuario findByNombre(String nombre) throws IllegalArgumentException;
 	*/

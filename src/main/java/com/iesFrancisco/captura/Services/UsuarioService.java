@@ -18,7 +18,7 @@ public class UsuarioService {
 	UsuarioRepository repository;
 
 	/**
-	 * Método del servicio que nos devolverá todos los usuarios que tenemos
+	 * MÃ©todo del servicio que nos devolverÃ¡ todos los usuarios que tenemos
 	 * guardados
 	 * 
 	 * @return la lista de usuarios
@@ -33,12 +33,12 @@ public class UsuarioService {
 	}
 
 	/**
-	 * Método del servicio que nos devolverá un usuario por id
+	 * MÃ©todo del servicio que nos devolverÃ¡ un usuario por id
 	 * 
 	 * @param id del usuario que queremos buscar
 	 * @return el usuario
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
-	 * @throws NullPointerException     en caso de que algún objeto sea null
+	 * @throws NullPointerException     en caso de que algÃºn objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
 	public Usuario getUsuarioById(Long id)
@@ -82,13 +82,13 @@ public class UsuarioService {
 	}*/
 	
 	/**
-	 * Método del servicio que nos creará un usuario y en caso de que exista nos lo
+	 * MÃ©todo del servicio que nos crearÃ¡ un usuario y en caso de que exista nos lo
 	 * actualiza
 	 * 
 	 * @param usuario que queremos crear
 	 * @return el usuario creado/actualizado
 	 * @throws RecordNotFoundException en caso de que no encuentre el usuario
-	 * @throws NullPointerException    en caso de que algún objeto sea null
+	 * @throws NullPointerException    en caso de que algÃºn objeto sea null
 	 */
 	public Usuario creaUsuario(Usuario usuario) throws NullPointerException, IllegalArgumentException {
 		if (usuario != null) {
@@ -107,11 +107,11 @@ public class UsuarioService {
 	}
 
 	/**
-	 * Método del servicio que usaremos para actualizar un usuario que exista.
+	 * MÃ©todo del servicio que usaremos para actualizar un usuario que exista.
 	 * 
 	 * @param usuario que queremos actualizar
 	 * @return el usuario actualizado
-	 * @throws NullPointerException     en caso de que algún objeto sea null
+	 * @throws NullPointerException     en caso de que algÃºn objeto sea null
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
@@ -147,10 +147,10 @@ public class UsuarioService {
 	}
 
 	/**
-	 * Método del servicio que borra un usuario introducido por id
+	 * MÃ©todo del servicio que borra un usuario introducido por id
 	 * 
 	 * @param id del usuario que queremos borrar
-	 * @throws NullPointerException     en caso de que algún objeto sea null
+	 * @throws NullPointerException     en caso de que algÃºn objeto sea null
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
