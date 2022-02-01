@@ -64,12 +64,10 @@ public class ObraService {
 	 * @throws NullPointerException
 	 * @throws IllegalArgumentException
 	 */
-	
-	/**
 	public Obra getObraByName(String nombre) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if(nombre != null) {
 			try {
-				Optional<Obra> result = obrasRepository.findByName(nombre);
+				Optional<Obra> result = Optional.of(obrasRepository.findByName(nombre));
 				if(result.isPresent()) {
 					return result.get();
 				}else {
@@ -82,7 +80,7 @@ public class ObraService {
 		}else {
 			throw new NullPointerException("Error: El nombre introducido tiene un valor nulo");
 		}
-	}*/
+	}
 	
 	/**
 	 * Método del servicio que crea un usuario y si existe nos lo actualiza
