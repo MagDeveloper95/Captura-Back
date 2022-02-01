@@ -1,4 +1,4 @@
-package com.iesFrancisco.captura.Model;
+	package com.iesFrancisco.captura.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class Usuario implements Serializable {
 	        inverseJoinColumns = @JoinColumn(name="idObra", nullable = false)
 	    )
     	@ManyToMany(cascade = CascadeType.ALL)
-	    private List<Obra> obras;
+	    private List<Obra> obra;
 	
 
 	
@@ -122,8 +122,16 @@ public class Usuario implements Serializable {
 		return registro;
 	}
 
-	public void setBooks(List<Registro> registro) {
+	public void setRegistro(List<Registro> registro) {
 		this.registro = registro;
+	}
+
+	public List<Obra> getObra() {
+		return obra;
+	}
+
+	public void setObra(List<Obra> obra) {
+		this.obra = obra;
 	}
 
 	@Override

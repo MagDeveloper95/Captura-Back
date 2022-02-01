@@ -15,7 +15,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table (name="registro")
-
 public class Registro implements Serializable {
 
 	private static final long serialVersionUID = 1L;
