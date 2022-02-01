@@ -11,7 +11,6 @@ import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Exception.RecordOK;
 import com.iesFrancisco.captura.Exception.ResquestUnauthourized;
 import com.iesFrancisco.captura.Model.Foto;
-import com.iesFrancisco.captura.Model.Visita;
 
 
 @Repository

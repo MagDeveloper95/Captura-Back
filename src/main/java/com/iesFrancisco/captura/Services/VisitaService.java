@@ -1,5 +1,6 @@
 package com.iesFrancisco.captura.Services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
+import com.iesFrancisco.captura.Model.Usuario;
 import com.iesFrancisco.captura.Model.Visita;
 import com.iesFrancisco.captura.Repositories.VisitaRepository;
 
@@ -17,65 +19,184 @@ public class VisitaService {
     VisitaRepository repository;
     
     /**
-     * Metodo que devuelve una lista 
-     * con todas las visitas almacenadas
-     * @return
-     */
-    public List<Visita> getAllVisita() {
-        List<Visita> result = repository.findAll();
-        return result;
-    }
-    /**
-     * Metodo que devuelve una visita ingresando su id
-     * @param id identificador de la visita.
-     * @return la visita que ha encontrado.
-     * @throws RecordNotFoundException en caso de no encontrarla lanza la excepción 404
-     */
-    public Visita getVisitaById(Long id) throws RecordNotFoundException {
-        Optional<Visita> result = repository.findById(id);
-        if (result.isPresent()) {
-            return result.get();
-        } else {
-            throw new RecordNotFoundException("Visita no encontrada", id);
-        }
-    }
-    /**
-     * Método que usamos para crear o editar una visita. 
-     * @param visita que queremos crear o updatear.
-     * @return la visita en caso de encontrarla y sino la crea y la devuelve
-     * @throws RecordNotFoundException en caso de no encontrarla lanza la excepción 404
-     */
-    public Visita createOrUpdateVisita(Visita visita) throws RecordNotFoundException {
-        if (visita.getId() != null && visita.getId() > 0) {
-            Optional<Visita> visitaDummy = repository.findById(visita.getId());
-            if (visitaDummy.isPresent()) {
-                Visita newVisita = visitaDummy.get();
-                newVisita.setId(visita.getId());
-                newVisita.setHeader(visita.getHeader());
-                newVisita.setFecha(visita.getFecha());
-                newVisita.setNota(visita.getNota());
-                newVisita.setFotos(visita.getFotos());
-                newVisita = repository.save(newVisita);
-                return newVisita;
-            } else {
-            	 throw new RecordNotFoundException("Visita no encontrada", visita.getId());
-            }
-        } else {
-            visita = repository.save(visita);
-            return visita;
-        }
-    }
-    /**
-     * Método que usamos para borrar una visita introducida por su id
-     * @param id identificador de la visita.
-     * @throws RecordNotFoundException en caso de no encontrarla lanza la excepción 404
-     */
-    public void deleteVisita(Long id) throws RecordNotFoundException {
-        Optional<Visita> visita = repository.findById(id);
-        if (visita.isPresent()) {
-            repository.deleteById(id);
-        } else {
-            throw new RecordNotFoundException("Visita no encontrada", id);
-        }
-    }
+	 * MÃ©todo del servicio que nos devolverÃ¡ todas las visitas que tenemos
+	 * guardados
+	 * 
+	 * @return la lista de vistas
+	 */
+	public List<Visita> getAllVisitas() throws RecordNotFoundException {
+		List<Visita> getAllVisitasDummy = repository.findAll();
+		if (getAllVisitasDummy != null) {
+			return getAllVisitasDummy;
+		} else {
+			throw new RecordNotFoundException("No hay visitas en la base de datos");
+		}
+	}
+	/**
+	 * Mï¿½todo del servicio que devuelve una Visita introduciendo un id
+	 * @param id de la visita
+	 * @return la visita
+	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
+	 * @throws NullPointerException     en caso de que algï¿½n objeto sea null
+	 * @throws IllegalArgumentException en caso de que sea nulo
+	 */
+	public Visita getVisitaPorId(Long id)
+			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+		if (id != null) {
+			try {
+				Optional<Visita> getVisitaDummy = repository.findById(id);
+				if (getVisitaDummy.isPresent()) {
+					return getVisitaDummy.get();
+				} else {
+					throw new RecordNotFoundException("Error ---> La visita con id: " + id + " no existe");
+				}
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(e);
+			}
+		} else {
+			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
+		}
+	}
+	/**
+	 * Mï¿½todo del servicio que devuelve una Visita introduciendo una obra
+	 * @param id de la obra
+	 * @return la visita
+	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
+	 * @throws NullPointerException     en caso de que algï¿½n objeto sea null
+	 * @throws IllegalArgumentException en caso de que sea nulo
+	 */
+	public List<Visita> getVisitaPorObra(Long id)
+			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+		if (id != null) {
+			try {
+				Optional<List<Visita>> getVisitasDummy = Optional.of(repository.getFotosPorObra(id));
+				if (getVisitasDummy.isPresent()) {
+					return getVisitasDummy.get();
+				} else {
+					throw new RecordNotFoundException("Error ---> La visita con id: " + id + " no existe");
+				}
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(e);
+			}
+		} else {
+			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
+		}
+	}
+	/**
+	 * Mï¿½todo del servicio que devuelve una Visita introduciendo una obra
+	 * @param id de la obra
+	 * @return la visita
+	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
+	 * @throws NullPointerException     en caso de que algï¿½n objeto sea null
+	 * @throws IllegalArgumentException en caso de que sea nulo
+	 */
+	public List<Visita> getVisitaPorFecha(LocalDate fecha)
+			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+		if (fecha != null) {
+			try {
+				Optional<List<Visita>> getVisitasDummy = Optional.of(repository.getVisitasPorFecha(fecha));
+				if (getVisitasDummy.isPresent()) {
+					return getVisitasDummy.get();
+				} else {
+					throw new RecordNotFoundException("Error ---> La visita con fecha: " + fecha + " no existe");
+				}
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(e);
+			}
+		} else {
+			throw new NullPointerException("Error ---> La fecha introducido tiene un valor nulo");
+		}
+	}
+	/**
+	 * MÃ©todo del servicio que nos crearÃ¡ una visita y en caso de que exista nos lo
+	 * actualiza
+	 * 
+	 * @param visita que queremos crear
+	 * @return el visita creado/actualizado
+	 * @throws RecordNotFoundException en caso de que no encuentre el usuario
+	 * @throws NullPointerException    en caso de que algÃºn objeto sea null
+	 */
+	public Visita creaVisita(Visita visita) throws NullPointerException, IllegalArgumentException {
+		if (visita != null) {
+			if (visita.getId() < 0) {
+				try {
+					return visita = repository.save(visita);
+				} catch (IllegalArgumentException e) {
+					throw new IllegalArgumentException(e);
+				}
+			} else {
+				return actualizaVisita(visita);
+			}
+		} else {
+			throw new NullPointerException("Error ---> La visita introducido tiene un valor nulo");
+		}
+	}
+
+	/**
+	 * MÃ©todo del servicio que usaremos para actualizar una visita que exista.
+	 * 
+	 * @param visita que queremos actualizar
+	 * @return visita actualizada
+	 * @throws NullPointerException     en caso de que algÃºn objeto sea null
+	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
+	 * @throws IllegalArgumentException en caso de que sea nulo
+	 */
+	public Visita actualizaVisita(Visita visita)
+			throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
+		if (visita != null) {
+			Optional<Visita> getVisitaDummy = Optional.of(getVisitaPorId(visita.getId()));
+			if (getVisitaDummy != null) {
+				if (!getVisitaDummy.isPresent()) {
+					Visita actualizaVisitaDummy = getVisitaDummy.get();
+					actualizaVisitaDummy.setId(visita.getId());
+					actualizaVisitaDummy.setHeader(visita.getHeader());
+					actualizaVisitaDummy.setFecha(visita.getFecha());
+					actualizaVisitaDummy.setFecha(visita.getFecha());
+					actualizaVisitaDummy.setNota(visita.getNota());
+					actualizaVisitaDummy.setFotos(visita.getFotos());
+					actualizaVisitaDummy.setObra(visita.getObra());
+					try {
+						return repository.save(actualizaVisitaDummy);
+					} catch (IllegalArgumentException e) {
+						throw new IllegalArgumentException(e);
+					}
+				} else {
+					throw new RecordNotFoundException("Error ---> La visita no existe", visita.getId());
+				}
+			} else {
+				throw new NullPointerException("Error ---> La visita optional tiene un valor nulo");
+			}
+		} else {
+			throw new NullPointerException("Error ---> La visita introducido tiene un valor nulo");
+		}
+	}
+
+	/**
+	 * MÃ©todo del servicio que borra una visita introducido por id
+	 * 
+	 * @param id de la visita que queremos borrar
+	 * @throws NullPointerException     en caso de que algÃºn objeto sea null
+	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
+	 * @throws IllegalArgumentException en caso de que sea nulo
+	 */
+	public void borrarVisita(Long id) throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
+		if (id != null) {
+			Optional<Visita> borrarVisitaDummy = Optional.of(getVisitaPorId(id));
+			if (borrarVisitaDummy != null) {
+				if (!borrarVisitaDummy.isPresent()) {
+					try {
+						repository.deleteById(id);
+					} catch (IllegalArgumentException e) {
+						throw new IllegalArgumentException(e);
+					}
+				} else {
+					throw new RecordNotFoundException("Error ---> La visita no existe", id);
+				}
+			} else {
+				throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
+			}
+		} else {
+			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
+		}
+	}
 }

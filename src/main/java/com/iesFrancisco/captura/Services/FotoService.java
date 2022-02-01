@@ -16,101 +16,108 @@ public class FotoService {
 
     @Autowired // instanciar el repositorio
     FotoRepository repository;
+
     /**
-	 * M�todo del servicio que devuelve una lista con las fotos
-	 * @return la lista de las fotos     	
-	 * @throws RecordNotFoundException en caso de que sea nulo
+	 * Método del servicio que nos devolverá todas las fotos que tenemos
+	 * guardados
+	 * 
+	 * @return la lista de fotos
 	 */
 	public List<Foto> getAllFotos() throws RecordNotFoundException {
-		List<Foto> fotosDummy = repository.findAll();
-		if (fotosDummy != null) {
-			return fotosDummy;
+		List<Foto> getAllFotos = repository.findAll();
+		if (getAllFotos != null) {
+			return getAllFotos;
 		} else {
 			throw new RecordNotFoundException("No hay fotos en la base de datos");
 		}
 	}
-    /**
-     * M�todo del servicio que devuelve una foto por su id 
-     * @param id de la foto 
-     * @return la foto
-     * @throws RecordNotFoundException  en caso de que no encuentre el usuario
+	/**
+	 * M�todo del servicio que devuelve una Foto introduciendo un id
+	 * @param id de la foto
+	 * @return la foto
+	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
-     */
-    public Foto getFotoById(Long id) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
-        if (id != null) {
-            try {
-                Optional<Foto> getFotoDummy = repository.findById(id);
-                if (getFotoDummy.isPresent()) {
-                    return getFotoDummy.get();
-                } else {
-                    throw new RecordNotFoundException("Error ---> La foto con id: " + id + " no existe");
-                }
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException(e);
-            }
-        } else {
-            throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
-        }
-    }
-    /**
-     * M�todo del servicio que devuelve las fotos de una visita 
-     * @param id de la foto 
-     * @return la foto
-     * @throws RecordNotFoundException  en caso de que no encuentre el usuario
+	 */
+	public Foto getFotoPorId(Long id)
+			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+		if (id != null) {
+			try {
+				Optional<Foto> getFotoDummy = repository.findById(id);
+				if (getFotoDummy.isPresent()) {
+					return getFotoDummy.get();
+				} else {
+					throw new RecordNotFoundException("Error ---> La foto con id: " + id + " no existe");
+				}
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(e);
+			}
+		} else {
+			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
+		}
+	}
+	/**
+	 * M�todo del servicio que devuelve una Foto introduciendo una Visita
+	 * @param id de la visita
+	 * @return la foto
+	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
-     */
-    public List<Foto> getFotosPorVisita(Long id) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
-        if (id != null) {
-            try {
-                Optional<List<Foto>> getFotoDummy = Optional.of(repository.getFotosPorVisita(id));
-                if (getFotoDummy.isPresent()) {
-                    return getFotoDummy.get();
-                } else {
-                    throw new RecordNotFoundException("Error ---> La fotos visita con id: " + id + " no existe");
-                }
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException(e);
-            }
-        } else {
-            throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
-        }
-    }
-    /**
-     * M�todo del servicio que devuelve una foto por su id 
-     * @param id de la foto 
-     * @return la foto
-     * @throws RecordNotFoundException  en caso de que no encuentre el usuario
+	 */
+	public List<Foto> getFotosPorVisita(Long id)
+			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+		if (id != null) {
+			try {
+				Optional<List<Foto>> getFotosDummy = Optional.of(repository.getFotosPorVisita(id));
+				if (getFotosDummy.isPresent()) {
+					return getFotosDummy.get();
+				} else {
+					throw new RecordNotFoundException("Error ---> La foto con id: " + id + " no existe");
+				}
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(e);
+			}
+		} else {
+			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
+		}
+	}
+	/**
+	 * M�todo del servicio que devuelve una Foto introduciendo una fecha
+	 * @param fecha	
+	 * @return La foto
+	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
-     */
-    public List<Foto> getFotosPorFecha(LocalDate fecha) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
-        if (fecha != null) {
-            try {
-                Optional<List<Foto>> getFotoDummy = Optional.of(repository.getFotosPorFecha(fecha));
-                if (getFotoDummy.isPresent()) {
-                    return getFotoDummy.get();
-                } else {
-                    throw new RecordNotFoundException("Error ---> La foto con fecha: " + fecha + " no existe");
-                }
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException(e);
-            }
-        } else {
-            throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
-        }
-    }
-    /**
-     * M�todo del serviciio que crea una foto o la actualiza en caso de que exista
-     * @param foto que queremos crear 
-     * @return foto 
-     * @throws NullPointerException     en caso de que algun objeto sea null
-     * @throws IllegalArgumentException en caso de que sea nulo
-     */
-    public Foto creaFoto(Foto foto) throws NullPointerException, IllegalArgumentException {
-        if (foto != null) {
-			if (foto.getId() < 0) {
+	 */
+	public List<Foto> getFotosPorFecha(LocalDate fecha)
+			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+		if (fecha != null) {
+			try {
+				Optional<List<Foto>> getFotosDummy = Optional.of(repository.getFotosPorFecha(fecha));
+				if (getFotosDummy.isPresent()) {
+					return getFotosDummy.get();
+				} else {
+					throw new RecordNotFoundException("Error ---> La foto con fecha: " + fecha + " no existe");
+				}
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(e);
+			}
+		} else {
+			throw new NullPointerException("Error ---> La foto introducida tiene un valor nulo");
+		}
+	}
+	/**
+	 * Método del servicio que nos creará una foto y en caso de que exista nos lo
+	 * actualiza
+	 * 
+	 * @param foto que queremos crear
+	 * @return foto creada/actualizada
+	 * @throws RecordNotFoundException en caso de que no encuentre el usuario
+	 * @throws NullPointerException    en caso de que algún objeto sea null
+	 */
+	public Foto creaUsuario(Foto foto) throws NullPointerException, IllegalArgumentException {
+		if (foto != null) {
+			if (foto.getId() < 0 & foto != null) {
 				try {
 					return foto = repository.save(foto);
 				} catch (IllegalArgumentException e) {
@@ -122,12 +129,13 @@ public class FotoService {
 		} else {
 			throw new NullPointerException("Error ---> La foto introducido tiene un valor nulo");
 		}
-    }
-    /**
-	 * Método del servicio que usaremos para actualizar una foto que exista.
+	}
+
+	/**
+	 * Método del servicio que usaremos para actualizar un foto que exista.
 	 * 
 	 * @param foto que queremos actualizar
-	 * @return la foto actualizada
+	 * @return el foto actualizado
 	 * @throws NullPointerException     en caso de que algún objeto sea null
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
@@ -135,16 +143,16 @@ public class FotoService {
 	public Foto actualizarFoto(Foto foto)
 			throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
 		if (foto != null) {
-			Optional<Foto> getFotoDummy = Optional.of(getFotoById(foto.getId()));
+			Optional<Foto> getFotoDummy = Optional.of(getFotoPorId(foto.getId()));
 			if (getFotoDummy != null) {
 				if (!getFotoDummy.isPresent()) {
-					Foto actualizaFotoDummy = getFotoDummy.get();
-					actualizaFotoDummy.setId(foto.getId());
-					actualizaFotoDummy.setUrl(foto.getUrl());
-					actualizaFotoDummy.setComentario(foto.getComentario());
-					actualizaFotoDummy.setVisita(foto.getVisita());
+					Foto actualizarFotoDummy = getFotoDummy.get();
+					actualizarFotoDummy.setId(foto.getId());
+					actualizarFotoDummy.setUrl(foto.getUrl());
+					actualizarFotoDummy.setComentario(foto.getComentario());
+					actualizarFotoDummy.setVisita(foto.getVisita());
 					try {
-						return repository.save(actualizaFotoDummy);
+						return repository.save(actualizarFotoDummy);
 					} catch (IllegalArgumentException e) {
 						throw new IllegalArgumentException(e);
 					}
@@ -158,6 +166,7 @@ public class FotoService {
 			throw new NullPointerException("Error ---> La foto introducido tiene un valor nulo");
 		}
 	}
+
 	/**
 	 * Método del servicio que borra una foto introducido por id
 	 * 
@@ -166,9 +175,9 @@ public class FotoService {
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	public void borrarFoto(Long id) throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
+	public void borrarFotoPorId(Long id) throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
 		if (id != null) {
-			Optional<Foto> borrarFotoDummy = Optional.of(getFotoById(id));
+			Optional<Foto> borrarFotoDummy = Optional.of(getFotoPorId(id));
 			if (borrarFotoDummy != null) {
 				if (!borrarFotoDummy.isPresent()) {
 					try {
@@ -186,4 +195,5 @@ public class FotoService {
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
 	}
+
 }
