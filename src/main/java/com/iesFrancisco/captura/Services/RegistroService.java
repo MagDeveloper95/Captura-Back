@@ -11,6 +11,7 @@ import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Exception.RecordOK;
 import com.iesFrancisco.captura.Exception.ResquestUnauthourized;
 import com.iesFrancisco.captura.Model.Registro;
+import com.iesFrancisco.captura.Model.Usuario;
 import com.iesFrancisco.captura.Repositories.RegistroRepository;
 
 @Service
@@ -18,90 +19,126 @@ public class RegistroService {
 
 	@Autowired // instanciar el repositorio
 	RegistroRepository repository;
-
-	public List<Registro> getAllRegistros() throws RecordNotFoundException, ResquestUnauthourized, RecordOK {
-
-		List<Registro> result;
-		// METER AQUI WATCHDOG
-		result = repository.findAll();
+	/**
+	 * Método del servicio que devuelve una lista con
+	 * @return la lista de los registros 	
+	 * @throws RecordNotFoundException en caso de que sea nulo
+	 */
+	public List<Registro> getAllRegistros() throws RecordNotFoundException {
+		List<Registro> result = repository.findAll();
 		if (result != null) {
 			return result;
 		} else {
 			throw new RecordNotFoundException("No hay registros en la base de datos");
 		}
-
 	}
-
-	public Registro getRegistroById(Long id) throws RecordNotFoundException, ResquestUnauthourized, RecordOK {
-		// METER AQUI WATCHDOG
-		try {
-			Optional<Registro> result = repository.findById(id);
-			if (result.isPresent()) {
-				return result.get();
-			} else {
-				throw new RecordNotFoundException("La nota no existe", id);
-			}
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Nota no encontrada");
-		}
-	}
-
-	public Registro creaRegistro(Registro registro) throws RecordNotFoundException, ResquestUnauthourized, RecordOK {
-		Registro nuevoRegistro = null;
-		// METER AQUI WATCHDOG
-		if (registro.getId() != null && registro.getId() > 0) {
-			Optional<Registro> dummy = repository.findById(registro.getId());
+	/**
+	 * Método del servicio que devuelve un registro introduciendo un id
+	 * @param id del registro
+	 * @return el registro
+	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
+	 * @throws NullPointerException     en caso de que algún objeto sea null
+	 * @throws IllegalArgumentException en caso de que sea nulo
+	 */
+	public Registro getRegistroById(Long id)
+			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+		if (id != null) {
 			try {
-
-				if (dummy.isPresent()) {
-					Registro returnRegistro = dummy.get();
-					return returnRegistro;
+				Optional<Registro> getRegistroDummy = repository.findById(id);
+				if (getRegistroDummy.isPresent()) {
+					return getRegistroDummy.get();
 				} else {
-					try {
-						nuevoRegistro = registro;
-						nuevoRegistro.setId(registro.getId());
-						nuevoRegistro.setDescripcion(registro.getDescripcion());
-						nuevoRegistro.setFecha(registro.getFecha());
-						nuevoRegistro.setUsuario(registro.getUsuario());
-						nuevoRegistro = repository.save(nuevoRegistro);
-						return nuevoRegistro;
-					} catch (Exception e) {
-					}
-
-					throw new RecordNotFoundException("El registro no existe");
+					throw new RecordNotFoundException("Error ---> El registro con id: " + id + " no existe");
 				}
-			} catch (Exception e) {
-				throw new IllegalArgumentException("Nota no encontrada");
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(e);
 			}
+		} else {
+			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
-		// METER AQUI WATCHDOG
-		return nuevoRegistro;
 	}
-
+	/**
+	 * Método del servicio que devuelve una lista de registros dependiendo del usuario introducido
+	 * @param id del usuario
+	 * @return la lista con los registros del usuario
+	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
+	 * @throws NullPointerException     en caso de que algún objeto sea null
+	 * @throws IllegalArgumentException en caso de que sea nulo
+	 */
+	
+	/**
+	public List<Registro> getRegistroPorUsuario(Long id)
+			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+		if (id != null) {
+			try {
+				Optional<List<Registro>> getRegistroDummy = Optional.of(repository.getRegistroPorUsuario(id));
+				if(getRegistroDummy != null) {					
+					if (getRegistroDummy.isPresent()) {
+						return getRegistroDummy.get();
+					} else {
+						throw new RecordNotFoundException("Error ---> El registro del usuario con id: " + id + " no existe");
+					}
+				}else {
+					throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
+				}
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(e);
+			}
+		} else {
+			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
+		}
+	}*/
+	/**
+	 * Metodo del servicio que devuelve un registro introduciendo una fecha
+	 * @param fecha por la que queremos filtrar
+	 * @return una listra con los registro con esa fecha
+	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
+	 * @throws NullPointerException     en caso de que algún objeto sea null
+	 * @throws IllegalArgumentException en caso de que sea nulo
+	 */
+	
+	/**
 	public List<Registro> getRegistroPorFecha(LocalDate fecha)
-			throws RecordNotFoundException, ResquestUnauthourized, RecordOK {
-		List<Registro> returnReg = null;
-		if (!fecha.isBefore(LocalDate.now()) && fecha != null) {
-			returnReg = repository.getRegistroPorFecha(fecha); // Prueba
-			if (returnReg != null) {
-				return returnReg;
-			} else {
-				throw new RecordNotFoundException("El registro no existe");
+			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+		if (fecha != null) {
+			try {
+				Optional<List<Registro>> getRegistroFechaDummy = Optional.of(repository.getRegistroPorFecha(fecha));
+				if(getRegistroFechaDummy != null) {					
+					if (getRegistroFechaDummy.isPresent()) {
+						return getRegistroFechaDummy.get();
+					} else {
+						throw new RecordNotFoundException("Error ---> El registro con fecha: " + fecha + " no existe");
+					}
+				}else {
+					throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
+				}
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(e);
 			}
+		} else {
+			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
-		return returnReg;
-	}
-
-	List<Registro> getRegistroPorUsuario(Long usuario) throws RecordNotFoundException, ResquestUnauthourized, RecordOK {
-		List<Registro> returnReg = null;
-		if (!usuario.equals(-1L)) {
-			returnReg = repository.getRegistroPorUsuario(usuario); // Prueba
-			if (returnReg != null) {
-				return returnReg;
+	}*/
+	/**
+	 * Método del servicio que crea un nuevo Registro
+	 * @param registro que queremos crear
+	 * @return el registro
+	 * @throws NullPointerException     en caso de que algún objeto sea null
+	 * @throws IllegalArgumentException en caso de que sea nulo
+	 */
+	public Registro creaRegistro(Registro registro) throws NullPointerException, IllegalArgumentException {
+		if (registro != null) {
+			if (registro.getId() < 0 & registro != null) {
+				try {
+					return registro = repository.save(registro);
+				} catch (IllegalArgumentException e) {
+					throw new IllegalArgumentException(e);
+				}
 			} else {
-				throw new RecordNotFoundException("El registro no existe");
+				return registro;
 			}
+		} else {
+			throw new NullPointerException("Error ---> El registro introducido tiene un valor nulo");
 		}
-		return returnReg;
 	}
 }

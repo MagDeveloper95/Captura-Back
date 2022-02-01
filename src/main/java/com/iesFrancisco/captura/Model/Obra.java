@@ -1,11 +1,14 @@
 package com.iesFrancisco.captura.Model;
 
+import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Float;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,9 +17,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.data.geo.Point;
+
 @Entity
 @Table (name="obra")
-	
 public class Obra implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -27,17 +31,25 @@ public class Obra implements Serializable {
 	@Column(name = "nombre", length = 256)
 	private String nombre;
 	@Column(name = "latLong", length = 256, nullable = false)
-	private Coordenada latLong;
+	private Point2D.Float latLong;
 	@Column(name = "datos", length = 256)
 	private String datos;
 	
 	@ManyToMany(mappedBy = "obra")
 	private List<Usuario> usuario;
 	
-	@OneToMany(mappedBy ="obra", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy ="obra", cascade = {CascadeType.ALL},orphanRemoval = true)
 	private List<Visita> visita;
 	
-	private Obra(Long id, String nombre, Coordenada latLong, String datos, List<Usuario> usuario,
+    public void addVisita(Visita author){
+        if(this.visita == null){
+            this.visita = new ArrayList<>();
+        }
+        
+        this.visita.add(author);
+    }
+	
+	private Obra(Long id, String nombre, Point2D.Float latLong, String datos, List<Usuario> usuario,
 			List<Visita> visita) {
 		super();
 		this.id = id;
@@ -49,7 +61,7 @@ public class Obra implements Serializable {
 	}
 
 
-	public Obra(Long id, String nombre, Coordenada latLong, String datos) {
+	public Obra(Long id, String nombre, Point2D.Float latLong, String datos) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -59,7 +71,7 @@ public class Obra implements Serializable {
 	}
 
 	public Obra() {
-		this(-1L,"Por defecto",new Coordenada(),"Por defecto",new ArrayList<Usuario>(), new ArrayList<Visita>());
+		this(-1L,"Por defecto",new Point2D.Float(0,0),"Por defecto",new ArrayList<Usuario>(), new ArrayList<Visita>());
 	}
 
 	public Long getId() {
@@ -94,7 +106,7 @@ public class Obra implements Serializable {
 	public void setUsuario(List<Usuario> usuario) {
 		this.usuario = usuario;
 	}
-
+/**
 	public Coordenada getLatLong() {
 		return latLong;
 	}
@@ -102,16 +114,25 @@ public class Obra implements Serializable {
 	public void setLatLong(Coordenada latLong) {
 		this.latLong = latLong;
 	}
-	
+*/	
 	public List<Visita> getVisita() {
 		return visita;
 	}
-
 
 	public void setVisita(List<Visita> visita) {
 		this.visita = visita;
 	}
 	
+	public Point2D.Float getLatLong() {
+		return latLong;
+	}
+
+
+	public void setLatLong(Point2D.Float latLong) {
+		this.latLong = latLong;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Obra [id=" + id + ", nombre=" + nombre + ", latLong=" + latLong + ", datos=" + datos + ", usuario="
@@ -142,10 +163,5 @@ public class Obra implements Serializable {
 			return false;
 		return true;
 	}
-
-	
-
-	
-	
 
 }

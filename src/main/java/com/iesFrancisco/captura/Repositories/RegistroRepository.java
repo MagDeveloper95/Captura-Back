@@ -24,8 +24,9 @@ public interface RegistroRepository extends JpaRepository<Registro, Long> {
 	 * @throws ResquestUnauthourized en caso de que no este autorizado
 	 * @throws RecordOK en caso de que todo vaya correctamente.
 	 */
-	@Query("SELECT daReg FROM registro daReg where daReg.fecha = ?1")
-	List<Registro> getRegistroPorFecha(LocalDate fecha) throws RecordNotFoundException,ResquestUnauthourized,RecordOK;
+	
+	//@Query("SELECT daReg FROM registro daReg where daReg.fecha = ?1")
+	//List<Registro> getRegistroPorFecha(LocalDate fecha) throws RecordNotFoundException,ResquestUnauthourized,RecordOK;
 	/**
 	 * Métodoo que nos devuelve una lista con los registros
 	 * introduciendo un usuario
@@ -35,9 +36,10 @@ public interface RegistroRepository extends JpaRepository<Registro, Long> {
 	 * @throws ResquestUnauthourized en caso de que no este autorizado
 	 * @throws RecordOK en caso de que todo vaya correctamente
 	 */
-	//metodos 1 queries aqui
-	@Query("SELECT daReg FROM registro daReg where daReg.idUser = ?1")
-	List<Registro> getRegistroPorUsuario(Long usuario) throws RecordNotFoundException,ResquestUnauthourized,RecordOK;
+	//metodos 1 queries aqui/
+	
+	//@Query("SELECT daReg FROM registro daReg where daReg.idUser = ?1")
+	//List<Registro> getRegistroPorUsuario(Long usuario) throws RecordNotFoundException,ResquestUnauthourized,RecordOK;
 	
 	
 }

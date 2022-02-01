@@ -8,7 +8,9 @@ import com.iesFrancisco.captura.Model.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
-	
+	/**
+	//Aqui van m�todos que no est�n en el CRUD b�sico
 	@Query("SELECT US FROM usuario US WHERE US.nombre = ?1")
 	Usuario findByNombre(String nombre) throws IllegalArgumentException;
+	*/
 }

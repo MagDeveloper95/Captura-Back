@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
+import com.iesFrancisco.captura.Model.Registro;
 import com.iesFrancisco.captura.Model.Usuario;
 import com.iesFrancisco.captura.Repositories.UsuarioRepository;
 
@@ -17,23 +18,27 @@ public class UsuarioService {
 	UsuarioRepository repository;
 
 	/**
-	 * MÈtodo del servicio que nos devolver· todos los usuarios que tenemos
+	 * M√©todo del servicio que nos devolver√° todos los usuarios que tenemos
 	 * guardados
 	 * 
 	 * @return la lista de usuarios
 	 */
-	public List<Usuario> getAllUsuarios() {
-		List<Usuario> getAllUsuarioDummy = repository.findAll();
-		return getAllUsuarioDummy;
+	public List<Usuario> getAllUsuarios() throws RecordNotFoundException {
+		List<Usuario> getAllUsuariosDummy = repository.findAll();
+		if (getAllUsuariosDummy != null) {
+			return getAllUsuariosDummy;
+		} else {
+			throw new RecordNotFoundException("No hay registros en la base de datos");
+		}
 	}
 
 	/**
-	 * MÈtodo del servicio que nos devolver· un usuario por id
+	 * M√©todo del servicio que nos devolver√° un usuario por id
 	 * 
 	 * @param id del usuario que queremos buscar
 	 * @return el usuario
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
-	 * @throws NullPointerException     en caso de que alg˙n objeto sea null
+	 * @throws NullPointerException     en caso de que alg√∫n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
 	public Usuario getUsuarioById(Long id)
@@ -53,7 +58,7 @@ public class UsuarioService {
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
 	}
-	
+	/**
 	public Usuario getUsarioByNombre(String nombre)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (nombre != null) {
@@ -74,20 +79,20 @@ public class UsuarioService {
 		} else {
 			throw new NullPointerException("Error ---> El nombre introducido tiene un valor nulo");
 		}
-	}
+	}*/
 	
 	/**
-	 * MÈtodo del servicio que nos crear· un usuario y en caso de que exista nos lo
+	 * M√©todo del servicio que nos crear√° un usuario y en caso de que exista nos lo
 	 * actualiza
 	 * 
 	 * @param usuario que queremos crear
 	 * @return el usuario creado/actualizado
 	 * @throws RecordNotFoundException en caso de que no encuentre el usuario
-	 * @throws NullPointerException    en caso de que alg˙n objeto sea null
+	 * @throws NullPointerException    en caso de que alg√∫n objeto sea null
 	 */
 	public Usuario creaUsuario(Usuario usuario) throws NullPointerException, IllegalArgumentException {
 		if (usuario != null) {
-			if (usuario.getId() < 0) {
+			if (usuario.getId() < 0 & usuario != null) {
 				try {
 					return usuario = repository.save(usuario);
 				} catch (IllegalArgumentException e) {
@@ -102,11 +107,11 @@ public class UsuarioService {
 	}
 
 	/**
-	 * MÈtodo del servicio que usaremos para actualizar un usuario que exista.
+	 * M√©todo del servicio que usaremos para actualizar un usuario que exista.
 	 * 
 	 * @param usuario que queremos actualizar
 	 * @return el usuario actualizado
-	 * @throws NullPointerException     en caso de que alg˙n objeto sea null
+	 * @throws NullPointerException     en caso de que alg√∫n objeto sea null
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
@@ -124,7 +129,7 @@ public class UsuarioService {
 					actualizaUsuarioDummy.setFoto(usuario.getFoto());
 					actualizaUsuarioDummy.setDatos(usuario.getDatos());
 					actualizaUsuarioDummy.setRegistro(usuario.getRegistro());
-					actualizaUsuarioDummy.setObras(usuario.getObras());
+					actualizaUsuarioDummy.setObra(usuario.getObra());
 					try {
 						return repository.save(actualizaUsuarioDummy);
 					} catch (IllegalArgumentException e) {
@@ -142,10 +147,10 @@ public class UsuarioService {
 	}
 
 	/**
-	 * MÈtodo del servicio que borra un usuario introducido por id
+	 * M√©todo del servicio que borra un usuario introducido por id
 	 * 
 	 * @param id del usuario que queremos borrar
-	 * @throws NullPointerException     en caso de que alg˙n objeto sea null
+	 * @throws NullPointerException     en caso de que alg√∫n objeto sea null
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
