@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,17 +35,31 @@ public class Obra implements Serializable {
 	@ManyToMany(mappedBy = "obra")
 	private List<Usuario> usuario;
 	
-	@OneToMany(mappedBy ="obra", cascade = {CascadeType.ALL},orphanRemoval = true)
+    public void addUser(Usuario usuario){
+        if(this.usuario == null){
+            this.usuario = new ArrayList<>();
+        }
+        
+        this.usuario.add(usuario);
+    }
+	
+	//Comportamiento Eager
+	@OneToMany(fetch= FetchType.EAGER,mappedBy ="obra", cascade = {CascadeType.ALL},orphanRemoval = false)
 	private List<Visita> visita;
-	/**
-    public void addVisita(Visita author){
+
+	
+    public void addVisita(Visita visita){
         if(this.visita == null){
             this.visita = new ArrayList<>();
         }
-        
-        this.visita.add(author);
-    }*/
-	
+        this.visita.add(visita);
+        visita.setObra(this);
+    }
+    public void removeVisita(Visita visita) {
+    	this.visita.remove(visita);
+    	visita.setObra(null);
+    }
+
 	private Obra(Long id, String nombre, Point2D.Float latLong, String datos, List<Usuario> usuario,
 			List<Visita> visita) {
 		super();
@@ -64,6 +79,7 @@ public class Obra implements Serializable {
 		this.latLong = latLong;
 		this.datos = datos;
 		this.usuario = new ArrayList<Usuario>();
+		this.visita = new ArrayList<Visita>();
 	}
 
 	public Obra() {

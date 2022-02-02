@@ -1,6 +1,7 @@
 package com.iesFrancisco.captura.Services;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,7 +68,7 @@ public class ObraService {
 	public Obra getObraByName(String nombre) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if(nombre != null) {
 			try {
-				Optional<Obra> result = Optional.of(obrasRepository.findByName(nombre));
+				Optional<Obra> result = Optional.of(getObraByName(nombre));
 				if(result.isPresent()) {
 					return result.get();
 				}else {
@@ -144,10 +145,10 @@ public class ObraService {
 	
 	/**
 	 * Método del servicio que borra una obra introducida por id
-	 * @param id
+	 * @param id de la obra que queremos borrar
 	 * @throws RecordNotFoundException
-	 * @throws NullPointerException
-	 * @throws IllegalArgumentException
+	 * @throws NullPointerException 
+	 * @throws IllegalArgumentException hola
 	 */
 	public void deleteObraById(Long id) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
 		if(id!=null) {
@@ -168,17 +169,23 @@ public class ObraService {
 	}
 	
 	public List<Obra> getObraByUser(Usuario usuario) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
-		return null;
-		
+		List<Obra> lista = new ArrayList<Obra>();
+		if(usuario!=null) {
+				
+						
+		}else {
+			throw new NullPointerException ("Error: El usuario introducido tiene un valor nulo");
+		}
+		return null;		
 	}
 	
 	public Obra getObraByLoc(Point2D coordenadas) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
-		return null;
-		
+		return null;	
 	}
 	
 	public Obra createOrUpdateObra (Obra obra) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
-		if(obra.getId()!=null&&obra.getId()>0) {
+	if(obra!=null) {
+		if(obra.getId()>0) {
 			Optional<Obra> n = obrasRepository.findById(obra.getId());
 			if(n.isPresent()) {//UPDATE
 				Obra newObra = n.get();
@@ -199,6 +206,9 @@ public class ObraService {
 				obra=obrasRepository.save(obra);
 				return obra;
 		}
+	}else {
+		throw new NullPointerException ("Error: La obra introducida tiene un valor nulo");
+	}
 	}
 	
 

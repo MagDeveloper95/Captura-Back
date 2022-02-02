@@ -2,8 +2,6 @@ package com.iesFrancisco.captura.Controllers;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,12 +64,12 @@ public class ObraController {
 				return ResponseEntity.notFound().build();
 			}
 			
-			BeanUtils.copyProperties(obraDetails, obra.get());// Copiaria todo el objeto, aqui no interesa por el Id que no lo queremos actualizar
-			/**obra.get().setDatos(obraDetails.getDatos());
+			//BeanUtils.copyProperties(obraDetails, obra.get());// Copiaria todo el objeto, aqui no interesa por el Id que no lo queremos actualizar
+			obra.get().setDatos(obraDetails.getDatos());
 			obra.get().setLatLong(obraDetails.getLatLong());
 			obra.get().setNombre(obraDetails.getNombre());
 			obra.get().setUsuario(obraDetails.getUsuario());
-			obra.get().setVisita(obraDetails.getVisita());*/
+			obra.get().setVisita(obraDetails.getVisita());
 			
 			return ResponseEntity.status(HttpStatus.CREATED).body(service.createOrUpdateObra(obra.get()));						
 	}
@@ -91,6 +89,15 @@ public class ObraController {
 	public List<Obra> readAll(){
 		List<Obra> obras = service.getAllObras();
 		return obras;
+	}
+	
+	@GetMapping("/name/{name}")
+	public ResponseEntity<?> listarPorNombre(@PathVariable(value ="name") String name){
+		Optional<Obra> oObra = Optional.of(service.getObraByName(name));
+		if(!oObra.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(oObra);
 	}
 	
 	
