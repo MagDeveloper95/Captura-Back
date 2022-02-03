@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Model.Foto;
+import com.iesFrancisco.captura.Model.Registro;
 import com.iesFrancisco.captura.Repositories.FotoRepository;
 
 @Service
@@ -23,12 +24,12 @@ public class FotoService {
 	 * 
 	 * @return la lista de fotos
 	 */
-	public List<Foto> getAllFotos() throws RecordNotFoundException {
-		List<Foto> getAllFotos = repository.findAll();
-		if (getAllFotos != null) {
-			return getAllFotos;
+    public List<Foto> getAllFotos() throws RecordNotFoundException {
+		List<Foto> result = repository.findAll();
+		if (result != null) {
+			return result;
 		} else {
-			throw new RecordNotFoundException("No hay fotos en la base de datos");
+			throw new RecordNotFoundException("No hay registros en la base de datos");
 		}
 	}
 	/**

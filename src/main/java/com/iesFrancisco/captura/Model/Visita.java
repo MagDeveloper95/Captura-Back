@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "visita")
 public class Visita implements Serializable {
@@ -31,6 +33,7 @@ public class Visita implements Serializable {
 	private LocalDate fecha;
 	@Column(name = "nota", length = 256)
 	private String nota;
+	@JsonIgnoreProperties(value = "visita",allowSetters = true)
 	@OneToMany(mappedBy = "visita", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Foto> fotos = new ArrayList<Foto>();
 	@ManyToOne(fetch = FetchType.EAGER)
