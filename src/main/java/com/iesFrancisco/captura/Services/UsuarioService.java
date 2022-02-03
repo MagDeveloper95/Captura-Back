@@ -173,4 +173,32 @@ public class UsuarioService {
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
 	}
+	
+	public Usuario createOrUpdateUsuario (Usuario usuario) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+	if(usuario!=null) {
+		if(usuario.getId()>0) {
+			Optional<Usuario> user = repository.findById(usuario.getId());
+			if(user.isPresent()) {//UPDATE
+				Usuario newUser = user.get();
+				newUser.setId(usuario.getId());
+				newUser.setDatos(usuario.getDatos());
+				newUser.setEmail(usuario.getEmail());
+				newUser.setNombre(usuario.getNombre());
+				newUser.setFoto(usuario.getFoto());
+				newUser.setKey(usuario.getKey());
+				newUser = repository.save(newUser);
+				return newUser;
+			}else {//INSERT
+				usuario.setId(null);
+				usuario=repository.save(usuario);
+				return usuario;
+			}
+		}else {
+				usuario=repository.save(usuario);
+				return usuario;
+		}
+	}else {
+		throw new NullPointerException ("Error: La obra introducida tiene un valor nulo");
+	}
+	}
 }
