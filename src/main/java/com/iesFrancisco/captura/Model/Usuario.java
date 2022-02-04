@@ -16,6 +16,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "usuario")
 public class Usuario implements Serializable {
@@ -35,6 +38,7 @@ public class Usuario implements Serializable {
 	private String foto;
 	@Column(name = "datos", length = 256)
 	private String datos;
+	@JsonManagedReference
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Registro> registro = new ArrayList<Registro>();
 	@JoinTable(
@@ -42,6 +46,7 @@ public class Usuario implements Serializable {
 	        joinColumns = @JoinColumn(name = "idUsuario", nullable = false),
 	        inverseJoinColumns = @JoinColumn(name="idObra", nullable = false)
 	    )
+		@JsonIgnoreProperties(value="usuario", allowSetters=true)
     	@ManyToMany(cascade = CascadeType.ALL)
 	    private List<Obra> obra;
 	
@@ -123,7 +128,6 @@ public class Usuario implements Serializable {
 	}
 
 	public void setRegistro(List<Registro> registro) {
-		this.registro = registro;
 	}
 
 	public List<Obra> getObra() {
