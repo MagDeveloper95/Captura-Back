@@ -1,7 +1,6 @@
 package com.iesFrancisco.captura.Services;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Model.Obra;
-import com.iesFrancisco.captura.Model.Usuario;
 import com.iesFrancisco.captura.Repositories.ObraRepository;
 
 
@@ -25,18 +23,23 @@ public class ObraService {
 	 * 
 	 * @return result , lista de usuarios
 	 */
-	public List<Obra> getAllObras(){
+	public List<Obra> getAllObras() throws NullPointerException{
 		List<Obra> result = obrasRepository.findAll();
-		return result;
+		if (!result.isEmpty()) {
+			return result;
+		} else {
+			throw new NullPointerException("Error: El id introducido tiene un valor nulo");
+		}
+
 	}
 	
 	/**
 	 * Método que devuelve una obra por su id
 	 * @param id de la obra
 	 * @return result, una obra
-	 * @throws RecordNotFoundException
-	 * @throws NullPointerException
-	 * @throws IllegalArgumentException
+	 * @throws RecordNotFoundException en caso de que no encuentre la obra
+	 * @throws NullPointerException en caso de que algun objeto sea nulo
+	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
 	public Obra getObraById(Long id) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
 		if(id!=null) {
@@ -55,32 +58,6 @@ public class ObraService {
 			throw new NullPointerException("Error: El id introducido tiene un valor nulo");
 		}
 
-	}
-	
-	/**
-	 * Método para obtener una obra por su nombre
-	 * @param nombre
-	 * @return result, una obra
-	 * @throws RecordNotFoundException
-	 * @throws NullPointerException
-	 * @throws IllegalArgumentException
-	 */
-	public Obra getObraByName(String nombre) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
-		if(nombre != null) {
-			try {
-				Optional<Obra> result = Optional.of(getObraByName(nombre));
-				if(result.isPresent()) {
-					return result.get();
-				}else {
-					throw new RecordNotFoundException("La obra no existe", nombre);
-				}
-			} catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException(e);
-			}
-			
-		}else {
-			throw new NullPointerException("Error: El nombre introducido tiene un valor nulo");
-		}
 	}
 	
 	/**
@@ -110,9 +87,9 @@ public class ObraService {
 	 * Método del servicio que actualizara la obra si existe en la base de datos
 	 * @param obra que queremos actualizar
 	 * @return obra actualizada
-	 * @throws RecordNotFoundException
-	 * @throws NullPointerException
-	 * @throws IllegalArgumentException
+	 * @throws RecordNotFoundException en caso de que no encuentre la obra
+	 * @throws NullPointerException en caso de que algun objeto sea nulo
+	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
 	public Obra actualizaObra (Obra obra) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
 		if(obra!=null) {
@@ -146,11 +123,11 @@ public class ObraService {
 	/**
 	 * Método del servicio que borra una obra introducida por id
 	 * @param id de la obra que queremos borrar
-	 * @throws RecordNotFoundException
-	 * @throws NullPointerException 
-	 * @throws IllegalArgumentException hola
+	 * @throws RecordNotFoundException en caso de que no encuentre la obra
+	 * @throws NullPointerException en caso de que algun objeto sea nulo
+	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	public void deleteObraById(Long id) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
+	public void deleteObraById(Long id) throws RecordNotFoundException, NullPointerException{
 		if(id!=null) {
 			Optional<Obra> obra = obrasRepository.findById(id);
 			if(obra!=null) {
@@ -167,22 +144,16 @@ public class ObraService {
 		}
 
 	}
+
 	
-	public List<Obra> getObraByUser(Usuario usuario) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
-		List<Obra> lista = new ArrayList<Obra>();
-		if(usuario!=null) {
-				
-						
-		}else {
-			throw new NullPointerException ("Error: El usuario introducido tiene un valor nulo");
-		}
-		return null;		
-	}
-	
-	public Obra getObraByLoc(Point2D coordenadas) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
-		return null;	
-	}
-	
+	/**
+	 * 
+	 * @param obra
+	 * @return un obra nueva o actualizada
+	 * @throws RecordNotFoundException en caso de que no encuentre la obra
+	 * @throws NullPointerException en caso de que algun objeto sea nulo
+	 * @throws IllegalArgumentException en caso de que sea nulo
+	 */
 	public Obra createOrUpdateObra (Obra obra) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 	if(obra!=null) {
 		if(obra.getId()>0) {
@@ -209,6 +180,85 @@ public class ObraService {
 	}else {
 		throw new NullPointerException ("Error: La obra introducida tiene un valor nulo");
 	}
+	}
+	
+	
+	/**
+	 * Método que devuelve las obras que tiene un usuario
+	 * @param usuario
+	 * @return una lista de obras
+	 * @throws RecordNotFoundException en caso de que no encuentre la obra
+	 * @throws NullPointerException en caso de que algun objeto sea nulo
+	 * @throws IllegalArgumentException en caso de que sea nulo
+	 */
+	public List<Obra> getObraByUser(Long id) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
+		if(id!=null) {
+			try {
+				Optional<List<Obra>> lista = Optional.of(obrasRepository.findUsersByObra(id));
+				if(lista.isPresent()) {
+					return lista.get();
+				}else {
+					throw new RecordNotFoundException("La Obra no existe, por lo que no se puede incluir", id);
+				}
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(e);
+			}						
+		}else {
+			throw new NullPointerException ("Error: El usuario introducido tiene un valor nulo");
+		}
+			
+	}
+	
+	/**
+	 * Método que devuelve una obra por las coordenadas
+	 * @param coordenadas
+	 * @return obra en caso de que no encuentre la obra
+	 * @throws RecordNotFoundException en caso de que no encuentre la obra
+	 * @throws NullPointerException en caso de que algun objeto sea nulo
+	 * @throws IllegalArgumentException en caso de que sea nulo
+	 */
+	public Obra getObraByLoc(Point2D coordenadas) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
+		if(coordenadas!=null) {
+			try {
+				Optional<Obra> obra = Optional.of(obrasRepository.findObraByLatLong(coordenadas));
+				if(obra.isPresent()) {
+					return obra.get();
+				}else {
+					
+				}
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(e);
+			}
+		}else {
+			throw new NullPointerException ("Error: Las coordenadas introducidas tienen un valor nulo");
+		}
+		return null;	
+	}
+	
+	/**
+	 * Método para obtener una obra por su nombre
+	 * @param nombre
+	 * @return result, una obra
+	 * @throws RecordNotFoundException en caso de que no encuentre la obra
+	 * @throws NullPointerException en caso de que algun objeto sea nulo
+	 * @throws IllegalArgumentException en caso de que sea nulo
+	 */
+	public Obra getObraByName(String nombre) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+		if(nombre != null) {
+			try {
+				Optional<Obra> result = Optional.of(obrasRepository.findByName(nombre));
+				if(result.isPresent()) {
+					return result.get();
+				}else {
+					throw new RecordNotFoundException("La obra no existe", nombre);
+				}
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(e);
+			}
+			
+		}else {
+			throw new NullPointerException("Error: El nombre introducido tiene un valor nulo");
+		}
 	}
 	
 

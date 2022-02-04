@@ -47,4 +47,6 @@ public class RegistroController {
 		Registro creatUp = service.creaRegistro(note);
 		return new ResponseEntity<Registro>(creatUp,new HttpHeaders(),HttpStatus.OK);
 	}
+	
+	
 }

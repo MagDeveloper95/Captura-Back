@@ -16,6 +16,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table (name="obra")
 public class Obra implements Serializable {
@@ -32,22 +35,17 @@ public class Obra implements Serializable {
 	@Column(name = "datos", length = 256)
 	private String datos;
 	
+	@JsonIgnoreProperties(value="usuario", allowSetters=true)
 	@ManyToMany(mappedBy = "obra")
-	private List<Usuario> usuario;
+	private List<Usuario> usuario = new ArrayList<>();
 	
-    public void addUser(Usuario usuario){
-        if(this.usuario == null){
-            this.usuario = new ArrayList<>();
-        }
-        
-        this.usuario.add(usuario);
-    }
 	
 	//Comportamiento Eager
-	@OneToMany(fetch= FetchType.EAGER,mappedBy ="obra", cascade = {CascadeType.ALL},orphanRemoval = false)
-	private List<Visita> visita;
+	@JsonManagedReference
+	@OneToMany(fetch= FetchType.EAGER,mappedBy ="obra", cascade = {CascadeType.ALL},orphanRemoval = true)
+	private List<Visita> visita = new ArrayList<>();
 
-	
+/**	
     public void addVisita(Visita visita){
         if(this.visita == null){
             this.visita = new ArrayList<>();
@@ -59,6 +57,18 @@ public class Obra implements Serializable {
     	this.visita.remove(visita);
     	visita.setObra(null);
     }
+    
+    public void addUsuario(Usuario usuario){
+        if(this.usuario == null){
+            this.usuario = new ArrayList<>();
+        }       
+        this.usuario.add(usuario);
+    }
+    
+    public void removeUsuario(Usuario usuario) {
+    	this.usuario.remove(usuario);
+    	usuario.setObra(null);
+    }*/
 
 	private Obra(Long id, String nombre, Point2D.Float latLong, String datos, List<Usuario> usuario,
 			List<Visita> visita) {
@@ -116,7 +126,13 @@ public class Obra implements Serializable {
 	}
 
 	public void setUsuario(List<Usuario> usuario) {
-		this.usuario = usuario;
+		//this.usuario = usuario;
+	    this.usuario.clear();
+	    if (usuario != null) {
+	        this.usuario.addAll(usuario);
+	    }else {
+	    	System.out.println("Error al setear visita en Obra");
+	    }
 	}
 
 	public List<Visita> getVisita() {
@@ -124,7 +140,13 @@ public class Obra implements Serializable {
 	}
 
 	public void setVisita(List<Visita> visita) {
-		this.visita = visita;
+		//this.visita=visita;
+	    this.visita.clear();
+	    if (visita != null) {
+	        this.visita.addAll(visita);
+	    }else {
+	    	System.out.println("Error al setear visita en Obra");
+	    }
 	}
 	
 	public Point2D.Float getLatLong() {
