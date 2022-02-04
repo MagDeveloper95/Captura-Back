@@ -9,38 +9,39 @@ import org.springframework.stereotype.Service;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Model.Foto;
+import com.iesFrancisco.captura.Model.Registro;
 import com.iesFrancisco.captura.Repositories.FotoRepository;
 
 @Service
 public class FotoService {
 
-    @Autowired // instanciar el repositorio
-    FotoRepository repository;
+	@Autowired // instanciar el repositorio
+	FotoRepository repository;
 
-    /**
-	 * Método del servicio que nos devolverá todas las fotos que tenemos
-	 * guardados
+	/**
+	 * Método del servicio que nos devolverá todas las fotos que tenemos guardados
 	 * 
 	 * @return la lista de fotos
 	 */
 	public List<Foto> getAllFotos() throws RecordNotFoundException {
-		List<Foto> getAllFotos = repository.findAll();
-		if (getAllFotos != null) {
-			return getAllFotos;
+		List<Foto> result = repository.findAll();
+		if (result != null) {
+			return result;
 		} else {
-			throw new RecordNotFoundException("No hay fotos en la base de datos");
+			throw new RecordNotFoundException("No hay registros en la base de datos");
 		}
 	}
+
 	/**
 	 * M�todo del servicio que devuelve una Foto introduciendo un id
+	 * 
 	 * @param id de la foto
 	 * @return la foto
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	public Foto getFotoPorId(Long id)
-			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+	public Foto getFotoPorId(Long id) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (id != null) {
 			try {
 				Optional<Foto> getFotoDummy = repository.findById(id);
@@ -56,8 +57,10 @@ public class FotoService {
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
 	}
+
 	/**
 	 * M�todo del servicio que devuelve una Foto introduciendo una Visita
+	 * 
 	 * @param id de la visita
 	 * @return la foto
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
@@ -81,9 +84,11 @@ public class FotoService {
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
 	}
+
 	/**
 	 * M�todo del servicio que devuelve una Foto introduciendo una fecha
-	 * @param fecha	
+	 * 
+	 * @param fecha
 	 * @return La foto
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
@@ -106,6 +111,7 @@ public class FotoService {
 			throw new NullPointerException("Error ---> La foto introducida tiene un valor nulo");
 		}
 	}
+
 	/**
 	 * Método del servicio que nos creará una foto y en caso de que exista nos lo
 	 * actualiza
@@ -175,7 +181,8 @@ public class FotoService {
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	public void borrarFotoPorId(Long id) throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
+	/*public void borrarFotoPorId(Long id)
+			throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
 		if (id != null) {
 			Optional<Foto> borrarFotoDummy = Optional.of(getFotoPorId(id));
 			if (borrarFotoDummy != null) {
@@ -194,6 +201,20 @@ public class FotoService {
 		} else {
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
-	}
+	}*/
 
+	public void borrarFoto(Long id) throws RecordNotFoundException {
+		Optional<Foto> foto = repository.findById(id);
+		try {
+			if (foto.isPresent()) {
+				repository.deleteById(id);
+
+			} else {
+				throw new RecordNotFoundException("La foto no existe", id);
+			}
+		} catch (IllegalArgumentException e ) {
+			throw new IllegalArgumentException(e);
+		}
+
+	}
 }

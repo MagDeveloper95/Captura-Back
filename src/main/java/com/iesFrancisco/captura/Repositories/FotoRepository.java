@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -37,4 +38,5 @@ public interface FotoRepository extends JpaRepository<Foto,Long> {
 	 */
 	@Query(value= "SELECT FOT FROM foto FOT where FOT.fecha LIKE %?1", nativeQuery=true)
 	List<Foto> getFotosPorFecha(LocalDate fecha) throws IllegalArgumentException;
+	
 }

@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
+
+import com.iesFrancisco.captura.Model.Foto;
+import com.iesFrancisco.captura.Model.Usuario;
+
 import com.iesFrancisco.captura.Model.Visita;
 import com.iesFrancisco.captura.Repositories.VisitaRepository;
 
@@ -178,7 +182,7 @@ public class VisitaService {
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	public void borrarVisita(Long id) throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
+	/*public void borrarVisita(Long id) throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
 		if (id != null) {
 			Optional<Visita> borrarVisitaDummy = Optional.of(getVisitaPorId(id));
 			if (borrarVisitaDummy != null) {
@@ -197,5 +201,19 @@ public class VisitaService {
 		} else {
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
+	}*/
+	public void borrarVisita(Long id) throws RecordNotFoundException {
+		Optional<Visita> visita = repository.findById(id);
+		try {
+			if (visita.isPresent()) {
+				repository.deleteById(id);
+
+			} else {
+				throw new RecordNotFoundException("Visita no encontrada", id);
+			}
+		} catch (IllegalArgumentException e ) {
+			throw new IllegalArgumentException(e);
+		}
+
 	}
 }
