@@ -7,13 +7,18 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.iesFrancisco.captura.AppMain;
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Model.Registro;
 import com.iesFrancisco.captura.Repositories.RegistroRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Service
 public class RegistroService {
-
+	
+	private static final Logger logger = LogManager.getLogger(AppMain.class);
+	
 	@Autowired // instanciar el repositorio
 	RegistroRepository repository;
 	/**
