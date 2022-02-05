@@ -18,15 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iesFrancisco.captura.Model.Registro;
 import com.iesFrancisco.captura.Services.RegistroService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/registro")
 public class RegistroController {
 	
 	@Autowired
 	RegistroService service;
-
+	
+	@ApiOperation(value = "Devuelve una lista de registros")
+	@ApiResponses(value = {
+			@ApiResponse(code=200,message= "succecful", response=List.class)
+	})
 	@GetMapping
-	public ResponseEntity<List<Registro>> getAllNotes() {
+	public ResponseEntity<List<Registro>> getAllRegistros() {
 		List<Registro> all = service.getAllRegistros();
 		// Devolvemos la lista y respuestas de http
 		return new ResponseEntity<List<Registro>>(all, new HttpHeaders(), HttpStatus.OK);
