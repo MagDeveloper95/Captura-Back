@@ -1,0 +1,25 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<Configuration status="WARN" name="log4j2.xml">
+  <Appenders>
+    <Console name="STDOUT" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %c{1}: %msg%n" />
+    </Console>
+    <Console name="STDERR" target="SYSTEM_ERR">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %c{1}: %msg%n" />
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Root level="WARN">
+        <AppenderRef ref="ConsoleAppender" />
+        <AppenderRef ref="FileAppender"/>
+    </Root>
+    <Root level="INFO">
+        <AppenderRef ref="ConsoleAppender" />
+        <AppenderRef ref="FileAppender"/>
+    </Root>
+    <Root level="ERROR">
+        <AppenderRef ref="ConsoleAppender" />
+        <AppenderRef ref="FileAppender"/>
+    </Root>
+  </Loggers>
+</Configuration>
