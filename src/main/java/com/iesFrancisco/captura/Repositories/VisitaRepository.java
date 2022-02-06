@@ -35,6 +35,6 @@ public interface VisitaRepository extends JpaRepository<Visita,Long> {
 	 * @throws ResquestUnauthourized en caso de que no este autorizado
 	 * @throws RecordOK en caso de que todo vaya correctamente.
 	 */
-	@Query(value= "SELECT VIST FROM visita VIST where VIST.fecha LIKE %?1", nativeQuery=true)
+	@Query(value= "SELECT * FROM visita VIST where VIST.fecha LIKE %?1", nativeQuery=true)
 	List<Visita> getVisitasPorFecha(LocalDate fecha) throws IllegalArgumentException;
 }

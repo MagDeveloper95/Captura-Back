@@ -25,7 +25,7 @@ public interface FotoRepository extends JpaRepository<Foto,Long> {
 	 * @throws ResquestUnauthourized en caso de que no este autorizado
 	 * @throws RecordOK en caso de que todo vaya correctamente.
 	 */
-	@Query(value= "SELECT FOT FROM foto FOT where FOT.idVisita LIKE %?1", nativeQuery=true)
+	@Query(value= "SELECT FOT.id, FOT.comentario,Fot.url,FOT.id_visita FROM foto as FOT where id_visita LIKE %?1", nativeQuery=true)
 	List<Foto> getFotosPorVisita(Long id) throws IllegalArgumentException;
 	/**
 	 * Método que nos devuelve una lista con los las fotos  

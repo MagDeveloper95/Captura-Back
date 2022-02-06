@@ -43,8 +43,7 @@ public class VisitaService {
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	public Visita getVisitaPorId(Long id)
-			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+	public Visita getVisitaPorId(Long id) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (id != null) {
 			try {
 				Optional<Visita> getVisitaDummy = repository.findById(id);
@@ -95,6 +94,7 @@ public class VisitaService {
 	 */
 	public List<Visita> getVisitaPorFecha(LocalDate fecha)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+		System.out.println(fecha);
 		if (fecha != null) {
 			try {
 				Optional<List<Visita>> getVisitasDummy = Optional.of(repository.getVisitasPorFecha(fecha));
@@ -120,8 +120,9 @@ public class VisitaService {
 	 * @throws NullPointerException    en caso de que algún objeto sea null
 	 */
 	public Visita creaVisita(Visita visita) throws NullPointerException, IllegalArgumentException {
+		System.out.println(visita);
 		if (visita != null) {
-			if (visita.getId() < 0) {
+			if (visita.getId() > 0 & visita != null) {
 				try {
 					return visita = repository.save(visita);
 				} catch (IllegalArgumentException e) {
@@ -182,11 +183,11 @@ public class VisitaService {
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	/*public void borrarVisita(Long id) throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
+	public void borrarVisita(Long id) throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
 		if (id != null) {
 			Optional<Visita> borrarVisitaDummy = Optional.of(getVisitaPorId(id));
 			if (borrarVisitaDummy != null) {
-				if (!borrarVisitaDummy.isPresent()) {
+				if (borrarVisitaDummy.isPresent()) {
 					try {
 						repository.deleteById(id);
 					} catch (IllegalArgumentException e) {
@@ -201,19 +202,5 @@ public class VisitaService {
 		} else {
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
-	}*/
-	public void borrarVisita(Long id) throws RecordNotFoundException {
-		Optional<Visita> visita = repository.findById(id);
-		try {
-			if (visita.isPresent()) {
-				repository.deleteById(id);
-
-			} else {
-				throw new RecordNotFoundException("Visita no encontrada", id);
-			}
-		} catch (IllegalArgumentException e ) {
-			throw new IllegalArgumentException(e);
-		}
-
 	}
 }

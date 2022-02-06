@@ -1,5 +1,6 @@
 package com.iesFrancisco.captura.Controllers;
 
+import java.rmi.ServerException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
@@ -55,7 +59,7 @@ public class FotoController {
 	 * @param id
 	 * @return ResponseEntity
 	 */
-	@GetMapping("/foto/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<Foto> getFotosById(@PathVariable("id") Long id) {
 		Foto fotoById = service.getFotoPorId(id);
 		return new ResponseEntity<Foto>(fotoById, new HttpHeaders(), HttpStatus.OK);
@@ -67,9 +71,10 @@ public class FotoController {
 	 * @param fecha
 	 * @return ResponseEntity
 	 */
-	
+
 	@GetMapping("/fecha/{fecha}")
-	public ResponseEntity<List<Foto>> getFotosByDate(@RequestParam("fecha")@DateTimeFormat(pattern = "yyy-MM-dd") LocalDate fecha) {
+	public ResponseEntity<List<Foto>> getFotosByDate(
+			@RequestParam("fecha") @DateTimeFormat(pattern = "yyy-MM-dd") LocalDate fecha) {
 		List<Foto> fotoByDate = service.getFotosPorFecha(fecha);
 		return new ResponseEntity<List<Foto>>(fotoByDate, new HttpHeaders(), HttpStatus.OK);
 	}
@@ -80,8 +85,8 @@ public class FotoController {
 	 * @param visita
 	 * @return ResponseEntity
 	 */
-	
-	@GetMapping("/{visita}")
+
+	@GetMapping("/visita/{visita}")
 	public ResponseEntity<List<Foto>> getFotosByVisita(@PathVariable("visita") Visita visita) {
 		List<Foto> fotoByVisita = service.getFotosPorVisita(visita.getId());
 		return new ResponseEntity<List<Foto>>(fotoByVisita, new HttpHeaders(), HttpStatus.OK);
@@ -89,19 +94,19 @@ public class FotoController {
 
 	@DeleteMapping("{id}")
 	public HttpStatus deleteFoto(@PathVariable("id") Long id) throws RecordNotFoundException {
-		service.borrarFoto(id);
+		service.borrarFotoPorId(id);
 		return HttpStatus.OK;
 	}
-	
-	
+
 	/**
 	 * Actualiza la foto
+	 * 
 	 * @param updateFoto
 	 * @param id
 	 * @return ResponseEntity
 	 */
 
-	@PostUpdate
+	@PostUpdate()
 	public ResponseEntity<Foto> updateFoto(@RequestBody Foto updateFoto, @PathVariable(value = "id") Long id) {
 		Optional<Foto> foto = Optional.of(service.getFotoPorId(id));
 		if (!foto.isPresent()) {
@@ -113,10 +118,10 @@ public class FotoController {
 		foto.get().setVisita(updateFoto.getVisita());
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.actualizarFoto(foto.get()));
 	}
-	
-	@PostMapping("/add") 
-	public ResponseEntity<Foto> create(@RequestBody  Foto foto){
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.creaUsuario(foto));
 
+	@PostMapping("/add")
+	public ResponseEntity<Foto> create(@Valid @RequestBody Foto foto){
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.crearFoto(foto));
 	}
+
 }

@@ -61,31 +61,31 @@ public class VisitaController {
 	 * @return ResponseEntity
 	 */
 
-	@PostMapping
+	@PostMapping("/add")
 	public ResponseEntity<Visita> createVisita(@Valid @RequestBody Visita visita) {
-		Visita addVisita = service.creaVisita(visita);
-		return new ResponseEntity<Visita>(addVisita, new HttpHeaders(), HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.creaVisita(visita));
 	}
 	/**
 	 * Obtenemos una visita por la Obra
 	 * @param obra
 	 * @return ResponseEntity
 	 */
-
+/*
 	@GetMapping("/obra/{obra}")
 	public ResponseEntity<List<Visita>> getVisitaByObra(@PathVariable("obra") Obra obra) {
 		List<Visita> visitabyObra = service.getVisitaPorObra(obra.getId());
 		return new ResponseEntity<List<Visita>>(visitabyObra, new HttpHeaders(), HttpStatus.OK);
 
-	}
+	}*/
 	/**
 	 * Obtenemos una visita segun la Fecha
 	 * @param fecha
 	 * @return ResponseEntity
 	 */
 
-	@GetMapping("/{fecha}")
-	public ResponseEntity<List<Visita>> getVisitaByDate(@PathVariable("fecha")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate fecha) {
+	@GetMapping("/fecha/{fecha}")
+	public ResponseEntity<List<Visita>> getVisitaByDate(@DateTimeFormat(pattern = "dd-MM-yyyy")@Valid @RequestBody LocalDate fecha) {
+		System.out.println("Entrando en Mappind de Fecha");
 		List<Visita> visitabyDate = service.getVisitaPorFecha(fecha);
 		return new ResponseEntity<List<Visita>>(visitabyDate, new HttpHeaders(), HttpStatus.OK);
 	}
