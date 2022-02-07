@@ -46,7 +46,7 @@ public class Usuario implements Serializable {
 	        joinColumns = @JoinColumn(name = "idUsuario", nullable = false),
 	        inverseJoinColumns = @JoinColumn(name="idObra", nullable = false)
 	    )
-		@JsonIgnoreProperties(value="usuario", allowSetters=true)
+		@JsonIgnoreProperties("usuario")
     	@ManyToMany(cascade = CascadeType.ALL)
 	    private List<Obra> obra;
 	

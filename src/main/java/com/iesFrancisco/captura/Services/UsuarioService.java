@@ -58,6 +58,14 @@ public class UsuarioService {
 		}
 	}
 	
+	/**
+	 * Metodo que devuelve un usuario a partir de su nombre
+	 * @param nombre
+	 * @return
+	 * @throws RecordNotFoundException en caso de que no encuentre al usuario
+	 * @throws NullPointerException en el caso de algun objeto a NULL
+	 * @throws IllegalArgumentException 
+	 */
 	public Usuario getUsarioByNombre(String nombre)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (nombre != null) {
@@ -91,7 +99,7 @@ public class UsuarioService {
 	 */
 	public Usuario creaUsuario(Usuario usuario) throws NullPointerException, IllegalArgumentException {
 		if (usuario != null) {
-			if (usuario.getId() < 0 & usuario != null) {
+			if (usuario.getId() == -1) {
 				try {
 					return usuario = repository.save(usuario);
 				} catch (IllegalArgumentException e) {

@@ -35,7 +35,7 @@ public class Obra implements Serializable {
 	@Column(name = "datos", length = 256)
 	private String datos;
 	
-	@JsonIgnoreProperties(value="usuario", allowSetters=true)
+	@JsonIgnoreProperties("obra")
 	@ManyToMany(mappedBy = "obra")
 	private List<Usuario> usuario = new ArrayList<>();
 	
