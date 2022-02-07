@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.iesFrancisco.captura.Model.Usuario;
 import com.iesFrancisco.captura.Services.UsuarioService;
+
 
 @RestController
 @RequestMapping("/usuario")
@@ -36,54 +39,113 @@ public class UsuarioController {
 	 * @return ResponseEntity
 	 */ 
 	@PostMapping("/guardar")
-	public ResponseEntity<?> create(@RequestBody Usuario usuario){
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.createOrUpdateUsuario(usuario));
+	public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) throws ResponseStatusException{
+		try {
+			return ResponseEntity.status(HttpStatus.CREATED).body(service.createOrUpdateUsuario(usuario));
+		} catch (Exception e) {
+			return new ResponseEntity<Usuario>(usuario,new HttpHeaders(),HttpStatus.BAD_REQUEST);
+		} 
 
 	}
 	
+/**
+ * Metodo que trae un usuario a través de un ID
+ * @param id del usuario
+ * @return Usuario que contiene la ID
+ * @throws ResponseStatusException 
+ */
 	@GetMapping("/{id}")
-	public ResponseEntity<?> listarPorId(@PathVariable(value ="id") Long id){
-		Optional<Usuario> user = Optional.of(service.getUsuarioById(id));
-		if(!user.isPresent()) {
-			return ResponseEntity.notFound().build();
+	public ResponseEntity<Usuario> listarPorId(@PathVariable(value ="id") Long id) throws ResponseStatusException{
+		if(id!=null) {
+			try {
+				return ResponseEntity.status(HttpStatus.OK).body(service.getUsuarioById(id));
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario no ha sido encontrado", e);
+			}
+		}else {
+			return ResponseEntity.noContent().build();
 		}
-		return ResponseEntity.ok(user);
 	}
-	
+	/**
+	 * Metodo para actualizar un usuario
+	 * @param Usuario
+	 * @param id del usuario
+	 * @return Usuario actualizado
+	 * @throws ResponseStatusException
+	 */
 	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@RequestBody Usuario userDetails, @PathVariable(value="id")Long id){
-		Optional<Usuario> user = Optional.of(service.getUsuarioById(id));
-			if(!user.isPresent()) {
-				return ResponseEntity.notFound().build();
-			}			
-			BeanUtils.copyProperties(userDetails, user.get());// Copiaria todo el objeto, aqui no interesa por el Id que no lo queremos actualizar
-
-			
-			return ResponseEntity.status(HttpStatus.CREATED).body(service.createOrUpdateUsuario(user.get()));						
+	public ResponseEntity<Usuario> update(@RequestBody Usuario userDetails, @PathVariable(value="id")Long id) throws ResponseStatusException{
+		if(id!=null) {
+			try {
+				Optional<Usuario> user = Optional.of(service.getUsuarioById(id));
+				if(!user.isPresent()) {
+					return ResponseEntity.notFound().build();
+				}			
+				BeanUtils.copyProperties(userDetails, user.get());		
+				return ResponseEntity.status(HttpStatus.CREATED).body(service.createOrUpdateUsuario(user.get()));
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario no ha podido ser actualizado", e);
+			}
+		}else {
+			return ResponseEntity.noContent().build();
+		}					
 	}
 	
+	/**
+	 * Metodo para borrar un usuario a traves de su ID
+	 * @param id de usuario
+	 * @return borra el usuario
+	 * @throws ResponseStatusException
+	 */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable(value="id")Long id){
-		Optional<Usuario> user = Optional.of(service.getUsuarioById(id));
-		if(!user.isPresent()) {
-			return ResponseEntity.notFound().build();
+	public ResponseEntity<Usuario> delete(@PathVariable(value="id")Long id) throws ResponseStatusException{
+		if(id!=null) {
+			try {
+				Optional<Usuario> user = Optional.of(service.getUsuarioById(id));
+				if(!user.isPresent()) {
+					return ResponseEntity.notFound().build();
+				}else {
+					service.borrarUsuario(id);
+					return ResponseEntity.ok().build();
+				}
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario no ha podido ser borrado", e);	
+			}
+		}else {
+			return ResponseEntity.noContent().build();
 		}
-		service.borrarUsuario(id);
-		return ResponseEntity.ok().build();
 	}
-	
+	/**
+	 * Metodo que trae una lista de usuarios
+	 * @return Lista de usuarios
+	 * @throws ResponseStatusException
+	 */
 	@GetMapping
-	public List<Usuario> readAll(){
-		List<Usuario> usuarios = service.getAllUsuarios();
-		return usuarios;
+	public ResponseEntity<List<Usuario>> readAll() throws ResponseStatusException{
+		try {
+			List<Usuario> usuarios = service.getAllUsuarios();
+			return new ResponseEntity<List<Usuario>>(usuarios, new HttpHeaders(), HttpStatus.OK);
+		} catch (ResponseStatusException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuarios no encontradas", e);
+		}
+	}
+	/**
+	 * Metodo para buscar un usuario a partir de su nombre
+	 * @param nombre de usuario
+	 * @return usuario
+	 * @throws ResponseStatusException
+	 */
+	@GetMapping("/nombre/{nombre}")
+	public ResponseEntity<Usuario> listarPorNombre(@PathVariable(value ="nombre") String nombre) throws ResponseStatusException  {
+		if(nombre!=null) {
+			try {
+				return ResponseEntity.status(HttpStatus.OK).body(service.getUsarioByNombre(nombre));
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario no ha sido encontrado", e);
+			}
+		}else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El nombre de usuario no es correcto");
+		}
 	}
 	
-	@GetMapping("/nombre/{nombre}")
-	public ResponseEntity<?> listarPorNombre(@PathVariable(value ="nombre") String name){
-		Optional<Usuario> user = Optional.of(service.getUsarioByNombre(name));
-		if(!user.isPresent()) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok(user);
-	}
 }

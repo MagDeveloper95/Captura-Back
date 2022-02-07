@@ -29,7 +29,8 @@ public interface ObraRepository extends JpaRepository<Obra,Long> {
 	 * @return lista de obras que tiene ese usuario
 	 * @throws IllegalArgumentException
 	 */
-	@Query(value="SELECT * FROM obra JOIN obra.usuario ON usuario WHERE usuario.id= ?1", nativeQuery = true)
+	@Query(value="SELECT * FROM obra JOIN usuario_obra ON usuario_obra.id_obra = obra.id "
+			+ "JOIN usuario ON usuario.id = usuario_obra.id_usuario WHERE usuario.id= ?1", nativeQuery = true)
 	List<Obra> findUsersByObra(Long id) throws IllegalArgumentException;
 	
 	/**

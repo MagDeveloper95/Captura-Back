@@ -4,7 +4,9 @@ import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,9 +17,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Services.ObraService;
+
 
 @RestController
 @RequestMapping("/obra")
@@ -32,8 +36,12 @@ public class ObraController {
 	 * @return ResponseEntity
 	 */ 
 	@PostMapping("/guardar")
-	public ResponseEntity<?> create(@RequestBody Obra obra){
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.createOrUpdateObra(obra));
+	public ResponseEntity<?> create(@RequestBody Obra obra) throws ResponseStatusException{
+			try {
+				return ResponseEntity.status(HttpStatus.CREATED).body(service.creaObra(obra));
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido crear", e);
+			}
 	}
 	
 	/**
@@ -42,12 +50,14 @@ public class ObraController {
 	 * @return
 	 */
 	@GetMapping("/{id}")
-	public ResponseEntity<?> listarPorId(@PathVariable(value ="id") Long id){
-		Optional<Obra> oObra = Optional.of(service.getObraById(id));
-		if(!oObra.isPresent()) {
-			return ResponseEntity.notFound().build();
+	public ResponseEntity<Obra> listarPorId(@PathVariable(value ="id") Long id) throws ResponseStatusException  {
+		try {
+			//Obra obra = service.getObraById(id);
+			return ResponseEntity.status(HttpStatus.OK).body(service.getObraById(id));
+		} catch (ResponseStatusException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido encontrar", e);
 		}
-		return ResponseEntity.ok(oObra);
+
 	}
 	/**
 	 * Controlador que actualiza por ID una obra que ya esta creada
@@ -56,19 +66,21 @@ public class ObraController {
 	 * @return obra
 	 */
 	@PutMapping("/{id}")
-	public ResponseEntity<Obra> update(@RequestBody Obra obraDetails, @PathVariable(value="id")Long id){
-		Optional<Obra> obra = Optional.of(service.getObraById(id));
+	public ResponseEntity<Obra> update(@RequestBody Obra obraDetails, @PathVariable(value="id")Long id) throws ResponseStatusException{
+		try {
+			Optional<Obra> obra = Optional.of(service.getObraById(id));
 			if(!obra.isPresent()) {
-				return ResponseEntity.notFound().build();
-			}			
-			//BeanUtils.copyProperties(obraDetails, obra.get());// Copiaria todo el objeto, aqui no interesa por el Id que no lo queremos actualizar
-			obra.get().setDatos(obraDetails.getDatos());
-			obra.get().setLatLong(obraDetails.getLatLong());
-			obra.get().setNombre(obraDetails.getNombre());
-			obra.get().setUsuario(obraDetails.getUsuario());
-			obra.get().setVisita(obraDetails.getVisita());
-			
-			return ResponseEntity.status(HttpStatus.CREATED).body(service.createOrUpdateObra(obra.get()));						
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido encontrar");
+			}else {
+				BeanUtils.copyProperties(obraDetails, obra.get());// Copiaria todo el objeto, aqui no interesa por el Id que no lo queremos actualizar
+				return ResponseEntity.status(HttpStatus.CREATED).body(service.actualizaObra(obra.get()));
+			}
+
+		} catch (ResponseStatusException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido encontrar", e);
+		}
+
+					
 	}
 	/**
 	 * Metodo que borra una obra
@@ -76,64 +88,90 @@ public class ObraController {
 	 * @return
 	 */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Obra> delete(@PathVariable(value="id")Long id){
-		Optional<Obra> obra = Optional.of(service.getObraById(id));
-		if(!obra.isPresent()) {
-			return ResponseEntity.notFound().build();
-		}
-		service.deleteObraById(id);
-		return ResponseEntity.ok().build();
+	public ResponseEntity<Obra> delete(@PathVariable(value="id")Long id) throws ResponseStatusException{
+			try {
+				Optional<Obra> obra = Optional.of(service.getObraById(id));
+				if(obra.isPresent()) {
+					service.deleteObraById(id);
+					return ResponseEntity.ok().build();
+				}else {
+					return ResponseEntity.notFound().build();
+				}
+
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido borrar", e);
+			}
+
 	}	
 	/**
-	 * Metodo que trae todas las obras de la base de datos
-	 * @return todas las obras
+	 * Metodo que devuelve todas las obras
+	 * @return Lista de Obras
+	 * @throws ResponseStatusException
 	 */
 	@GetMapping
-	public List<Obra> readAll(){
-		List<Obra> obras = service.getAllObras();
-		return obras;
+	public ResponseEntity<List<Obra>> readAll() throws ResponseStatusException{
+		try {
+			List<Obra> obras = service.getAllObras();
+			return new ResponseEntity<List<Obra>>(obras,new HttpHeaders(),HttpStatus.OK);
+		} catch (ResponseStatusException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Obras no encontradas", e);	
+		}
+
+
 	}
 	/**
-	 * Metodo que busca por nombre de la Obra
-	 * @param name
-	 * @return
+	 * Metodo que devuelve una obra a traves del nombre de la mismas
+	 * @param nombre de la obra
+	 * @return una obra
+	 * @throws ResponseStatusException
 	 */
 	@GetMapping("/nombre/{nombre}")
-	public ResponseEntity<?> listarPorNombre(@PathVariable(value ="nombre") String nombre){
-		Optional<Obra> oObra = Optional.of(service.getObraByName(nombre));
-		if(!oObra.isPresent()) {
-			return ResponseEntity.notFound().build();
+	public ResponseEntity<Obra> listarPorNombre(@PathVariable(value ="nombre") String nombre) throws ResponseStatusException{
+		if(nombre!=null) {
+			try {
+				return ResponseEntity.status(HttpStatus.OK).body(service.getObraByName(nombre));
+			} catch (Exception e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha podido encontrar el nombre de la obra", e);
+			}
+		}else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha podido encontrar el nombre de la obra");
 		}
-		return ResponseEntity.ok(oObra);
 	}
 	/**
-	 * Metodo que busca las obras por usuario
-	 * @param id
+	 * Metodo que busca las obras de un usuario
+	 * @param id del usuario
 	 * @return obras del usuario
+	 * @throws ResponseStatusException
 	 */
 	@GetMapping("usuario/{usuarioId}")
-	public ResponseEntity<?> listarPorUsuario(@PathVariable(value ="usuarioId") Long id){
-		Optional<List<Obra>> oObra = Optional.of(service.getObraByUser(id));
-		if(!oObra.isPresent()) {
-			return ResponseEntity.notFound().build();
+	public ResponseEntity<List<Obra>> listarPorUsuario(@PathVariable(value ="usuarioId") Long id) throws ResponseStatusException{
+		if(id!=null) {
+			try {
+				return ResponseEntity.status(HttpStatus.OK).body(service.getObraByUser(id));		
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha podido encontrar el usuario de la obra", e);
+			}
+
+		}else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha podido encontrar el usuario de la obra");
 		}
-		return ResponseEntity.ok(oObra);
+
 	}
+	
 	/**
-	 * Metodo que devuelve una obra por sus coordenadas
+	 * Metodo que devuelve una obra a partir de sus coordenadas
 	 * @param coordenadas
 	 * @return obra
+	 * @throws ResponseStatusException
 	 */
 	@GetMapping("/coordenadas/{coordenadas}")
-	public ResponseEntity<?> listarPorCoordenada(@PathVariable(value="coordenadas")Point2D coordenadas){
-		Optional<Obra> oObra = Optional.of(service.getObraByLoc(coordenadas));
-		if(!oObra.isPresent()) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok(oObra);
+	public ResponseEntity<Obra> listarPorCoordenada(@PathVariable(value="coordenadas")Point2D coordenadas) throws ResponseStatusException{
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(service.getObraByLoc(coordenadas));
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha podido encontrar las coordenadas de la obra", e);
+		}	
 	}
-	
-	
 	
 	
 	
