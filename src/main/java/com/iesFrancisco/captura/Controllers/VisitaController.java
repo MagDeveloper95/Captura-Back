@@ -1,8 +1,13 @@
 package com.iesFrancisco.captura.Controllers;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.sql.*;
 
 import javax.persistence.PostUpdate;
 import javax.validation.Valid;
@@ -19,11 +24,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
-import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Model.Visita;
 import com.iesFrancisco.captura.Services.VisitaService;
 
@@ -84,9 +87,16 @@ public class VisitaController {
 	 */
 
 	@GetMapping("/fecha/{fecha}")
-	public ResponseEntity<List<Visita>> getVisitaByDate(@DateTimeFormat(pattern = "dd-MM-yyyy")@Valid @RequestBody LocalDate fecha) {
+	public ResponseEntity<List<Visita>> getVisitaByDate(@PathVariable String fecha) {
 		System.out.println("Entrando en Mappind de Fecha");
-		List<Visita> visitabyDate = service.getVisitaPorFecha(fecha);
+		LocalDate date;
+		try {
+			date = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		}catch(DateTimeParseException e) {
+			date = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyyMMdd"));
+		}
+		
+		List<Visita> visitabyDate = service.getVisitaPorFecha(date);
 		return new ResponseEntity<List<Visita>>(visitabyDate, new HttpHeaders(), HttpStatus.OK);
 	}
 	/**

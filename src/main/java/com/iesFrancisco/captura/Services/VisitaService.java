@@ -1,6 +1,9 @@
 package com.iesFrancisco.captura.Services;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,10 +97,15 @@ public class VisitaService {
 	 */
 	public List<Visita> getVisitaPorFecha(LocalDate fecha)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+	/*	 
+		String str = "2017-06-25";
+		LocalDate date = LocalDate.parse(str);
+*/
+
 		System.out.println(fecha);
 		if (fecha != null) {
 			try {
-				Optional<List<Visita>> getVisitasDummy = Optional.of(repository.getVisitasPorFecha(fecha));
+				Optional<List<Visita>> getVisitasDummy = Optional.of(repository.getVisitasPorFecha( fecha));
 				if (getVisitasDummy.isPresent()) {
 					return getVisitasDummy.get();
 				} else {

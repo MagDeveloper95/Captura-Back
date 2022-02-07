@@ -98,6 +98,7 @@ public class FotoService {
 	 */
 	public List<Foto> getFotosPorFecha(LocalDate fecha)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
+		
 		if (fecha != null) {
 			try {
 				Optional<List<Foto>> getFotosDummy = Optional.of(repository.getFotosPorFecha(fecha));
