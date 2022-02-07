@@ -20,6 +20,10 @@ import org.springframework.web.server.ResponseStatusException;
 import com.iesFrancisco.captura.Model.Registro;
 import com.iesFrancisco.captura.Services.RegistroService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/registro")
 public class RegistroController {
@@ -41,7 +45,6 @@ public class RegistroController {
 		} catch (ResponseStatusException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Los registros no se han podido encontrar", e);
 		}
-
 	}
 	/**
 	 * Metodo que devuelve nota por id
