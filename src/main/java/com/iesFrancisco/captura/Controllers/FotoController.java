@@ -99,7 +99,7 @@ public class FotoController {
 	 * @return ResponseEntity
 	 */
 	
-	@GetMapping("/{idVisita}")
+	@GetMapping("/visita/{idVisita}")
 	public ResponseEntity<List<Foto>> getFotosByVisita(@PathVariable("idVisita") Long idVisita) throws ResponseStatusException {
 		if(idVisita!=null&&idVisita>-1) {
 			try {

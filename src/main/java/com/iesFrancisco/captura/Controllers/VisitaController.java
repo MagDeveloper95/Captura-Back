@@ -1,6 +1,8 @@
 package com.iesFrancisco.captura.Controllers;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
+import com.iesFrancisco.captura.Model.Foto;
 import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Model.Visita;
 import com.iesFrancisco.captura.Services.VisitaService;
@@ -116,12 +119,18 @@ public class VisitaController {
 	 * @param fecha
 	 * @return ResponseEntity
 	 */
-	@GetMapping("/{fecha}")
-	public ResponseEntity<List<Visita>> getVisitaByDate(@PathVariable("fecha")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate fecha)
+	@GetMapping("/fecha/{fecha}")
+	public ResponseEntity<List<Visita>> getVisitaByDate(@PathVariable("fecha") String fecha)
 			throws ResponseStatusException{
-		if(fecha!=null) {
+		LocalDate date;
+		try {
+			date = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		} catch (DateTimeParseException e) {
+			date = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyyMMdd"));
+		}
+		if(date!=null) {
 			try {
-				List<Visita> visitabyDate = service.getVisitaPorFecha(fecha);
+				List<Visita> visitabyDate = service.getVisitaPorFecha(date);
 				return new ResponseEntity<List<Visita>>(visitabyDate, new HttpHeaders(), HttpStatus.OK);
 			} catch (ResponseStatusException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La visita no se ha podido encontrar", e);
@@ -140,6 +149,19 @@ public class VisitaController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Visita> deleteVisita(@PathVariable("id") Long id) throws ResponseStatusException {
+		if(id != null && id > -1) {
+			try {
+				service.borrarVisita(id);
+				return ResponseEntity.ok().build();
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Foto no encontrada", e);
+			}
+		}else {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Foto no encontrada por ID");
+		}
+	}
+	/*
+	public ResponseEntity<Visita> deleteVisita(@PathVariable("id") Long id) throws ResponseStatusException {
 		try {
 			Optional<Visita> visita = Optional.of(service.getVisitaPorId(id));
 			if(!visita.isPresent()) {
@@ -152,7 +174,8 @@ public class VisitaController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La visita no se han podido borrar",e);
 		}
 
-	}
+	}*/
+	
 	/**
 	 * Actualizamos la Visita
 	 * @param updateVisita

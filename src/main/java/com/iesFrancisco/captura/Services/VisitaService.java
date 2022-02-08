@@ -121,8 +121,8 @@ public class VisitaService {
 	 */
 	public Visita creaVisita(Visita visita) throws NullPointerException, IllegalArgumentException {
 		if (visita != null) {
-			if (visita.getId() < 0) {
-				System.out.println(visita.getId());
+			if (visita.getId() > 0) {
+				System.out.println(visita);
 				try {
 					return visita = repository.save(visita);
 				} catch (IllegalArgumentException e) {
