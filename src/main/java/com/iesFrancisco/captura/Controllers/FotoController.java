@@ -79,7 +79,7 @@ public class FotoController {
 	 */
 	
 	@GetMapping("/fecha/{fecha}")
-	public ResponseEntity<List<Foto>> getFotosByDate(@RequestParam("fecha")@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fecha) throws ResponseStatusException {
+	public ResponseEntity<List<Foto>> getFotosByDate(@RequestParam("fecha") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate fecha) throws ResponseStatusException {
 		if(fecha!=null) {
 			try {
 				List<Foto> fotoByDate = service.getFotosPorFecha(fecha);
