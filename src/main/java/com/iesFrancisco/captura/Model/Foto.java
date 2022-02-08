@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @Entity
 @Table(name = "foto")
@@ -21,11 +23,12 @@ public class Foto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id", nullable = false)
-    protected Long id;
+    private Long id;
     @Column(name = "url", length = 256)
-    protected String url;
+    private String url;
     @Column(name = "comentario", length = 256)
-    protected String comentario;
+    private String comentario;
+    @JsonIgnoreProperties(value="fotos", allowSetters = true)
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idVisita")
     private Visita visita;

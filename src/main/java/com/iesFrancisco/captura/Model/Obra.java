@@ -1,6 +1,5 @@
 package com.iesFrancisco.captura.Model;
 
-import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table (name="obra")
@@ -31,20 +28,22 @@ public class Obra implements Serializable {
 	private Long id;	
 	@Column(name = "nombre", length = 256)
 	private String nombre;
-	@Column(name = "latitud", length = 256, nullable = false)
-	private Point latLong;
+	@Column(name = "latitud", length = 256)
+	private float latitud;
+	@Column(name = "longitud", length = 256)
+	private float longitud;
 	@Column(name = "datos", length = 256)
 	private String datos;
 	
-	@JsonIgnoreProperties(value="obra", allowGetters = true)
+	@JsonIgnoreProperties(value="obra", allowSetters = true)
 	@ManyToMany(mappedBy = "obra")
 	private List<Usuario> usuario = new ArrayList<>();
 	
 	
 	//Comportamiento Eager
-	@JsonManagedReference
+	@JsonIgnoreProperties(value="obra", allowSetters=true)
 	@OneToMany(fetch= FetchType.EAGER,mappedBy ="obra", cascade = {CascadeType.ALL},orphanRemoval = true)
-	private List<Visita> visita = new ArrayList<>();
+	private List<Visita> visitas;
 
 /**	
     public void addVisita(Visita visita){
@@ -71,30 +70,32 @@ public class Obra implements Serializable {
     	usuario.setObra(null);
     }*/
 
-	private Obra(Long id, String nombre, Point latLong, String datos, List<Usuario> usuario,
-			List<Visita> visita) {
+	private Obra(Long id, String nombre, float latitud, float longitud, String datos, List<Usuario> usuarios,
+			List<Visita> visitas) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
-		this.latLong = latLong;
+		this.latitud = latitud;
+		this.longitud = longitud;
 		this.datos = datos;
-		this.usuario = usuario;
-		this.visita = visita;
+		this.usuario = usuarios;
+		this.visitas = visitas;
 	}
 
 
-	public Obra(Long id, String nombre, Point latLong, String datos) {
+	public Obra(Long id, String nombre, float latitud, float longitud, String datos) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
-		this.latLong = latLong;
+		this.latitud = latitud;
+		this.longitud = longitud;
 		this.datos = datos;
 		this.usuario = new ArrayList<Usuario>();
-		this.visita = new ArrayList<Visita>();
+		this.visitas = new ArrayList<Visita>();
 	}
 
 	public Obra() {
-		this(-1L,"Por defecto",new Point(0,0),"Por defecto",new ArrayList<Usuario>(), new ArrayList<Visita>());
+		this(-1L,"Por defecto",-1,-1,"Por defecto",new ArrayList<Usuario>(), new ArrayList<Visita>());
 	}
 
 	public Long getId() {
@@ -128,7 +129,7 @@ public class Obra implements Serializable {
 
 	public void setUsuario(List<Usuario> usuario) {
 		//this.usuario = usuario;
-	    this.usuario.clear();
+	    //this.usuario.clear();
 	    if (usuario != null) {
 	        this.usuario.addAll(usuario);
 	    }else {
@@ -137,42 +138,51 @@ public class Obra implements Serializable {
 	}
 
 	public List<Visita> getVisita() {
-		return visita;
+		return visitas;
 	}
 
 	public void setVisita(List<Visita> visita) {
 		//this.visita=visita;
-	    this.visita.clear();
+	   // this.visitas.clear();
 	    if (visita != null) {
-	        this.visita.addAll(visita);
+	        this.visitas.addAll(visita);
 	    }else {
 	    	System.out.println("Error al setear visita en Obra");
 	    }
 	}
-	
-	public Point getLatLong() {
-		return latLong;
+
+
+	public float getLatitud() {
+		return latitud;
 	}
 
 
-	public void setLatLong(Point latLong) {
-		this.latLong = latLong;
+	public void setLatitud(float latitud) {
+		this.latitud = latitud;
 	}
 
 
-	@Override
-	public String toString() {
-		return "Obra [id=" + id + ", nombre=" + nombre + ", latLong=" + latLong + ", datos=" + datos + ", usuario="
-				+ usuario + "]";
+	public float getLongitud() {
+		return longitud;
 	}
+
+
+	public void setLongitud(float longitud) {
+		this.longitud = longitud;
+	}
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + Float.floatToIntBits(latitud);
+		result = prime * result + Float.floatToIntBits(longitud);
+		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -188,7 +198,21 @@ public class Obra implements Serializable {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (Float.floatToIntBits(latitud) != Float.floatToIntBits(other.latitud))
+			return false;
+		if (Float.floatToIntBits(longitud) != Float.floatToIntBits(other.longitud))
+			return false;
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
+			return false;
 		return true;
 	}
+	
+	
+	
+
+
 
 }

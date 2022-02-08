@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 @Service
 public class RegistroService {
 	
-	private static final Logger logger = LogManager.getLogger(AppMain.class);
+	private static final Logger logger = LogManager.getLogger(RegistroService.class);
 	
 	@Autowired // instanciar el repositorio
 	RegistroRepository repository;

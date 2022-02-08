@@ -187,13 +187,12 @@ public class ObraController {
 	 * @return obra
 	 * @throws ResponseStatusException
 	 */
-	@GetMapping("/coordenadas/{coordenadas}")
-	public ResponseEntity<Obra> listarPorCoordenada(@PathVariable(value="coordenadas")Point coordenadas) throws ResponseStatusException{
-		System.out.println(coordenadas);
-		if(coordenadas!=null) {
+	@GetMapping("/coordenadas/{latitud}/{longitud}")
+	public ResponseEntity<Obra> listarPorCoordenada(@PathVariable(value="latitud")float latitud,@PathVariable(value="longitud") float longitud) throws ResponseStatusException{
+		if(latitud!=0) {
 			
 			try {
-				return ResponseEntity.status(HttpStatus.OK).body(service.getObraByLoc(coordenadas));
+				return ResponseEntity.status(HttpStatus.OK).body(service.getObraByLoc(latitud, longitud));
 			} catch (ResponseStatusException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha podido encontrar las coordenadas de la obra", e);
 			}

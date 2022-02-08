@@ -1,8 +1,6 @@
 package com.iesFrancisco.captura.Repositories;
 
-import java.awt.Point;
 import java.util.List;
-
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -40,8 +38,8 @@ public interface ObraRepository extends JpaRepository<Obra,Long> {
 	 * @return obra donde están las coordenadas
 	 * @throws IllegalArgumentException
 	 */
-	@Query(value="SELECT * From obra WHERE obra.lat_long LIKE %?1", nativeQuery = true)
-	Obra findObraByLatLong(Point coordenadas) throws IllegalArgumentException;
+	@Query(value="SELECT * From obra WHERE obra.latitud = ?1 AND obra.longitud =?2 ", nativeQuery = true)
+	Obra findObraByLatLong(float latitud, float longitud) throws IllegalArgumentException;
 	
 	
 }
