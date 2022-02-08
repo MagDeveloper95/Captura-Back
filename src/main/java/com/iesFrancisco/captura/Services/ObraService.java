@@ -1,9 +1,10 @@
 package com.iesFrancisco.captura.Services;
 
-import java.awt.Point;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ import com.iesFrancisco.captura.Repositories.ObraRepository;
 
 @Service
 public class ObraService {
+	
+	private static final Logger logger = LogManager.getLogger(ObraService.class);
 	
 	@Autowired
 	ObraRepository obrasRepository;
@@ -26,8 +29,10 @@ public class ObraService {
 	public List<Obra> getAllObras() throws RecordNotFoundException{
 		List<Obra> result = obrasRepository.findAll();
 		if (result!=null) {
+			logger.info("Consulta exitosa en getAllObras");
 			return result;
 		} else {
+			logger.error("No hay Obras en la base de datos, en getAllObras");
 			throw new RecordNotFoundException("No hay Obras en la base de datos");
 		}
 
@@ -46,15 +51,19 @@ public class ObraService {
 			try {
 				Optional<Obra> result = obrasRepository.findById(id);
 				if(result.isPresent()) {
+					logger.info("Consulta exitosa en getObraByID");
 					return result.get();
 				}else {
+					logger.error("Error ---> La Obra con id: " + id + " no existe en getObraByID");
 					throw new RecordNotFoundException("La obra no existe", id);
 				}
 			} catch (IllegalArgumentException e) {
+				logger.error("Error ---> IllegarArgumentException en getObraByID" + e);
 				throw new IllegalArgumentException(e);
 			}
 
 		}else {
+			logger.error("Error ---> El id introducido tiene un valor nulo en getObraByID");
 			throw new NullPointerException("Error: El id introducido tiene un valor nulo");
 		}
 
@@ -74,14 +83,17 @@ public class ObraService {
 					//String name = obra.getId().toString()+obra.getNombre();
 					//System.out.println(name);
 					//OneDriveService.createFolder(name);
+					logger.info("Consulta exitosa en creaObra");
 					return obra = obrasRepository.save(obra);
 				} catch (IllegalArgumentException e) {
+					logger.error("Error ---> IllegarArgumentException en creaObra: "+ e);
 					throw new IllegalArgumentException(e);
 				}
 			}else {
 				return actualizaObra(obra);
 			}
 		}else {
+			logger.error("Error ---> La obra introducida tiene un valor nulo en creaObra");
 			throw new NullPointerException ("Error: La obra introducida tiene un valor nulo");
 		}
 	}
@@ -97,7 +109,6 @@ public class ObraService {
 	public Obra actualizaObra (Obra obra) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
 		if(obra!=null) {
 			Optional<Obra> result = Optional.of(getObraById(obra.getId()));
-				if(result!=null) {
 					if(result.isPresent()) {
 						Obra newObra = result.get();
 						newObra.setId(obra.getId());
@@ -106,22 +117,22 @@ public class ObraService {
 						newObra.setLongitud(obra.getLongitud());
 						newObra.setDatos(obra.getDatos());
 						newObra.setUsuario(obra.getUsuario());
-						System.out.println(obra.getUsuario());
 						newObra.setVisita(obra.getVisita());
 						try {
+							logger.info("Consulta exitosa en actualizarObra");
 							return obrasRepository.save(newObra);
 						} catch (IllegalArgumentException e) {
+							logger.error("Error ---> IllegarArgumentException en actualizarObra :" + e);
 							throw new IllegalArgumentException(e);
 						}
 					}else {
+						logger.error("Error ---> La obra no existe", obra.getId() + " en ActualizarObra");
 						throw new RecordNotFoundException("La obra no existe", obra);
 					}
-				}else {
-					throw new NullPointerException ("Error: La obra introducida tiene un valor nulo");
-				}
-		}else {
-			throw new NullPointerException ("Error: La obra introducida tiene un valor nulo");
-		}
+			}else {
+				logger.error("Error ---> La visita introducida tiene un valor nulo en ActualizarObra");	
+				throw new NullPointerException ("Error: La obra introducida tiene un valor nulo");
+			}
 
 	}
 	
@@ -135,19 +146,17 @@ public class ObraService {
 	public void deleteObraById(Long id) throws RecordNotFoundException, NullPointerException{
 		if(id!=null) {
 			Optional<Obra> obra = obrasRepository.findById(id);
-			if(obra!=null) {
 				if(obra.isPresent()) {
+					logger.info("Consulta exitosa en borrarObra");
 					obrasRepository.deleteById(id);
 				} else {
+					logger.error("Error ---> La obra no existe", id + " en borrarObra");
 					throw new RecordNotFoundException("La Obra no existe, por lo que no se puede borrar", id);
 				}
-			}else {
-				throw new NullPointerException ("Error: La obra introducida tiene un valor nulo");
-			}
 		}else {
+			logger.error("Error ---> La obra introducida tiene un valor nulo en deleteObraById");
 			throw new NullPointerException ("Error: La obra introducida tiene un valor nulo");
 		}
-
 	}
 
 		
@@ -163,19 +172,19 @@ public class ObraService {
 		if(id!=null) {
 			try {
 				Optional<List<Obra>> lista = Optional.of(obrasRepository.findUsersByObra(id));
-				if(lista!=null) {
 					if(lista.isPresent()) {
+						logger.info("Consulta exitosa en getObraByUser");
 						return lista.get();
 					}else {
+						logger.error("Error ---> el usuario con id: " + id + " no tiene lista de obras en getVisitaPorObra");
 						throw new RecordNotFoundException("Los datos son erroneos", id);
-					}
-				}else {
-					throw new NullPointerException("Error ---> El usuario introducido tiene un valor erroneo");
-				}				
+					}			
 			} catch (IllegalArgumentException e) {
+				logger.error("Error ---> IllegarArgumentException en getObraByUser" + e);
 				throw new IllegalArgumentException(e);
 			}						
 		}else {
+			logger.error("Error ---> El usuario introducido tiene un valor nulo getVisitaPorObra");
 			throw new NullPointerException ("Error: El usuario introducido tiene un valor nulo");
 		}
 			
@@ -190,24 +199,18 @@ public class ObraService {
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
 	public Obra getObraByLoc(float latitud,float longitud) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
-		if(latitud!=0) {
 			try {
 				Optional<Obra> obra = Optional.of(obrasRepository.findObraByLatLong(latitud, longitud));
-				if(obra!=null) {
 					if(obra.isPresent()) {
+						logger.info("Consulta exitosa en getObraByLoc");
 						return obra.get();
 					}else {
+						logger.error("Error ---> La obra con las coordenadas: " + latitud +" y "+ longitud+ " ,no tiene obra en getObraByLoc");
 						throw new RecordNotFoundException("La obra no existe", obra);
 					}
-				}else {
-					throw new NullPointerException("Error ---> Las coordenadas introducidas tiene un valor erroneo");
-				}
-
 			} catch (IllegalArgumentException e) {
+				logger.error("Error ---> IllegarArgumentException en getObraByLoc " + e);
 				throw new IllegalArgumentException(e);
-			}
-		}else {
-			throw new NullPointerException ("Error: Las coordenadas introducidas tienen un valor nulo");
 		}	
 	}
 	
@@ -223,20 +226,19 @@ public class ObraService {
 		if(nombre != null) {
 			try {
 				Optional<Obra> result = Optional.of(obrasRepository.findByName(nombre));
-				if(result!=null) {
 					if(result.isPresent()) {
+						logger.info("Consulta exitosa en getObraByName");
 						return result.get();
 					}else {
+						logger.error("Error ---> La obra con nombre: " + nombre + " , no tiene lista de visitas en getObraByName");
 						throw new RecordNotFoundException("La obra no existe", nombre);
 					}
-				}else {
-					throw new NullPointerException("Error ---> El nombre introducido tiene un valor nulo");
-				}
 			} catch (IllegalArgumentException e) {
+				logger.error("Error ---> IllegarArgumentException en getObraByName" + e);
 				throw new IllegalArgumentException(e);
-			}
-			
+			}			
 		}else {
+			logger.error("Error ---> La obra introducido tiene un valor nulo getObraByName");
 			throw new NullPointerException("Error: El nombre introducido tiene un valor nulo");
 		}
 	}

@@ -129,7 +129,7 @@ public class Obra implements Serializable {
 
 	public void setUsuario(List<Usuario> usuario) {
 		//this.usuario = usuario;
-	    //this.usuario.clear();
+	    this.usuario.clear();
 	    if (usuario != null) {
 	        this.usuario.addAll(usuario);
 	    }else {
@@ -143,7 +143,7 @@ public class Obra implements Serializable {
 
 	public void setVisita(List<Visita> visita) {
 		//this.visita=visita;
-	   // this.visitas.clear();
+	   this.visitas.clear();
 	    if (visita != null) {
 	        this.visitas.addAll(visita);
 	    }else {
