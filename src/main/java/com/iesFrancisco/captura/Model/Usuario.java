@@ -46,13 +46,13 @@ public class Usuario implements Serializable {
 	        joinColumns = @JoinColumn(name = "idUsuario", nullable = false),
 	        inverseJoinColumns = @JoinColumn(name="idObra", nullable = false)
 	    )
-		@JsonIgnoreProperties("usuario")
+		@JsonIgnoreProperties(value = "usuario", allowSetters = true)
     	@ManyToMany(cascade = CascadeType.ALL)
 	    private List<Obra> obra;
 	
 
 	
-	public Usuario(Long id, String nombre, String email, String key, String foto, String datos, List<Registro> registro) {
+	public Usuario(Long id, String nombre, String email, String key, String foto, String datos, List<Registro> registro,List<Obra> obra) {
 		this.id = id;
 		this.nombre = nombre;
 		this.email = email;
@@ -72,7 +72,7 @@ public class Usuario implements Serializable {
 	}
 
 	public Usuario() {
-		this(-1L,"Por defecto","Por defecto","Por defecto","Por defecto","Por defecto",new ArrayList<Registro>());
+		this(-1L,"Por defecto","Por defecto","Por defecto","Por defecto","Por defecto",new ArrayList<Registro>(), new ArrayList<Obra>());
 	}
 
 	public Long getId() {

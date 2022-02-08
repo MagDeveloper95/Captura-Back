@@ -27,7 +27,7 @@ public class UsuarioService {
 		if (getAllUsuariosDummy != null) {
 			return getAllUsuariosDummy;
 		} else {
-			throw new RecordNotFoundException("No hay registros en la base de datos");
+			throw new RecordNotFoundException("No hay usuarios en la base de datos");
 		}
 	}
 
@@ -165,7 +165,7 @@ public class UsuarioService {
 		if (id != null) {
 			Optional<Usuario> borrarUsuarioDummy = Optional.of(getUsuarioById(id));
 			if (borrarUsuarioDummy != null) {
-				if (!borrarUsuarioDummy.isPresent()) {
+				if (borrarUsuarioDummy.isPresent()) {
 					try {
 						repository.deleteById(id);
 					} catch (IllegalArgumentException e) {

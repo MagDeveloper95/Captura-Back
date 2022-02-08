@@ -1,6 +1,7 @@
 package com.iesFrancisco.captura.Controllers;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.iesFrancisco.captura.Model.Foto;
-import com.iesFrancisco.captura.Model.Visita;
 import com.iesFrancisco.captura.Services.FotoService;
 
 @RestController
@@ -57,12 +57,17 @@ public class FotoController {
 	 */
 	@GetMapping("/{id}")
 	public ResponseEntity<Foto> getFotosById(@PathVariable(value = "id") Long id) throws ResponseStatusException {
-		try {
-			Foto fotoById = service.getFotoPorId(id);
-			return new ResponseEntity<Foto>(fotoById, new HttpHeaders(), HttpStatus.OK);
-		} catch (ResponseStatusException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Foto no encontrada", e);	
+		if(id!=null && id>-1) {
+			try {
+				Foto fotoById = service.getFotoPorId(id);
+				return new ResponseEntity<Foto>(fotoById, new HttpHeaders(), HttpStatus.OK);
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Foto no encontrada", e);	
+			}
+		}else {
+			return new ResponseEntity<Foto>(new Foto(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
+
 
 	}
 
@@ -75,13 +80,16 @@ public class FotoController {
 	
 	@GetMapping("/fecha/{fecha}")
 	public ResponseEntity<List<Foto>> getFotosByDate(@RequestParam("fecha")@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fecha) throws ResponseStatusException {
-		try {
-			List<Foto> fotoByDate = service.getFotosPorFecha(fecha);
-			return new ResponseEntity<List<Foto>>(fotoByDate, new HttpHeaders(), HttpStatus.OK);
-		} catch (ResponseStatusException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Foto no encontrada", e);
+		if(fecha!=null) {
+			try {
+				List<Foto> fotoByDate = service.getFotosPorFecha(fecha);
+				return new ResponseEntity<List<Foto>>(fotoByDate, new HttpHeaders(), HttpStatus.OK);
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Foto no encontrada", e);
+			}
+		}else {
+			return new ResponseEntity<List<Foto>>(new ArrayList<Foto>(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
-
 	}
 
 	/**
@@ -91,26 +99,40 @@ public class FotoController {
 	 * @return ResponseEntity
 	 */
 	
-	@GetMapping("/{visita}")
-	public ResponseEntity<List<Foto>> getFotosByVisita(@PathVariable("visita") Visita visita) throws ResponseStatusException {
-		try {
-			List<Foto> fotoByVisita = service.getFotosPorVisita(visita.getId());
-			return new ResponseEntity<List<Foto>>(fotoByVisita, new HttpHeaders(), HttpStatus.OK);
-		} catch (ResponseStatusException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Las fotos de la visita no se han podido encontrar", e);
+	@GetMapping("/{idVisita}")
+	public ResponseEntity<List<Foto>> getFotosByVisita(@PathVariable("idVisita") Long idVisita) throws ResponseStatusException {
+		if(idVisita!=null&&idVisita>-1) {
+			try {
+				List<Foto> fotoByVisita = service.getFotosPorVisita(idVisita);
+				return new ResponseEntity<List<Foto>>(fotoByVisita, new HttpHeaders(), HttpStatus.OK);
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Las fotos de la visita no se han podido encontrar", e);
+			}
+		}else {
+			return new ResponseEntity<List<Foto>>(new ArrayList<Foto>(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
 	}
-
+	
+	/**
+	 * Metodo que borra una foto mediante su id
+	 * @param id
+	 * @return foto eliminada
+	 * @throws ResponseStatusException
+	 */
 	@DeleteMapping("{id}")
 	public ResponseEntity<Foto> deleteFoto(@PathVariable("id") Long id) throws ResponseStatusException {
-		try {
-			service.borrarFoto(id);
-			return ResponseEntity.ok().build();
-		} catch (ResponseStatusException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Foto no encontrada", e);
+		if(id != null && id > -1) {
+			try {
+				service.borrarFoto(id);
+				return ResponseEntity.ok().build();
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Foto no encontrada", e);
+			}
+		}else {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Foto no encontrada por ID");
 		}
-
 	}
+	
 	/**
 	 * Actualiza la foto
 	 * @param updateFoto
@@ -119,27 +141,36 @@ public class FotoController {
 	 */
 	@PostUpdate
 	public ResponseEntity<Foto> updateFoto(@RequestBody Foto updateFoto, @PathVariable(value = "id") Long id) throws ResponseStatusException {
-		try {
-			Optional<Foto> foto = Optional.of(service.getFotoPorId(id));
-			if (!foto.isPresent()) {
-				return ResponseEntity.notFound().build();
+		if(updateFoto!=null) {
+			try {
+				Optional<Foto> foto = Optional.of(service.getFotoPorId(id));
+				if (!foto.isPresent()) {
+					return ResponseEntity.notFound().build();
+				}
+				foto.get().setUrl(updateFoto.getUrl());
+				foto.get().setComentario(updateFoto.getComentario());
+				foto.get().setVisita(updateFoto.getVisita());
+				return ResponseEntity.status(HttpStatus.CREATED).body(service.actualizarFoto(foto.get()));
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la foto no se ha podido actualizar", e);
 			}
-			foto.get().setUrl(updateFoto.getUrl());
-			foto.get().setComentario(updateFoto.getComentario());
-			foto.get().setVisita(updateFoto.getVisita());
-			return ResponseEntity.status(HttpStatus.CREATED).body(service.actualizarFoto(foto.get()));
-		} catch (ResponseStatusException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la foto no se ha podido actualizar", e);
+		}else {
+			return new ResponseEntity<Foto>(new Foto(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
+
 
 	}
 	
 	@PostMapping("/add") 
 	public ResponseEntity<Foto> create(@RequestBody  Foto foto) throws ResponseStatusException{
-		try {
-			return ResponseEntity.status(HttpStatus.CREATED).body(service.creaUsuario(foto));
-		} catch (ResponseStatusException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la foto no se ha podido guardar", e);
+		if(foto!=null) {
+			try {
+				return ResponseEntity.status(HttpStatus.CREATED).body(service.creaUsuario(foto));
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la foto no se ha podido guardar", e);
+			}
+		}else {
+			return new ResponseEntity<Foto>(new Foto(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
 	}
 }
