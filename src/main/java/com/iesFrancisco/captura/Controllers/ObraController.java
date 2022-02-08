@@ -1,6 +1,5 @@
 package com.iesFrancisco.captura.Controllers;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -190,7 +189,6 @@ public class ObraController {
 	@GetMapping("/coordenadas/{latitud}/{longitud}")
 	public ResponseEntity<Obra> listarPorCoordenada(@PathVariable(value="latitud")float latitud,@PathVariable(value="longitud") float longitud) throws ResponseStatusException{
 		if(latitud!=0) {
-			
 			try {
 				return ResponseEntity.status(HttpStatus.OK).body(service.getObraByLoc(latitud, longitud));
 			} catch (ResponseStatusException e) {

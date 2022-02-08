@@ -71,6 +71,9 @@ public class ObraService {
 		if(obra!=null) {
 			if(obra.getId()<0) {
 				try {
+					//String name = obra.getId().toString()+obra.getNombre();
+					//System.out.println(name);
+					//OneDriveService.createFolder(name);
 					return obra = obrasRepository.save(obra);
 				} catch (IllegalArgumentException e) {
 					throw new IllegalArgumentException(e);
