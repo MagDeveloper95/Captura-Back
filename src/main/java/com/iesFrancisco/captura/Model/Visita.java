@@ -16,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -38,7 +37,7 @@ public class Visita implements Serializable {
 	@JsonIgnoreProperties(value = "visita",allowSetters = true)
 	@OneToMany(mappedBy = "visita", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Foto> fotos = new ArrayList<Foto>();
-	@JsonBackReference
+	@JsonIgnoreProperties(value="visitas", allowSetters = true)
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Obra obra;
 

@@ -45,7 +45,6 @@ public class ObraService {
 		if(id!=null) {
 			try {
 				Optional<Obra> result = obrasRepository.findById(id);
-				System.out.println(result.get().getLatLong());
 				if(result.isPresent()) {
 					return result.get();
 				}else {
@@ -98,10 +97,10 @@ public class ObraService {
 				if(result!=null) {
 					if(result.isPresent()) {
 						Obra newObra = result.get();
-						System.out.println("a");
 						newObra.setId(obra.getId());
 						newObra.setNombre(obra.getNombre());
-						newObra.setLatLong(obra.getLatLong());
+						newObra.setLatitud(obra.getLatitud());
+						newObra.setLongitud(obra.getLongitud());
 						newObra.setDatos(obra.getDatos());
 						newObra.setUsuario(obra.getUsuario());
 						System.out.println(obra.getUsuario());
@@ -187,10 +186,10 @@ public class ObraService {
 	 * @throws NullPointerException en caso de que algun objeto sea nulo
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	public Obra getObraByLoc(Point coordenadas) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
-		if(coordenadas!=null) {
+	public Obra getObraByLoc(float latitud,float longitud) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
+		if(latitud!=0) {
 			try {
-				Optional<Obra> obra = Optional.of(obrasRepository.findObraByLatLong(coordenadas));
+				Optional<Obra> obra = Optional.of(obrasRepository.findObraByLatLong(latitud, longitud));
 				if(obra!=null) {
 					if(obra.isPresent()) {
 						return obra.get();
