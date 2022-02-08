@@ -1,6 +1,6 @@
 package com.iesFrancisco.captura.Model;
 
-import java.awt.geom.Point2D;
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -30,12 +31,12 @@ public class Obra implements Serializable {
 	private Long id;	
 	@Column(name = "nombre", length = 256)
 	private String nombre;
-	@Column(name = "latLong", length = 256, nullable = false)
-	private Point2D.Float latLong;
+	@Column(name = "latitud", length = 256, nullable = false)
+	private Point latLong;
 	@Column(name = "datos", length = 256)
 	private String datos;
 	
-	@JsonIgnoreProperties("obra")
+	@JsonIgnoreProperties(value="obra", allowGetters = true)
 	@ManyToMany(mappedBy = "obra")
 	private List<Usuario> usuario = new ArrayList<>();
 	
@@ -70,7 +71,7 @@ public class Obra implements Serializable {
     	usuario.setObra(null);
     }*/
 
-	private Obra(Long id, String nombre, Point2D.Float latLong, String datos, List<Usuario> usuario,
+	private Obra(Long id, String nombre, Point latLong, String datos, List<Usuario> usuario,
 			List<Visita> visita) {
 		super();
 		this.id = id;
@@ -82,7 +83,7 @@ public class Obra implements Serializable {
 	}
 
 
-	public Obra(Long id, String nombre, Point2D.Float latLong, String datos) {
+	public Obra(Long id, String nombre, Point latLong, String datos) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -93,7 +94,7 @@ public class Obra implements Serializable {
 	}
 
 	public Obra() {
-		this(-1L,"Por defecto",new Point2D.Float(0,0),"Por defecto",new ArrayList<Usuario>(), new ArrayList<Visita>());
+		this(-1L,"Por defecto",new Point(0,0),"Por defecto",new ArrayList<Usuario>(), new ArrayList<Visita>());
 	}
 
 	public Long getId() {
@@ -149,12 +150,12 @@ public class Obra implements Serializable {
 	    }
 	}
 	
-	public Point2D.Float getLatLong() {
+	public Point getLatLong() {
 		return latLong;
 	}
 
 
-	public void setLatLong(Point2D.Float latLong) {
+	public void setLatLong(Point latLong) {
 		this.latLong = latLong;
 	}
 

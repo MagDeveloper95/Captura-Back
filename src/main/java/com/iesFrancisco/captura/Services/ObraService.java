@@ -1,6 +1,6 @@
 package com.iesFrancisco.captura.Services;
 
-import java.awt.geom.Point2D;
+import java.awt.Point;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,12 +23,12 @@ public class ObraService {
 	 * 
 	 * @return result , lista de usuarios
 	 */
-	public List<Obra> getAllObras() throws NullPointerException{
+	public List<Obra> getAllObras() throws RecordNotFoundException{
 		List<Obra> result = obrasRepository.findAll();
-		if (!result.isEmpty()) {
+		if (result!=null) {
 			return result;
 		} else {
-			throw new NullPointerException("Error: El id introducido tiene un valor nulo");
+			throw new RecordNotFoundException("No hay Obras en la base de datos");
 		}
 
 	}
@@ -45,6 +45,7 @@ public class ObraService {
 		if(id!=null) {
 			try {
 				Optional<Obra> result = obrasRepository.findById(id);
+				System.out.println(result.get().getLatLong());
 				if(result.isPresent()) {
 					return result.get();
 				}else {
@@ -103,6 +104,7 @@ public class ObraService {
 						newObra.setLatLong(obra.getLatLong());
 						newObra.setDatos(obra.getDatos());
 						newObra.setUsuario(obra.getUsuario());
+						System.out.println(obra.getUsuario());
 						newObra.setVisita(obra.getVisita());
 						try {
 							return obrasRepository.save(newObra);
@@ -185,7 +187,7 @@ public class ObraService {
 	 * @throws NullPointerException en caso de que algun objeto sea nulo
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	public Obra getObraByLoc(Point2D coordenadas) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
+	public Obra getObraByLoc(Point coordenadas) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
 		if(coordenadas!=null) {
 			try {
 				Optional<Obra> obra = Optional.of(obrasRepository.findObraByLatLong(coordenadas));

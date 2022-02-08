@@ -1,6 +1,7 @@
 package com.iesFrancisco.captura.Controllers;
 
-import java.awt.geom.Point2D;
+import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,12 +37,17 @@ public class ObraController {
 	 * @return ResponseEntity
 	 */ 
 	@PostMapping("/guardar")
-	public ResponseEntity<?> create(@RequestBody Obra obra) throws ResponseStatusException{
+	public ResponseEntity<Obra> create(@RequestBody Obra obra) throws ResponseStatusException{
+		if(obra!=null) {
 			try {
 				return ResponseEntity.status(HttpStatus.CREATED).body(service.creaObra(obra));
 			} catch (ResponseStatusException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido crear", e);
 			}
+		}else {
+			return new ResponseEntity<Obra>(new Obra(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 	
 	/**
@@ -51,12 +57,16 @@ public class ObraController {
 	 */
 	@GetMapping("/{id}")
 	public ResponseEntity<Obra> listarPorId(@PathVariable(value ="id") Long id) throws ResponseStatusException  {
-		try {
-			//Obra obra = service.getObraById(id);
-			return ResponseEntity.status(HttpStatus.OK).body(service.getObraById(id));
-		} catch (ResponseStatusException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido encontrar", e);
+		if(id!=null&&id>-1) {
+			try {
+				return ResponseEntity.status(HttpStatus.OK).body(service.getObraById(id));
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido encontrar", e);
+			}
+		}else {
+			return new ResponseEntity<Obra>(new Obra(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
+
 
 	}
 	/**
@@ -67,42 +77,52 @@ public class ObraController {
 	 */
 	@PutMapping("/{id}")
 	public ResponseEntity<Obra> update(@RequestBody Obra obraDetails, @PathVariable(value="id")Long id) throws ResponseStatusException{
-		try {
-			Optional<Obra> obra = Optional.of(service.getObraById(id));
-			if(!obra.isPresent()) {
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido encontrar");
-			}else {
-				BeanUtils.copyProperties(obraDetails, obra.get());// Copiaria todo el objeto, aqui no interesa por el Id que no lo queremos actualizar
-				return ResponseEntity.status(HttpStatus.CREATED).body(service.actualizaObra(obra.get()));
-			}
+		if(obraDetails!=null&&id>-1) {
+			try {
+				Optional<Obra> obra = Optional.of(service.getObraById(id));
+				if(!obra.isPresent()) {
+					throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido encontrar");
+				}else {
+					BeanUtils.copyProperties(obraDetails, obra.get());// Copiaria todo el objeto, aqui no interesa por el Id que no lo queremos actualizar
+					return ResponseEntity.status(HttpStatus.CREATED).body(service.actualizaObra(obra.get()));
+				}
 
-		} catch (ResponseStatusException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido encontrar", e);
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido encontrar", e);
+			}
+		}else {
+			return new ResponseEntity<Obra>(new Obra(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
+
 
 					
 	}
+	
 	/**
 	 * Metodo que borra una obra
 	 * @param id
 	 * @return
 	 */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Obra> delete(@PathVariable(value="id")Long id) throws ResponseStatusException{
+	public HttpStatus delete(@PathVariable(value="id")Long id) throws ResponseStatusException{
+		if(id!=null&&id>-1) {
 			try {
 				Optional<Obra> obra = Optional.of(service.getObraById(id));
 				if(obra.isPresent()) {
-					service.deleteObraById(id);
-					return ResponseEntity.ok().build();
+					service.deleteObraById(id);	
+					return HttpStatus.OK;
 				}else {
-					return ResponseEntity.notFound().build();
+					return HttpStatus.BAD_REQUEST;
 				}
 
 			} catch (ResponseStatusException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido borrar", e);
 			}
-
+		}else {
+			return HttpStatus.BAD_REQUEST;
+		}
 	}	
+	
 	/**
 	 * Metodo que devuelve todas las obras
 	 * @return Lista de Obras
@@ -114,11 +134,14 @@ public class ObraController {
 			List<Obra> obras = service.getAllObras();
 			return new ResponseEntity<List<Obra>>(obras,new HttpHeaders(),HttpStatus.OK);
 		} catch (ResponseStatusException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Obras no encontradas", e);	
+			List<Obra> obras = new ArrayList<Obra>();
+			return new ResponseEntity<List<Obra>>(obras,new HttpHeaders(),HttpStatus.OK);
+			//throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Obras no encontradas", e);	
 		}
 
 
 	}
+	
 	/**
 	 * Metodo que devuelve una obra a traves del nombre de la mismas
 	 * @param nombre de la obra
@@ -153,7 +176,7 @@ public class ObraController {
 			}
 
 		}else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha podido encontrar el usuario de la obra");
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se ha podido encontrar el usuario de la obra");
 		}
 
 	}
@@ -165,12 +188,19 @@ public class ObraController {
 	 * @throws ResponseStatusException
 	 */
 	@GetMapping("/coordenadas/{coordenadas}")
-	public ResponseEntity<Obra> listarPorCoordenada(@PathVariable(value="coordenadas")Point2D coordenadas) throws ResponseStatusException{
-		try {
-			return ResponseEntity.status(HttpStatus.OK).body(service.getObraByLoc(coordenadas));
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha podido encontrar las coordenadas de la obra", e);
-		}	
+	public ResponseEntity<Obra> listarPorCoordenada(@PathVariable(value="coordenadas")Point coordenadas) throws ResponseStatusException{
+		System.out.println(coordenadas);
+		if(coordenadas!=null) {
+			
+			try {
+				return ResponseEntity.status(HttpStatus.OK).body(service.getObraByLoc(coordenadas));
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha podido encontrar las coordenadas de la obra", e);
+			}
+		}else {
+			return new ResponseEntity<Obra>(new Obra(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+		}
+	
 	}
 	
 	

@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,11 +39,16 @@ public class UsuarioController {
 	 */ 
 	@PostMapping("/guardar")
 	public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) throws ResponseStatusException{
-		try {
-			return ResponseEntity.status(HttpStatus.CREATED).body(service.createOrUpdateUsuario(usuario));
-		} catch (Exception e) {
-			return new ResponseEntity<Usuario>(usuario,new HttpHeaders(),HttpStatus.BAD_REQUEST);
-		} 
+		if(usuario!=null){
+			try {
+				return ResponseEntity.status(HttpStatus.CREATED).body(service.creaUsuario(usuario));
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario no ha sido guardado", e);
+			} 
+		}else {
+			return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);
+		}
+
 
 	}
 	
@@ -63,7 +67,7 @@ public class UsuarioController {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario no ha sido encontrado", e);
 			}
 		}else {
-			return ResponseEntity.noContent().build();
+			return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	/**
@@ -87,7 +91,7 @@ public class UsuarioController {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario no ha podido ser actualizado", e);
 			}
 		}else {
-			return ResponseEntity.noContent().build();
+			return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);
 		}					
 	}
 	
@@ -101,18 +105,19 @@ public class UsuarioController {
 	public ResponseEntity<Usuario> delete(@PathVariable(value="id")Long id) throws ResponseStatusException{
 		if(id!=null) {
 			try {
+				System.out.println(id);
 				Optional<Usuario> user = Optional.of(service.getUsuarioById(id));
 				if(!user.isPresent()) {
 					return ResponseEntity.notFound().build();
 				}else {
 					service.borrarUsuario(id);
-					return ResponseEntity.ok().build();
+					return new ResponseEntity<Usuario>(HttpStatus.OK);
 				}
 			} catch (ResponseStatusException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario no ha podido ser borrado", e);	
 			}
 		}else {
-			return ResponseEntity.noContent().build();
+			return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	/**
@@ -124,7 +129,7 @@ public class UsuarioController {
 	public ResponseEntity<List<Usuario>> readAll() throws ResponseStatusException{
 		try {
 			List<Usuario> usuarios = service.getAllUsuarios();
-			return new ResponseEntity<List<Usuario>>(usuarios, new HttpHeaders(), HttpStatus.OK);
+			return new ResponseEntity<List<Usuario>>(usuarios, HttpStatus.OK); 
 		} catch (ResponseStatusException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuarios no encontradas", e);
 		}
@@ -137,7 +142,7 @@ public class UsuarioController {
 	 */
 	@GetMapping("/nombre/{nombre}")
 	public ResponseEntity<Usuario> listarPorNombre(@PathVariable(value ="nombre") String nombre) throws ResponseStatusException  {
-		if(nombre!=null) {
+		if(nombre!=null&&nombre.length()>0) {
 			try {
 				return ResponseEntity.status(HttpStatus.OK).body(service.getUsarioByNombre(nombre));
 			} catch (ResponseStatusException e) {

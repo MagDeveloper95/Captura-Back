@@ -1,7 +1,8 @@
 package com.iesFrancisco.captura.Repositories;
 
-import java.awt.geom.Point2D;
+import java.awt.Point;
 import java.util.List;
+
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -40,7 +41,7 @@ public interface ObraRepository extends JpaRepository<Obra,Long> {
 	 * @throws IllegalArgumentException
 	 */
 	@Query(value="SELECT * From obra WHERE obra.lat_long LIKE %?1", nativeQuery = true)
-	Obra findObraByLatLong(Point2D coordenadas) throws IllegalArgumentException;
+	Obra findObraByLatLong(Point coordenadas) throws IllegalArgumentException;
 	
 	
 }

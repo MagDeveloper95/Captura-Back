@@ -1,6 +1,7 @@
 package com.iesFrancisco.captura.Controllers;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -19,10 +20,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.iesFrancisco.captura.Model.Registro;
 import com.iesFrancisco.captura.Services.RegistroService;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/registro")
@@ -53,12 +50,17 @@ public class RegistroController {
 	 */
 	@GetMapping("/{id}") //Para meterle el id 
 	public ResponseEntity<Registro> getNotesById(@PathVariable("id")Long id) throws ResponseStatusException{
-		try {
-			Registro noteById = service.getRegistroById(id);	
-			return new ResponseEntity<Registro>(noteById,new HttpHeaders(),HttpStatus.OK);
-		} catch (ResponseStatusException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Los registros no se han podido encontrar", e);
+		if(id != null && id > -1) {
+			try {
+				Registro noteById = service.getRegistroById(id);	
+				return new ResponseEntity<Registro>(noteById,new HttpHeaders(),HttpStatus.OK);
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Los registros no se han podido encontrar", e);
+			}
+		}else {
+			return new ResponseEntity<Registro>(new Registro(), new HttpHeaders(),HttpStatus.BAD_REQUEST);
 		}
+
 	}
 	/**
 	 * Metodo para crear un nuevo registro
@@ -66,14 +68,19 @@ public class RegistroController {
 	 * @return un nuevo registro
 	 * @throws ResponseStatusException para informar al usuario
 	 */
-	@PostMapping
-	public ResponseEntity<Registro> create(@Valid @RequestBody Registro note) throws ResponseStatusException {
-		try {
-			Registro creatUp = service.creaRegistro(note);
-			return new ResponseEntity<Registro>(creatUp,new HttpHeaders(),HttpStatus.OK);
-		} catch (ResponseStatusException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El registro no se han podido crear", e);
+	@PostMapping("/guardar")
+	public ResponseEntity<Registro> create(@Valid @RequestBody Registro registro) throws ResponseStatusException {
+		if(registro != null) {
+			try {
+				Registro creatUp = service.creaRegistro(registro);
+				return new ResponseEntity<Registro>(creatUp,new HttpHeaders(),HttpStatus.OK);
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El registro no se han podido crear", e);
+			}
+		}else {
+			return new ResponseEntity<Registro>(new Registro(), new HttpHeaders(),HttpStatus.BAD_REQUEST);
 		}
+
 
 	}
 	
@@ -83,14 +90,39 @@ public class RegistroController {
 	 * @return
 	 * @throws ResponseStatusException
 	 */
-	@GetMapping("/{fecha}")
-	public ResponseEntity<List<Registro>> getNotesByDate(@PathVariable(value="fecha")LocalDate fecha) throws ResponseStatusException{
-		try {
-			List<Registro> noteByDate =  service.getRegistroPorFecha(fecha);
-			return new ResponseEntity<List<Registro>>(noteByDate, new HttpHeaders(),HttpStatus.OK);
-		} catch (ResponseStatusException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El registro no se ha podido obtener", e);
+	@GetMapping("/fecha/{fecha}")
+	public ResponseEntity<List<Registro>> getRegistroByDate(@PathVariable(value="fecha")LocalDate fecha) throws ResponseStatusException{
+		if(fecha!=null) {
+			try {
+				List<Registro> noteByDate =  service.getRegistroPorFecha(fecha);
+				return new ResponseEntity<List<Registro>>(noteByDate, new HttpHeaders(),HttpStatus.OK);
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El registro no se ha podido obtener", e);
+			}
+		}else {
+			return new ResponseEntity<List<Registro>>(new ArrayList<Registro>(), new HttpHeaders(),HttpStatus.BAD_REQUEST);
 		}
+
+	}
+	/**
+	 * Metodo que devuelve los registros de un usuario
+	 * @param usuario
+	 * @return Lista de Registros
+	 * @throws ResponseStatusException
+	 */
+	@GetMapping("/usuario/{idUsuario}")
+	public ResponseEntity<List<Registro>> getRegistroPorUsuario(@PathVariable(value="idUsuario")Long idUsuario) throws ResponseStatusException{
+		if(idUsuario!=null&&idUsuario!=-1) {
+			try {
+				List<Registro> registroByUser = service.getRegistroPorUsuario(idUsuario);
+				return new ResponseEntity<List<Registro>>(registroByUser, new HttpHeaders(), HttpStatus.OK);
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El registro no se ha podido obtener", e);
+			}
+		}else {
+			return new ResponseEntity<List<Registro>>(new ArrayList<Registro>(), new HttpHeaders(),HttpStatus.BAD_REQUEST);
+		}
+
 	}
 	
 }
