@@ -136,7 +136,7 @@ public class VisitaService {
 	public Visita creaVisita(Visita visita) throws NullPointerException, IllegalArgumentException {
 		if (visita != null) {
 
-			if (visita.getId() < 0 && visita!=null) {
+			if (visita.getId() > 0 && visita!=null) {
 
 				try {
 					logger.info("Consulta exitosa en creaVisita");

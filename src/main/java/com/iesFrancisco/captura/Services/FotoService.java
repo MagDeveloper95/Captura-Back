@@ -141,7 +141,7 @@ public class FotoService {
 	public Foto creaUsuario(Foto foto) throws NullPointerException, IllegalArgumentException {
 		if (foto != null) {
 
-			if (foto.getId() < 0 && foto != null) {
+			if (foto.getId() > 0 && foto != null) {
 
 				try {
 					logger.info("Consulta exitosa en creaFoto");

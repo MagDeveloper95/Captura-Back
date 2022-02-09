@@ -24,7 +24,7 @@ public interface VisitaRepository extends JpaRepository<Visita,Long> {
 	 * @throws ResquestUnauthourized en caso de que no este autorizado
 	 * @throws RecordOK en caso de que todo vaya correctamente.
 	 */
-	@Query(value= "SELECT VIST FROM visita VIST where VIST.idObra LIKE %?1", nativeQuery=true)
+	@Query(value= "SELECT * FROM visita VIST where VIST.id_obra LIKE %?1", nativeQuery=true)
 	List<Visita> getFotosPorObra(Long id) throws IllegalArgumentException;
 	/**
 	 * Método que nos devuelve una lista con los las las visitas  
