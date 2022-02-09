@@ -5,14 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.PostUpdate;
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +37,8 @@ public class VisitaController {
 	 * @param visita
 	 * @return ResponseEntity
 	 */
-
+	
+	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping()
 	public ResponseEntity<List<Visita>> getAllVisitas() throws ResponseStatusException{
 		try {
@@ -50,12 +49,14 @@ public class VisitaController {
 		}
 
 	}
+	
 	/**
 	 * Nos traemos la visica con la id que nosotros queramos
 	 * @param id
 	 * @return ResponseEntity
 	 */
-
+	
+	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/{id}")
 	public ResponseEntity<Visita> getVisitaById(@PathVariable("id") Long id) throws ResponseStatusException {
 		if(id!=null&&id>-1) {
@@ -68,36 +69,36 @@ public class VisitaController {
 		}else {
 			return new ResponseEntity<Visita>(new Visita(),new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
-
-
 	}
+	
 	/**
 	 * Creamos una visita
 	 * @param visita
 	 * @return ResponseEntity
 	 */
-
+	
+	@CrossOrigin(origins = "http://localhost:8100")
 	@PostMapping("/guardar")
-	public ResponseEntity<Visita> createVisita( @RequestBody Visita visita) throws ResponseStatusException {
+	public ResponseEntity<Visita> createVisita(@RequestBody Visita visita) throws ResponseStatusException {
 		if(visita!=null) {
 			try {
 				Visita addVisita = service.creaVisita(visita);
 				return new ResponseEntity<Visita>(addVisita, new HttpHeaders(), HttpStatus.OK);
-			} catch (Exception e) {
+			} catch (ResponseStatusException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La visita no se ha podido crear", e);
 			}
 		}else {
 			return new ResponseEntity<Visita>(new Visita(),new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
-
-
 	}
+	
 	/**
 	 * Obtenemos una visita por la Obra
 	 * @param obra
 	 * @return ResponseEntity
 	 */
 
+	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/obra/{obra}")
 	public ResponseEntity<List<Visita>> getVisitaByObra(@PathVariable("obra") Obra obra) throws ResponseStatusException {
 		if(obra!=null) {
@@ -117,6 +118,8 @@ public class VisitaController {
 	 * @param fecha
 	 * @return ResponseEntity
 	 */
+	
+	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/fecha/{fecha}")
 	public ResponseEntity<List<Visita>> getVisitaByDate(@PathVariable("fecha")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate fecha)
 			throws ResponseStatusException{
@@ -139,6 +142,7 @@ public class VisitaController {
 	 * @throws RecordNotFoundException
 	 */
 
+	@CrossOrigin(origins = "http://localhost:8100")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Visita> deleteVisita(@PathVariable("id") Long id) throws ResponseStatusException {
 		try {
@@ -152,8 +156,8 @@ public class VisitaController {
 		} catch (ResponseStatusException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La visita no se han podido borrar",e);
 		}
-
 	}
+	
 	/**
 	 * Actualizamos la Visita
 	 * @param updateVisita
@@ -161,6 +165,7 @@ public class VisitaController {
 	 * @return ResponseEntity
 	 */
 
+	@CrossOrigin(origins = "http://localhost:8100")
 	@PutMapping("/{id}")
 	public ResponseEntity<Visita> updateVisita(@RequestBody Visita updateVisita, @PathVariable(value = "id") Long id) throws ResponseStatusException {
 		if(updateVisita!=null&&id>-1) {
@@ -173,6 +178,5 @@ public class VisitaController {
 		}else {
 			return new ResponseEntity<Visita>(new Visita(),new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
-
 	}
 }

@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +39,7 @@ public class FotoController {
 	 * @param Foto
 	 * @return ResponseEntity
 	 */
-
+	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping()
 	public ResponseEntity<List<Foto>> allFotos() throws ResponseStatusException {
 		try {
@@ -55,6 +56,7 @@ public class FotoController {
 	 * @param id
 	 * @return ResponseEntity
 	 */
+	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/{id}")
 	public ResponseEntity<Foto> getFotosById(@PathVariable(value = "id") Long id) throws ResponseStatusException {
 		if(id!=null && id>-1) {
@@ -77,7 +79,7 @@ public class FotoController {
 	 * @param fecha
 	 * @return ResponseEntity
 	 */
-	
+	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/fecha/{fecha}")
 	public ResponseEntity<List<Foto>> getFotosByDate(@RequestParam("fecha") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate fecha) throws ResponseStatusException {
 		if(fecha!=null) {
@@ -98,7 +100,7 @@ public class FotoController {
 	 * @param visita
 	 * @return ResponseEntity
 	 */
-	
+	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/{idVisita}")
 	public ResponseEntity<List<Foto>> getFotosByVisita(@PathVariable("idVisita") Long idVisita) throws ResponseStatusException {
 		if(idVisita!=null&&idVisita>-1) {
@@ -119,6 +121,7 @@ public class FotoController {
 	 * @return foto eliminada
 	 * @throws ResponseStatusException
 	 */
+	@CrossOrigin(origins = "http://localhost:8100")
 	@DeleteMapping("{id}")
 	public ResponseEntity<Foto> deleteFoto(@PathVariable("id") Long id) throws ResponseStatusException {
 		if(id != null && id > -1) {
@@ -139,6 +142,7 @@ public class FotoController {
 	 * @param id
 	 * @return ResponseEntity
 	 */
+	@CrossOrigin(origins = "http://localhost:8100")
 	@PostUpdate
 	public ResponseEntity<Foto> updateFoto(@RequestBody Foto updateFoto, @PathVariable(value = "id") Long id) throws ResponseStatusException {
 		if(updateFoto!=null) {
@@ -160,7 +164,7 @@ public class FotoController {
 
 
 	}
-	
+	@CrossOrigin(origins = "http://localhost:8100")
 	@PostMapping("/add") 
 	public ResponseEntity<Foto> create(@RequestBody  Foto foto) throws ResponseStatusException{
 		if(foto!=null) {

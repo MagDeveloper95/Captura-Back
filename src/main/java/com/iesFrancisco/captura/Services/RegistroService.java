@@ -130,7 +130,7 @@ public class RegistroService {
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	public Registro creaRegistro(Registro registro) throws NullPointerException, IllegalArgumentException {
+	 public Registro creaRegistro(Registro registro) throws NullPointerException, IllegalArgumentException {
 		if (registro != null&&registro.getId() < 0) {
 				try {
 					logger.info("Consulta exitosa en creaRegistro");
