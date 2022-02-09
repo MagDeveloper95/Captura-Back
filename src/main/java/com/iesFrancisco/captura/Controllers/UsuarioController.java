@@ -85,8 +85,8 @@ public class UsuarioController {
 				if(!user.isPresent()) {
 					return ResponseEntity.notFound().build();
 				}			
-				BeanUtils.copyProperties(userDetails, user.get());		
-				return ResponseEntity.status(HttpStatus.CREATED).body(service.createOrUpdateUsuario(user.get()));
+				//BeanUtils.copyProperties(userDetails, user.get());		
+				return ResponseEntity.status(HttpStatus.CREATED).body(service.actualizarUsuario(user.get()));
 			} catch (ResponseStatusException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario no ha podido ser actualizado", e);
 			}

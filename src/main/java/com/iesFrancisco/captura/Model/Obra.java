@@ -37,7 +37,7 @@ public class Obra implements Serializable {
 	
 	@JsonIgnoreProperties(value="obra", allowSetters = true)
 	@ManyToMany(mappedBy = "obra")
-	private List<Usuario> usuario = new ArrayList<>();
+	private List<Usuario> usuario;
 	
 	
 	//Comportamiento Eager
@@ -133,7 +133,7 @@ public class Obra implements Serializable {
 	    if (usuario != null) {
 	        this.usuario.addAll(usuario);
 	    }else {
-	    	System.out.println("Error al setear visita en Obra");
+	    	System.out.println("Error al setear usuario en Obra");
 	    }
 	}
 

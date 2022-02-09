@@ -3,6 +3,7 @@ package com.iesFrancisco.captura.Model;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,8 +30,9 @@ public class Registro implements Serializable {
 	private String descripcion;
 	@Column(name="fecha")
 	private LocalDate fecha;
-	@JsonIgnoreProperties(value= "registros", allowSetters = true)
-	@ManyToOne(fetch=FetchType.EAGER)
+	
+	@JsonIgnoreProperties(value= "registro", allowSetters = true)
+	@ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name="idUser")
 	private Usuario usuario;
 	
@@ -43,6 +45,13 @@ public class Registro implements Serializable {
 		this.descripcion = descripcion;
 		this.fecha = fecha;
 		this.usuario = usuario;
+	}
+	
+	public Registro(Long id, String descripcion, LocalDate fecha) {
+		this.id = id;
+		this.descripcion = descripcion;
+		this.fecha = fecha;
+		this.usuario = new Usuario();
 	}
 
 	public Long getId() {

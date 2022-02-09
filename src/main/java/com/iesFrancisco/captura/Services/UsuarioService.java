@@ -144,7 +144,6 @@ public class UsuarioService {
 			throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
 		if (usuario != null) {
 			Optional<Usuario> getUsuarioDummy = Optional.of(getUsuarioById(usuario.getId()));
-			if (getUsuarioDummy != null) {
 				if (getUsuarioDummy.isPresent()) {
 					Usuario actualizaUsuarioDummy = getUsuarioDummy.get();
 					actualizaUsuarioDummy.setId(usuario.getId());
@@ -153,10 +152,10 @@ public class UsuarioService {
 					actualizaUsuarioDummy.setKey(usuario.getKey());
 					actualizaUsuarioDummy.setFoto(usuario.getFoto());
 					actualizaUsuarioDummy.setDatos(usuario.getDatos());
-					actualizaUsuarioDummy.setRegistro(usuario.getRegistro());
-					actualizaUsuarioDummy.setObra(usuario.getObra());
-					logger.info("Consulta exitosa en actualizarUsuario");
+					//actualizaUsuarioDummy.setRegistro(usuario.getRegistro());
+					//actualizaUsuarioDummy.setObra(usuario.getObra());
 					try {
+						logger.info("Consulta exitosa en actualizarUsuario");
 						return repository.save(actualizaUsuarioDummy);
 					} catch (IllegalArgumentException e) {
 						logger.error("Error ---> IllegarArgumentException en actualizarUsuario :" + e);
@@ -166,10 +165,6 @@ public class UsuarioService {
 					logger.error("Error ---> El usuario no existe", usuario.getId() + " en ActualizarUsuario");
 					throw new RecordNotFoundException("Error ---> El usuario no existe: ", usuario.getId() + " en ActualizarUsuario");
 				}
-			} else {
-				logger.error("Error ---> IllegarArgumentException en actualizarUsuario");
-				throw new NullPointerException("Error ---> El usuario optional tiene un valor nulo en ActualizarUsuario");
-			}
 		} else {
 			logger.error("Error ---> El usuario introducido tiene un valor nulo en ActualizarUsuario");
 			throw new NullPointerException("Error ---> El usuario introducido tiene un valor nulo en ActualizarUsuario");

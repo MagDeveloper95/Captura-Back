@@ -176,7 +176,10 @@ public class VisitaService {
 					actualizaVisitaDummy.setObra(visita.getObra());
 					try {
 						logger.info("Consulta exitosa en actualizarVisita");
-						return repository.save(actualizaVisitaDummy);
+						//return repository.save(actualizaVisitaDummy);
+						actualizaVisitaDummy = repository.save(actualizaVisitaDummy);
+						return actualizaVisitaDummy;
+						
 					} catch (IllegalArgumentException e) {
 						logger.error("Error ---> IllegarArgumentException en actualizarVisita :" + e);
 						throw new IllegalArgumentException(e);
