@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -34,11 +35,14 @@ public class Visita implements Serializable {
 	private LocalDate fecha;
 	@Column(name = "nota", length = 256)
 	private String nota;
+	
 	@JsonIgnoreProperties(value = "visita",allowSetters = true)
 	@OneToMany(mappedBy = "visita", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Foto> fotos = new ArrayList<Foto>();
-	@JsonIgnoreProperties(value="visitas", allowSetters = true)
+	
+	@JsonIgnoreProperties(value="visita", allowSetters = true)
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="idObra")
 	private Obra obra;
 
 	public Visita() {

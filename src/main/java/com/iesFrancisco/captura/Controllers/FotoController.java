@@ -147,9 +147,9 @@ public class FotoController {
 				if (!foto.isPresent()) {
 					return ResponseEntity.notFound().build();
 				}
-				foto.get().setUrl(updateFoto.getUrl());
+				/**oto.get().setUrl(updateFoto.getUrl());
 				foto.get().setComentario(updateFoto.getComentario());
-				foto.get().setVisita(updateFoto.getVisita());
+				foto.get().setVisita(updateFoto.getVisita());*/
 				return ResponseEntity.status(HttpStatus.CREATED).body(service.actualizarFoto(foto.get()));
 			} catch (ResponseStatusException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la foto no se ha podido actualizar", e);

@@ -37,16 +37,21 @@ public class Usuario implements Serializable {
 	private String foto;
 	@Column(name = "datos", length = 256)
 	private String datos;
-	@JsonIgnoreProperties(value= {"usuario"}, allowSetters = true)
+	
+	@JsonIgnoreProperties(value= "usuario", allowSetters = true)
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Registro> registros = new ArrayList<Registro>();
+	
 	@JoinTable(
 	        name = "usuarioObra",
 	        joinColumns = @JoinColumn(name = "idUsuario", nullable = false),
 	        inverseJoinColumns = @JoinColumn(name="idObra", nullable = false)
 	    )
 		@JsonIgnoreProperties(value = {"usuario"}, allowSetters = true)
-    	@ManyToMany(cascade = CascadeType.ALL)
+    	@ManyToMany(    cascade = {
+    	        CascadeType.PERSIST, 
+    	        CascadeType.MERGE
+    	    })
 	    private List<Obra> obra;
 	
 
@@ -127,7 +132,13 @@ public class Usuario implements Serializable {
 	}
 
 	public void setRegistro(List<Registro> registros) {
-		this.registros = registros;
+		//this.registros = registros;
+		this.registros.clear();
+		if(registros!=null) {
+			this.registros.addAll(registros);
+		}else{
+			System.out.println("Error al setear registro en Usuario");
+		}
 	}
 
 	public List<Obra> getObra() {
@@ -135,7 +146,13 @@ public class Usuario implements Serializable {
 	}
 
 	public void setObra(List<Obra> obras) {
-		this.obra = obras;
+		//this.obra = obras;
+		this.obra.clear();
+		if(obras!=null) {
+			this.obra.addAll(obras);
+		}else {
+			System.out.println("Error al setear obras en Usuario");
+		}
 	}
 
 	@Override

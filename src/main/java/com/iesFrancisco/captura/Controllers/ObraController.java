@@ -82,7 +82,7 @@ public class ObraController {
 				if(!obra.isPresent()) {
 					throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido encontrar");
 				}else {
-					BeanUtils.copyProperties(obraDetails, obra.get());// Copiaria todo el objeto, aqui no interesa por el Id que no lo queremos actualizar
+					//BeanUtils.copyProperties(obraDetails, obra.get());// Copiaria todo el objeto, aqui no interesa por el Id que no lo queremos actualizar
 					return ResponseEntity.status(HttpStatus.CREATED).body(service.actualizaObra(obra.get()));
 				}
 
