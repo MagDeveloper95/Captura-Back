@@ -10,11 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
+import com.iesFrancisco.captura.Model.Registro;
+import com.iesFrancisco.captura.Model.Usuario;
 import com.iesFrancisco.captura.Model.Visita;
 import com.iesFrancisco.captura.Repositories.VisitaRepository;
 
 @Service
 public class VisitaService {
+	
+	private Registro registro;
+	private RegistroService controlador;
 	
 	private static final Logger logger = LogManager.getLogger(VisitaService.class);
 
@@ -52,6 +57,7 @@ public class VisitaService {
 				Optional<Visita> getVisitaDummy = repository.findById(id);
 				if (getVisitaDummy.isPresent()) {
 					logger.info("Consulta exitosa en getVisitaByID");
+					
 					return getVisitaDummy.get();
 				} else {
 					logger.error("Error ---> La visita con id: " + id + " no existe en getVisitaByID");
@@ -138,6 +144,9 @@ public class VisitaService {
 			if (visita.getId() < 0 && visita!=null) {
 				try {
 					logger.info("Consulta exitosa en creaVisita");
+					/**
+					registro = new Registro("Ha creado una nueva visita el usuario: "+ idUsuario, LocalDate.now());
+					controlador.creaRegistro(registro);*/
 					return visita = repository.save(visita);
 				} catch (IllegalArgumentException e) {
 					logger.error("Error ---> IllegarArgumentException en creaVisita: "+ e);

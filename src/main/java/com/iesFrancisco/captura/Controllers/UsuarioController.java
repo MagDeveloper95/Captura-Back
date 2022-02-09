@@ -3,10 +3,10 @@ package com.iesFrancisco.captura.Controllers;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +37,7 @@ public class UsuarioController {
 	 * @param usuario
 	 * @return ResponseEntity
 	 */ 
+	@CrossOrigin(origins = "http://localhost:8100")
 	@PostMapping("/guardar")
 	public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) throws ResponseStatusException{
 		if(usuario!=null){
@@ -58,6 +59,7 @@ public class UsuarioController {
  * @return Usuario que contiene la ID
  * @throws ResponseStatusException 
  */
+	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/{id}")
 	public ResponseEntity<Usuario> listarPorId(@PathVariable(value ="id") Long id) throws ResponseStatusException{
 		if(id!=null) {
@@ -77,6 +79,7 @@ public class UsuarioController {
 	 * @return Usuario actualizado
 	 * @throws ResponseStatusException
 	 */
+	@CrossOrigin(origins = "http://localhost:8100")
 	@PutMapping("/{id}")
 	public ResponseEntity<Usuario> update(@RequestBody Usuario userDetails, @PathVariable(value="id")Long id) throws ResponseStatusException{
 		if(id!=null) {
@@ -101,6 +104,7 @@ public class UsuarioController {
 	 * @return borra el usuario
 	 * @throws ResponseStatusException
 	 */
+	@CrossOrigin(origins = "http://localhost:8100")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Usuario> delete(@PathVariable(value="id")Long id) throws ResponseStatusException{
 		if(id!=null) {
@@ -125,6 +129,7 @@ public class UsuarioController {
 	 * @return Lista de usuarios
 	 * @throws ResponseStatusException
 	 */
+	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping
 	public ResponseEntity<List<Usuario>> readAll() throws ResponseStatusException{
 		try {
@@ -140,6 +145,7 @@ public class UsuarioController {
 	 * @return usuario
 	 * @throws ResponseStatusException
 	 */
+	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/nombre/{nombre}")
 	public ResponseEntity<Usuario> listarPorNombre(@PathVariable(value ="nombre") String nombre) throws ResponseStatusException  {
 		if(nombre!=null&&nombre.length()>0) {

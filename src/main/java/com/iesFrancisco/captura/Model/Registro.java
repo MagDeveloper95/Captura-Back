@@ -47,6 +47,12 @@ public class Registro implements Serializable {
 		this.usuario = usuario;
 	}
 	
+	public Registro(String descripcion, LocalDate fecha) {
+		this.descripcion = descripcion;
+		this.fecha = fecha;
+		this.usuario = new Usuario();
+	}
+	
 	public Registro(Long id, String descripcion, LocalDate fecha) {
 		this.id = id;
 		this.descripcion = descripcion;
