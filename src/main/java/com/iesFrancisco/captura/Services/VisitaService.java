@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +18,12 @@ import com.iesFrancisco.captura.Repositories.VisitaRepository;
 @Service
 public class VisitaService {
 	
+
 	private Registro registro;
 	private RegistroService controlador;
-	
-	private static final Logger logger = LogManager.getLogger(VisitaService.class);
+
+	private static final Logger logger = LoggerFactory.getLogger(VisitaService.class);
+
 
     @Autowired 
     VisitaRepository repository;

@@ -3,8 +3,8 @@ package com.iesFrancisco.captura.Services;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import com.iesFrancisco.captura.Repositories.UsuarioRepository;
 @Service
 public class UsuarioService {
 	
-	private static final Logger logger = LogManager.getLogger(UsuarioService.class);
+	private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
 	@Autowired // instanciar el repositorio
 	UsuarioRepository repository;
