@@ -5,7 +5,7 @@ import com.microsoft.graph.models.Folder;
 import com.microsoft.graph.models.Request;
 import com.microsoft.graph.requests.GraphServiceClient;
 
-public class OneDrive {
+public class OneDriveService {
 	
 	private static GraphServiceClient<Request> graphClient = null;
 	
