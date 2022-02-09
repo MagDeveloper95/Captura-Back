@@ -4,20 +4,19 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.iesFrancisco.captura.AppMain;
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Model.Registro;
 import com.iesFrancisco.captura.Repositories.RegistroRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @Service
 public class RegistroService {
 	
-	private static final Logger logger = LogManager.getLogger(AppMain.class);
+	private static final Logger logger = LoggerFactory.getLogger(RegistroService.class);
 	
 	@Autowired // instanciar el repositorio
 	RegistroRepository repository;
@@ -29,8 +28,10 @@ public class RegistroService {
 	public List<Registro> getAllRegistros() throws RecordNotFoundException {
 		List<Registro> result = repository.findAll();
 		if (result != null) {
+			logger.info("Consulta exitosa en getAllRegistros");
 			return result;
 		} else {
+			logger.error("No hay visitas en la base de datos, en getAllVisitas");
 			throw new RecordNotFoundException("No hay registros en la base de datos");
 		}
 	}
@@ -48,14 +49,18 @@ public class RegistroService {
 			try {
 				Optional<Registro> getRegistroDummy = repository.findById(id);
 				if (getRegistroDummy.isPresent()) {
+					logger.info("Consulta exitosa en getRegistroByID");
 					return getRegistroDummy.get();
 				} else {
+					logger.error("Error ---> El registro con id: " + id + " no existe en getRegistroByID");
 					throw new RecordNotFoundException("Error ---> El registro con id: " + id + " no existe");
 				}
 			} catch (IllegalArgumentException e) {
+				logger.error("Error ---> IllegarArgumentException en getRegistroByID");
 				throw new IllegalArgumentException(e);
 			}
 		} else {
+			logger.error("Error ---> El id introducido tiene un valor nulo en getRegistroByID");
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
 	}
@@ -72,20 +77,20 @@ public class RegistroService {
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (id != null) {
 			try {
-				Optional<List<Registro>> getRegistroDummy = Optional.of(repository.getRegistroPorUsuario(id));
-				if(getRegistroDummy != null) {					
+				Optional<List<Registro>> getRegistroDummy = Optional.of(repository.getRegistroPorUsuario(id));				
 					if (getRegistroDummy.isPresent()) {
+						logger.info("Consulta exitosa en getRegistroPorUsuario");
 						return getRegistroDummy.get();
 					} else {
+						logger.error("Error ---> El Usuario con id: " + id + " no existe en getRegistroPorUsuario");
 						throw new RecordNotFoundException("Error ---> El registro del usuario con id: " + id + " no existe");
 					}
-				}else {
-					throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
-				}
 			} catch (IllegalArgumentException e) {
+				logger.error("Error ---> IllegarArgumentException en getRegistroPorUsuario" + e);
 				throw new IllegalArgumentException(e);
 			}
 		} else {
+			logger.error("Error ---> El usuario introducido tiene un valor nulo getRegistroPorUsuario");
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
 	}
@@ -101,20 +106,20 @@ public class RegistroService {
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (fecha != null) {
 			try {
-				Optional<List<Registro>> getRegistroFechaDummy = Optional.of(repository.getRegistroPorFecha(fecha));
-				if(getRegistroFechaDummy != null) {					
+				Optional<List<Registro>> getRegistroFechaDummy = Optional.of(repository.getRegistroPorFecha(fecha));				
 					if (getRegistroFechaDummy.isPresent()) {
+						logger.info("Consulta exitosa en getRegistroPorFecha");
 						return getRegistroFechaDummy.get();
 					} else {
+						logger.error("Error ---> El registro con fecha: " + fecha + " no existe en getRegistroPorFecha");
 						throw new RecordNotFoundException("Error ---> El registro con fecha: " + fecha + " no existe");
 					}
-				}else {
-					throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
-				}
 			} catch (IllegalArgumentException e) {
+				logger.error("Error ---> IllegarArgumentException en getRegistroPorFecha :" + e);
 				throw new IllegalArgumentException(e);
 			}
 		} else {
+			logger.error("Error ---> El registro introducido tiene un valor nulo en getRegistroPorFecha");
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
 	}
@@ -126,18 +131,17 @@ public class RegistroService {
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
 	public Registro creaRegistro(Registro registro) throws NullPointerException, IllegalArgumentException {
-		if (registro != null) {
-			if (registro.getId() < 0 & registro != null) {
+		if (registro != null&&registro.getId() < 0) {
 				try {
+					logger.info("Consulta exitosa en creaRegistro");
 					return registro = repository.save(registro);
 				} catch (IllegalArgumentException e) {
+					logger.error("Error ---> IllegarArgumentException en creaRegistro: "+ e);
 					throw new IllegalArgumentException(e);
 				}
-			} else {
-				return registro;
-			}
 		} else {
-			throw new NullPointerException("Error ---> El registro introducido tiene un valor nulo");
+			logger.error("Error ---> La visita introducida tiene un valor nulo o ya esta creado en creaRegistro: " + registro.getId()+" :" + registro);
+			throw new NullPointerException("Error ---> El registro introducido tiene un valor nulo o ya esta creado");
 		}
 	}
 }

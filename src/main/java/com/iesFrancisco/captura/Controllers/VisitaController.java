@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -80,7 +81,7 @@ public class VisitaController {
 	 */
 
 	@PostMapping("/guardar")
-	public ResponseEntity<Visita> createVisita(@Valid @RequestBody Visita visita) throws ResponseStatusException {
+	public ResponseEntity<Visita> createVisita( @RequestBody Visita visita) throws ResponseStatusException {
 		if(visita!=null) {
 			try {
 				Visita addVisita = service.creaVisita(visita);
@@ -120,8 +121,8 @@ public class VisitaController {
 	 * @return ResponseEntity
 	 */
 	@GetMapping("/fecha/{fecha}")
-	public ResponseEntity<List<Visita>> getVisitaByDate(@PathVariable("fecha") String fecha)
-			throws ResponseStatusException{
+
+	public ResponseEntity<List<Visita>> getVisitaByDate(@PathVariable("fecha") String fecha) throws ResponseStatusException{
 		LocalDate date;
 		try {
 			date = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -183,7 +184,7 @@ public class VisitaController {
 	 * @return ResponseEntity
 	 */
 
-	@PostUpdate
+	@PutMapping("/{id}")
 	public ResponseEntity<Visita> updateVisita(@RequestBody Visita updateVisita, @PathVariable(value = "id") Long id) throws ResponseStatusException {
 		if(updateVisita!=null&&id>-1) {
 			try {

@@ -79,7 +79,7 @@ public class FotoController {
 	 */
 	
 	@GetMapping("/fecha/{fecha}")
-	public ResponseEntity<List<Foto>> getFotosByDate(@RequestParam("fecha")@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fecha) throws ResponseStatusException {
+	public ResponseEntity<List<Foto>> getFotosByDate(@RequestParam("fecha") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate fecha) throws ResponseStatusException {
 		if(fecha!=null) {
 			try {
 				List<Foto> fotoByDate = service.getFotosPorFecha(fecha);
@@ -147,9 +147,9 @@ public class FotoController {
 				if (!foto.isPresent()) {
 					return ResponseEntity.notFound().build();
 				}
-				foto.get().setUrl(updateFoto.getUrl());
+				/**oto.get().setUrl(updateFoto.getUrl());
 				foto.get().setComentario(updateFoto.getComentario());
-				foto.get().setVisita(updateFoto.getVisita());
+				foto.get().setVisita(updateFoto.getVisita());*/
 				return ResponseEntity.status(HttpStatus.CREATED).body(service.actualizarFoto(foto.get()));
 			} catch (ResponseStatusException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la foto no se ha podido actualizar", e);

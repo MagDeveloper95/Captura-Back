@@ -17,7 +17,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "usuario")
@@ -38,28 +37,34 @@ public class Usuario implements Serializable {
 	private String foto;
 	@Column(name = "datos", length = 256)
 	private String datos;
-	@JsonManagedReference
+	
+	@JsonIgnoreProperties(value= "usuario", allowSetters = true)
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Registro> registro = new ArrayList<Registro>();
+	private List<Registro> registros = new ArrayList<Registro>();
+	
 	@JoinTable(
 	        name = "usuarioObra",
 	        joinColumns = @JoinColumn(name = "idUsuario", nullable = false),
 	        inverseJoinColumns = @JoinColumn(name="idObra", nullable = false)
 	    )
-		@JsonIgnoreProperties(value = "usuario", allowSetters = true)
-    	@ManyToMany(cascade = CascadeType.ALL)
+		@JsonIgnoreProperties(value = {"usuario"}, allowSetters = true)
+    	@ManyToMany(    cascade = {
+    	        CascadeType.PERSIST, 
+    	        CascadeType.MERGE
+    	    })
 	    private List<Obra> obra;
 	
 
 	
-	public Usuario(Long id, String nombre, String email, String key, String foto, String datos, List<Registro> registro,List<Obra> obra) {
+	public Usuario(Long id, String nombre, String email, String key, String foto, String datos, List<Registro> registros,List<Obra> obras) {
 		this.id = id;
 		this.nombre = nombre;
 		this.email = email;
 		this.key = key;
 		this.foto = foto;
 		this.datos = datos;
-		this.registro = registro;
+		this.registros = registros;
+		this.obra = obras;
 	}
 
 	public Usuario(String nombre, String email, String key, String foto, String datos) {
@@ -68,7 +73,6 @@ public class Usuario implements Serializable {
 		this.key = key;
 		this.foto = foto;
 		this.datos = datos;
-		this.registro = new ArrayList<Registro>();
 	}
 
 	public Usuario() {
@@ -124,18 +128,31 @@ public class Usuario implements Serializable {
 	}
 
 	public List<Registro> getRegistro() {
-		return registro;
+		return registros;
 	}
 
-	public void setRegistro(List<Registro> registro) {
+	public void setRegistro(List<Registro> registros) {
+		//this.registros = registros;
+		this.registros.clear();
+		if(registros!=null) {
+			this.registros.addAll(registros);
+		}else{
+			System.out.println("Error al setear registro en Usuario");
+		}
 	}
 
 	public List<Obra> getObra() {
 		return obra;
 	}
 
-	public void setObra(List<Obra> obra) {
-		this.obra = obra;
+	public void setObra(List<Obra> obras) {
+		//this.obra = obras;
+		this.obra.clear();
+		if(obras!=null) {
+			this.obra.addAll(obras);
+		}else {
+			System.out.println("Error al setear obras en Usuario");
+		}
 	}
 
 	@Override
@@ -166,6 +183,6 @@ public class Usuario implements Serializable {
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", nombre=" + nombre + ", email=" + email + ", key=" + key + ", foto=" + foto
-				+ ", datos=" + datos + ", registro=" + registro + "]";
+				+ ", datos=" + datos + ", registro=" + registros + "]";
 	}	
 }

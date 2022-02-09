@@ -3,6 +3,8 @@ package com.iesFrancisco.captura.Services;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import com.iesFrancisco.captura.Repositories.UsuarioRepository;
 
 @Service
 public class UsuarioService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
 	@Autowired // instanciar el repositorio
 	UsuarioRepository repository;
@@ -25,8 +29,10 @@ public class UsuarioService {
 	public List<Usuario> getAllUsuarios() throws RecordNotFoundException {
 		List<Usuario> getAllUsuariosDummy = repository.findAll();
 		if (getAllUsuariosDummy != null) {
+			logger.info("Consulta exitosa en getAllUsuarios");
 			return getAllUsuariosDummy;
 		} else {
+			logger.error("No hay usuarios en la base de datos en getAllUsuarios");
 			throw new RecordNotFoundException("No hay usuarios en la base de datos");
 		}
 	}
@@ -46,14 +52,18 @@ public class UsuarioService {
 			try {
 				Optional<Usuario> getUsuarioDummy = repository.findById(id);
 				if (getUsuarioDummy.isPresent()) {
+					logger.info("Consulta exitosa en getUsuarioByID");
 					return getUsuarioDummy.get();
 				} else {
+					logger.error("Error ---> El usuario con id: " + id + " no existe en getUsuarioByID");
 					throw new RecordNotFoundException("Error ---> El usuario con id: " + id + " no existe");
 				}
 			} catch (IllegalArgumentException e) {
+				logger.error("Error ---> IllegarArgumentException en getUsuarioByID :" + e);
 				throw new IllegalArgumentException(e);
 			}
 		} else {
+			logger.error("Error ---> El id introducido tiene un valor nulo en getUsuarioByID");
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
 	}
@@ -73,17 +83,22 @@ public class UsuarioService {
 				Optional<Usuario> getUsuarioDummy = Optional.of(repository.findByNombre(nombre));
 				if(getUsuarioDummy != null) {					
 					if (getUsuarioDummy.isPresent()) {
+						logger.info("Consulta exitosa en getUsuarioByNombre");
 						return getUsuarioDummy.get();
 					} else {
+						logger.error("Error ---> El usuario con id: " + nombre + " no existe en getUsuarioByID");
 						throw new RecordNotFoundException("Error ---> El usuario con nombre: " + nombre + " no existe");
+						
 					}
 				}else {
 					throw new NullPointerException("Error ---> El nombre introducido tiene un valor nulo");
 				}
 			} catch (IllegalArgumentException e) {
+				logger.error("Error ---> IllegarArgumentException en getUsuarioByNombre" + e);
 				throw new IllegalArgumentException(e);
 			}
 		} else {
+			logger.error("Error ---> El nombre introducido tiene un valor nulo en getUsuarioByNombre");
 			throw new NullPointerException("Error ---> El nombre introducido tiene un valor nulo");
 		}
 	}
@@ -101,14 +116,17 @@ public class UsuarioService {
 		if (usuario != null) {
 			if (usuario.getId() == -1) {
 				try {
+					logger.info("Consulta exitosa en creaUsuario");
 					return usuario = repository.save(usuario);
 				} catch (IllegalArgumentException e) {
+					logger.error("Error ---> IllegarArgumentException en creaUsuario: "+ e);
 					throw new IllegalArgumentException(e);
 				}
 			} else {
 				return actualizarUsuario(usuario);
 			}
 		} else {
+			logger.error("Error ---> El usuario introducido tiene un valor nulo en creaUsuario");
 			throw new NullPointerException("Error ---> El usuario introducido tiene un valor nulo");
 		}
 	}
@@ -126,8 +144,7 @@ public class UsuarioService {
 			throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
 		if (usuario != null) {
 			Optional<Usuario> getUsuarioDummy = Optional.of(getUsuarioById(usuario.getId()));
-			if (getUsuarioDummy != null) {
-				if (!getUsuarioDummy.isPresent()) {
+				if (getUsuarioDummy.isPresent()) {
 					Usuario actualizaUsuarioDummy = getUsuarioDummy.get();
 					actualizaUsuarioDummy.setId(usuario.getId());
 					actualizaUsuarioDummy.setNombre(usuario.getNombre());
@@ -135,21 +152,22 @@ public class UsuarioService {
 					actualizaUsuarioDummy.setKey(usuario.getKey());
 					actualizaUsuarioDummy.setFoto(usuario.getFoto());
 					actualizaUsuarioDummy.setDatos(usuario.getDatos());
-					actualizaUsuarioDummy.setRegistro(usuario.getRegistro());
-					actualizaUsuarioDummy.setObra(usuario.getObra());
+					//actualizaUsuarioDummy.setRegistro(usuario.getRegistro());
+					//actualizaUsuarioDummy.setObra(usuario.getObra());
 					try {
+						logger.info("Consulta exitosa en actualizarUsuario");
 						return repository.save(actualizaUsuarioDummy);
 					} catch (IllegalArgumentException e) {
+						logger.error("Error ---> IllegarArgumentException en actualizarUsuario :" + e);
 						throw new IllegalArgumentException(e);
 					}
 				} else {
-					throw new RecordNotFoundException("Error ---> El usuario no existe", usuario.getId());
+					logger.error("Error ---> El usuario no existe", usuario.getId() + " en ActualizarUsuario");
+					throw new RecordNotFoundException("Error ---> El usuario no existe: ", usuario.getId() + " en ActualizarUsuario");
 				}
-			} else {
-				throw new NullPointerException("Error ---> El usuario optional tiene un valor nulo");
-			}
 		} else {
-			throw new NullPointerException("Error ---> El usuario introducido tiene un valor nulo");
+			logger.error("Error ---> El usuario introducido tiene un valor nulo en ActualizarUsuario");
+			throw new NullPointerException("Error ---> El usuario introducido tiene un valor nulo en ActualizarUsuario");
 		}
 	}
 
@@ -167,17 +185,21 @@ public class UsuarioService {
 			if (borrarUsuarioDummy != null) {
 				if (borrarUsuarioDummy.isPresent()) {
 					try {
+						logger.info("Consulta exitosa en borrarUsuario");
 						repository.deleteById(id);
 					} catch (IllegalArgumentException e) {
 						throw new IllegalArgumentException(e);
 					}
 				} else {
-					throw new RecordNotFoundException("Error ---> El usuario no existe", id);
+					logger.error("Error ---> El usuario no existe", id + " en borrarUsuario");
+					throw new RecordNotFoundException("Error ---> El usuario no existe", id + " en borrarUsuario");
 				}
 			} else {
+				logger.error("Error ---> El usuario introducido tiene un valor nuloen borrarUsuario");
 				throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 			}
 		} else {
+			logger.error("Error ---> El usuario introducido tiene un valor nulo en borrarUsuario");
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
 	}

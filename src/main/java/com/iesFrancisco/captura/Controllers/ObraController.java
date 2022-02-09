@@ -1,6 +1,5 @@
 package com.iesFrancisco.captura.Controllers;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -83,7 +82,7 @@ public class ObraController {
 				if(!obra.isPresent()) {
 					throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido encontrar");
 				}else {
-					BeanUtils.copyProperties(obraDetails, obra.get());// Copiaria todo el objeto, aqui no interesa por el Id que no lo queremos actualizar
+					//BeanUtils.copyProperties(obraDetails, obra.get());// Copiaria todo el objeto, aqui no interesa por el Id que no lo queremos actualizar
 					return ResponseEntity.status(HttpStatus.CREATED).body(service.actualizaObra(obra.get()));
 				}
 
@@ -187,13 +186,11 @@ public class ObraController {
 	 * @return obra
 	 * @throws ResponseStatusException
 	 */
-	@GetMapping("/coordenadas/{coordenadas}")
-	public ResponseEntity<Obra> listarPorCoordenada(@PathVariable(value="coordenadas")Point coordenadas) throws ResponseStatusException{
-		System.out.println(coordenadas);
-		if(coordenadas!=null) {
-			
+	@GetMapping("/coordenadas/{latitud}/{longitud}")
+	public ResponseEntity<Obra> listarPorCoordenada(@PathVariable(value="latitud")float latitud,@PathVariable(value="longitud") float longitud) throws ResponseStatusException{
+		if(latitud!=0) {
 			try {
-				return ResponseEntity.status(HttpStatus.OK).body(service.getObraByLoc(coordenadas));
+				return ResponseEntity.status(HttpStatus.OK).body(service.getObraByLoc(latitud, longitud));
 			} catch (ResponseStatusException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha podido encontrar las coordenadas de la obra", e);
 			}

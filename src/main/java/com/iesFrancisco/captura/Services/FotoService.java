@@ -4,16 +4,19 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Model.Foto;
-import com.iesFrancisco.captura.Model.Registro;
 import com.iesFrancisco.captura.Repositories.FotoRepository;
 
 @Service
 public class FotoService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(FotoService.class);
 
 	@Autowired // instanciar el repositorio
 	FotoRepository repository;
@@ -26,8 +29,10 @@ public class FotoService {
 	public List<Foto> getAllFotos() throws RecordNotFoundException {
 		List<Foto> result = repository.findAll();
 		if (result != null) {
+			logger.info("Consulta exitosa en getAllFotos");
 			return result;
 		} else {
+			logger.error("No hay visitas en la base de datos, en getAllVisitas");
 			throw new RecordNotFoundException("No hay registros en la base de datos");
 		}
 	}
@@ -46,14 +51,18 @@ public class FotoService {
 			try {
 				Optional<Foto> getFotoDummy = repository.findById(id);
 				if (getFotoDummy.isPresent()) {
+					logger.info("Consulta exitosa en getFotoByID");
 					return getFotoDummy.get();
 				} else {
+					logger.error("Error ---> La foto con id: " + id + " no existe en getFotoByID");
 					throw new RecordNotFoundException("Error ---> La foto con id: " + id + " no existe");
 				}
 			} catch (IllegalArgumentException e) {
+				logger.error("Error ---> IllegarArgumentException en getFotoByID" + e);
 				throw new IllegalArgumentException(e);
 			}
 		} else {
+			logger.error("Error ---> El id introducido tiene un valor nulo en getFotoByID");
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
 	}
@@ -73,14 +82,18 @@ public class FotoService {
 			try {
 				Optional<List<Foto>> getFotosDummy = Optional.of(repository.getFotosPorVisita(id));
 				if (getFotosDummy.isPresent()) {
+					logger.info("Consulta exitosa en getFotosByVisita");
 					return getFotosDummy.get();
 				} else {
+					logger.error("Error ---> La visita con id: " + id + " no tiene lista de fotos en getFotoPorVisita");
 					throw new RecordNotFoundException("Error ---> La foto con id: " + id + " no existe");
 				}
 			} catch (IllegalArgumentException e) {
+				logger.error("Error ---> IllegarArgumentException en getFotoPorVisita" + e);
 				throw new IllegalArgumentException(e);
 			}
 		} else {
+			logger.error("Error ---> La visita introducida tiene un valor nulo getFotoPorVisita");
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");
 		}
 	}
@@ -100,15 +113,19 @@ public class FotoService {
 			try {
 				Optional<List<Foto>> getFotosDummy = Optional.of(repository.getFotosPorFecha(fecha));
 				if (getFotosDummy.isPresent()) {
+					logger.info("Consulta exitosa en getFotosPorFecha");
 					return getFotosDummy.get();
 				} else {
+					logger.error("Error ---> La fecha: " + fecha + " no tiene lista de fotos en getFotosPorFecha");
 					throw new RecordNotFoundException("Error ---> La foto con fecha: " + fecha + " no existe");
 				}
 			} catch (IllegalArgumentException e) {
+				logger.error("Error ---> IllegarArgumentException en getFotosPorFecha" + e);
 				throw new IllegalArgumentException(e);
 			}
 		} else {
-			throw new NullPointerException("Error ---> La foto introducida tiene un valor nulo");
+			logger.error("Error ---> La fecha introducida tiene un valor nulo getVisitaPorObra");
+			throw new NullPointerException("Error ---> La fecha introducida tiene un valor nulo");
 		}
 	}
 
@@ -123,8 +140,11 @@ public class FotoService {
 	 */
 	public Foto creaUsuario(Foto foto) throws NullPointerException, IllegalArgumentException {
 		if (foto != null) {
-			if (foto.getId() > 0 & foto != null) {
+
+			if (foto.getId() < 0 && foto != null) {
+
 				try {
+					logger.info("Consulta exitosa en creaFoto");
 					return foto = repository.save(foto);
 				} catch (IllegalArgumentException e) {
 					throw new IllegalArgumentException(e);
@@ -133,6 +153,7 @@ public class FotoService {
 				return actualizarFoto(foto);
 			}
 		} else {
+			logger.error("Error ---> La foto introducida tiene un valor nulo en creaFoto");
 			throw new NullPointerException("Error ---> La foto introducido tiene un valor nulo");
 		}
 	}
@@ -150,25 +171,25 @@ public class FotoService {
 			throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
 		if (foto != null) {
 			Optional<Foto> getFotoDummy = Optional.of(getFotoPorId(foto.getId()));
-			if (getFotoDummy != null) {
-				if (!getFotoDummy.isPresent()) {
+				if (getFotoDummy.isPresent()) {
 					Foto actualizarFotoDummy = getFotoDummy.get();
 					actualizarFotoDummy.setId(foto.getId());
 					actualizarFotoDummy.setUrl(foto.getUrl());
 					actualizarFotoDummy.setComentario(foto.getComentario());
 					actualizarFotoDummy.setVisita(foto.getVisita());
 					try {
+						logger.info("Consulta exitosa en actualizarFoto");
 						return repository.save(actualizarFotoDummy);
 					} catch (IllegalArgumentException e) {
+						logger.error("Error ---> IllegarArgumentException en actualizarFoto :" + e);
 						throw new IllegalArgumentException(e);
 					}
 				} else {
+					logger.error("Error ---> La foto no existe", foto.getId() + " en ActualizarVisita");
 					throw new RecordNotFoundException("Error ---> La foto no existe", foto.getId());
 				}
-			} else {
-				throw new NullPointerException("Error ---> La foto optional tiene un valor nulo");
-			}
 		} else {
+			logger.error("Error ---> La visita introducida tiene un valor nulo en ActualizarFoto");
 			throw new NullPointerException("Error ---> La foto introducido tiene un valor nulo");
 		}
 	}
@@ -204,17 +225,22 @@ public class FotoService {
 	}*/
 
 	public void borrarFoto(Long id) throws RecordNotFoundException {
-		Optional<Foto> foto = repository.findById(id);
-		try {
-			if (foto.isPresent()) {
-				repository.deleteById(id);
-
-			} else {
-				throw new RecordNotFoundException("La foto no existe", id);
+		if(id!=null) {
+			Optional<Foto> foto = repository.findById(id);
+			try {
+				if (foto.isPresent()) {
+					logger.info("Consulta exitosa en borrarFoto");
+					repository.deleteById(id);
+				} else {
+					logger.error("Error ---> La visita no existe", id + " en borrarFoto");
+					throw new RecordNotFoundException("La foto no existe", id);
+				}
+			} catch (IllegalArgumentException e ) {
+				throw new IllegalArgumentException(e);
 			}
-		} catch (IllegalArgumentException e ) {
-			throw new IllegalArgumentException(e);
+		}else {
+			logger.error("Error ---> La foto introducida tiene un valor nulo en borrarFoto");
+			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");			
 		}
-
 	}
 }
