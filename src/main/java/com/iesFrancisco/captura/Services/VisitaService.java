@@ -142,7 +142,7 @@ public class VisitaService {
 	 * @throws NullPointerException    en caso de que algún objeto sea null
 	 */
 	public Visita creaVisita(Visita visita) throws NullPointerException, IllegalArgumentException {
-		if (visita != null) {
+		if (visita != null) {	
 			if (visita.getId() < 0 && visita!=null) {
 				try {
 					logger.info("Consulta exitosa en creaVisita");
@@ -180,7 +180,6 @@ public class VisitaService {
 					Visita actualizaVisitaDummy = getVisitaDummy.get();
 					actualizaVisitaDummy.setId(visita.getId());
 					actualizaVisitaDummy.setHeader(visita.getHeader());
-					actualizaVisitaDummy.setFecha(visita.getFecha());
 					actualizaVisitaDummy.setFecha(visita.getFecha());
 					actualizaVisitaDummy.setNota(visita.getNota());
 					actualizaVisitaDummy.setFotos(visita.getFotos());

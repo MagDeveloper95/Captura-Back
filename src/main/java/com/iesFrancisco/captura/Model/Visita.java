@@ -38,9 +38,9 @@ public class Visita implements Serializable {
 	
 	@JsonIgnoreProperties(value = "visita",allowSetters = true)
 	@OneToMany(mappedBy = "visita", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Foto> fotos = new ArrayList<Foto>();
+	private List<Foto> fotos;
 	
-	@JsonIgnoreProperties(value="visita", allowSetters = true)
+	@JsonIgnoreProperties(value="visita", allowSetters = false)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="idObra")
 	private Obra obra;
@@ -113,7 +113,12 @@ public class Visita implements Serializable {
 	}
 
 	public void setFotos(List<Foto> fotos) {
-		this.fotos = fotos;
+	    this.fotos.clear();
+	    if (fotos != null) {
+	        this.fotos.addAll(fotos);
+	    }else {
+	    	System.out.println("Error al setear fotos en Visita");
+	    }
 	}
 
 	@Override

@@ -42,7 +42,7 @@ public class Obra implements Serializable {
 	
 	//Comportamiento Eager
 	@JsonIgnoreProperties(value="obra", allowSetters=true)
-	@OneToMany(fetch= FetchType.EAGER,mappedBy ="obra", cascade = {CascadeType.ALL},orphanRemoval = true)
+	@OneToMany(mappedBy ="obra"/** cascade = {CascadeType.ALL},orphanRemoval = true*/)
 	private List<Visita> visitas;
 
 /**	
@@ -83,7 +83,7 @@ public class Obra implements Serializable {
 	}
 
 
-	public Obra(Long id, String nombre, float latitud, float longitud, String datos) {
+	/**public Obra(Long id, String nombre, float latitud, float longitud, String datos) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -92,7 +92,7 @@ public class Obra implements Serializable {
 		this.datos = datos;
 		this.usuario = new ArrayList<Usuario>();
 		this.visitas = new ArrayList<Visita>();
-	}
+	}*/
 
 	public Obra() {
 		this(-1L,"Por defecto",-1,-1,"Por defecto",new ArrayList<Usuario>(), new ArrayList<Visita>());

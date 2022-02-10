@@ -50,6 +50,10 @@ public class ObraService {
 		if(id!=null) {
 			try {
 				Optional<Obra> result = obrasRepository.findById(id);
+				
+				/**ObraResponse obraResponse = new ObraResponse();
+				obraResponse.setid(result.get().getId());*/
+				
 				if(result.isPresent()) {
 					logger.info("Consulta exitosa en getObraByID");
 					return result.get();
@@ -78,7 +82,7 @@ public class ObraService {
 	 */
 	public Obra creaObra(Obra obra) throws NullPointerException, IllegalArgumentException{
 		if(obra!=null) {
-			if(obra.getId()<0) {
+			if(obra.getId() == -1) {
 				try {
 					//String name = obra.getId().toString()+obra.getNombre();
 					//System.out.println(name);
