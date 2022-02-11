@@ -39,6 +39,7 @@ public class FotoController {
 	 * @param Foto
 	 * @return ResponseEntity
 	 */
+	
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping()
 	public ResponseEntity<List<Foto>> allFotos() throws ResponseStatusException {
