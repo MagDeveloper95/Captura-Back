@@ -84,9 +84,7 @@ public class ObraService {
 		if(obra!=null) {
 			if(obra.getId() == -1) {
 				try {
-					//String name = obra.getId().toString()+obra.getNombre();
-					//System.out.println(name);
-					//OneDriveService.createFolder(name);
+					OneDriveService.createObra(obra.getNombre());
 					logger.info("Consulta exitosa en creaObra");
 					return obra = obrasRepository.save(obra);
 				} catch (IllegalArgumentException e) {

@@ -149,6 +149,7 @@ public class VisitaService {
 					/**
 					registro = new Registro("Ha creado una nueva visita el usuario: "+ idUsuario, LocalDate.now());
 					controlador.creaRegistro(registro);*/
+					OneDriveService.createVisita(visita.getHeader(),visita.getObra().getNombre());
 					return visita = repository.save(visita);
 				} catch (IllegalArgumentException e) {
 					logger.error("Error ---> IllegarArgumentException en creaVisita: "+ e);
