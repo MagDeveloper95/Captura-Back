@@ -170,8 +170,7 @@ public class VisitaController {
 	public ResponseEntity<Visita> updateVisita(@RequestBody Visita updateVisita, @PathVariable(value = "id") Long id) throws ResponseStatusException {
 		if(updateVisita!=null&&id>-1) {
 			try {
-				Optional<Visita> visita = Optional.of(service.getVisitaPorId(id));
-				return ResponseEntity.status(HttpStatus.CREATED).body(service.actualizaVisita(visita.get()));
+				return ResponseEntity.status(HttpStatus.CREATED).body(service.actualizaVisita(updateVisita));
 			} catch (ResponseStatusException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La visita no se han podido actualizar", e);
 			}
