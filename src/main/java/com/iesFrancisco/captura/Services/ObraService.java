@@ -12,6 +12,10 @@ import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Repositories.ObraRepository;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 
 @Service
 public class ObraService {
@@ -26,6 +30,10 @@ public class ObraService {
 	 * 
 	 * @return result , lista de usuarios
 	 */
+	@ApiOperation(value = "Busca todas las obras", notes = "Devuelve una lista de todas las obras")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Peticion correcta", response = List.class),
+			@ApiResponse(code = 404, message = "Error al obtener las obras"),
+			@ApiResponse(code = 500, message = "Internal server error") })
 	public List<Obra> getAllObras() throws RecordNotFoundException{
 		List<Obra> result = obrasRepository.findAll();
 		if (result!=null) {
