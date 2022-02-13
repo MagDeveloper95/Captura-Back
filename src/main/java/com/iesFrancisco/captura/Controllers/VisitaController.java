@@ -21,11 +21,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Model.Visita;
 import com.iesFrancisco.captura.Services.VisitaService;
 
+@Api(value = "VisitaController", description = "Operaciones sobre visitas")
 @RestController
 @RequestMapping("/visita")
 public class VisitaController {
@@ -37,7 +41,7 @@ public class VisitaController {
 	 * @param visita
 	 * @return ResponseEntity
 	 */
-	
+	@ApiOperation(value = "Muestra todas las visitas dela base de datos", response = Iterable.class, tags = "allVisitas")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping()
 	public ResponseEntity<List<Visita>> getAllVisitas() throws ResponseStatusException{
@@ -55,7 +59,7 @@ public class VisitaController {
 	 * @param id
 	 * @return ResponseEntity
 	 */
-	
+	@ApiOperation(value = "Muestra una visita de la base de datos", response = Visita.class, tags = "getVisita")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/{id}")
 	public ResponseEntity<Visita> getVisitaById(@PathVariable("id") Long id) throws ResponseStatusException {
@@ -76,7 +80,7 @@ public class VisitaController {
 	 * @param visita
 	 * @return ResponseEntity
 	 */
-	
+	@ApiOperation(value = "Crea una visita en la base de datos", response = Visita.class, tags = "createVisita")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@PostMapping("/guardar")
 	public ResponseEntity<Visita> createVisita(@RequestBody Visita visita) throws ResponseStatusException {
@@ -97,7 +101,7 @@ public class VisitaController {
 	 * @param obra
 	 * @return ResponseEntity
 	 */
-
+	@ApiOperation(value = "Muestra una visita de la base de datos", response = Visita.class, tags = "getVisita")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/obra/{obra}")
 	public ResponseEntity<List<Visita>> getVisitaByObra(@PathVariable("obra") Obra obra) throws ResponseStatusException {
@@ -118,7 +122,7 @@ public class VisitaController {
 	 * @param fecha
 	 * @return ResponseEntity
 	 */
-	
+	@ApiOperation(value = "Muestra una visita de la base de datos", response = Visita.class, tags = "getVisita")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/fecha/{fecha}")
 	public ResponseEntity<List<Visita>> getVisitaByDate(@PathVariable("fecha")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate fecha)
@@ -141,7 +145,7 @@ public class VisitaController {
 	 * @return ResponseEntity
 	 * @throws RecordNotFoundException
 	 */
-
+	@ApiOperation(value = "Borra una visita de la base de datos", response = Visita.class, tags = "deleteVisita")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Visita> deleteVisita(@PathVariable("id") Long id) throws ResponseStatusException {
@@ -164,7 +168,7 @@ public class VisitaController {
 	 * @param id
 	 * @return ResponseEntity
 	 */
-
+	@ApiOperation(value = "Actualiza una visita de la base de datos", response = Visita.class, tags = "updateVisita")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@PutMapping("/{id}")
 	public ResponseEntity<Visita> updateVisita(@RequestBody Visita updateVisita, @PathVariable(value = "id") Long id) throws ResponseStatusException {

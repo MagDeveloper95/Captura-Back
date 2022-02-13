@@ -3,18 +3,15 @@ package com.iesFrancisco.captura.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+import io.swagger.annotations.ApiModelProperty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -22,16 +19,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Obra implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	@ApiModelProperty(notes = "Identificador de la obra",name = "id", required = true, value = "1")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
-	private Long id;	
+	private Long id;
+	@ApiModelProperty(notes = "Nombre de la obra",name = "nombre", required = true, value = "La obra de la que se trata")	
 	@Column(name = "nombre", length = 256)
 	private String nombre;
+	@ApiModelProperty(notes = "latitud e la obra",name = "latitud", required = true, value = "latitud de la obra")
 	@Column(name = "latitud", length = 256)
 	private float latitud;
+	@ApiModelProperty(notes = "longitud de la obra",name = "longitud", required = true, value = "longitud de la obra")
 	@Column(name = "longitud", length = 256)
 	private float longitud;
+	@ApiModelProperty(notes = "Descripcion de la obra",name = "descripcion", required = true, value = "descripcion de la obra")
 	@Column(name = "datos", length = 256)
 	private String datos;
 	

@@ -9,18 +9,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
-import com.iesFrancisco.captura.Model.Registro;
-import com.iesFrancisco.captura.Model.Usuario;
 import com.iesFrancisco.captura.Model.Visita;
 import com.iesFrancisco.captura.Repositories.VisitaRepository;
 
 @Service
 public class VisitaService {
-	
-
-	private Registro registro;
-	private RegistroService controlador;
 
 	private static final Logger logger = LoggerFactory.getLogger(VisitaService.class);
 
@@ -34,6 +32,11 @@ public class VisitaService {
 	 * 
 	 * @return la lista de vistas
 	 */
+	@ApiOperation(value = "Muestra todas las visitas",notes = "Devuelve todas las visitas")
+	@ApiResponses(value ={
+		@ApiResponse(code = 200, message = "Peticion correcta", response = Visita.class),
+		@ApiResponse(code = 404, message = "Error al obtener la obra"),
+		@ApiResponse(code = 500, message = "Internal server error") })
 	public List<Visita> getAllVisitas() throws RecordNotFoundException {
 		List<Visita> getAllVisitasDummy = repository.findAll();
 		if (getAllVisitasDummy != null) {
@@ -52,6 +55,11 @@ public class VisitaService {
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
+	@ApiOperation(value = "Muestra una visita por su id",notes = "Devuelve una visita")
+	@ApiResponses(value ={
+		@ApiResponse(code = 200, message = "Peticion correcta", response = Visita.class),
+		@ApiResponse(code = 404, message = "Error al obtener la obra"),
+		@ApiResponse(code = 500, message = "Internal server error") })
 	public Visita getVisitaPorId(Long id)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (id != null) {
@@ -82,6 +90,11 @@ public class VisitaService {
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
+	@ApiOperation(value = "Muestra una visita por su obra",notes = "Devuelve una visita")
+	@ApiResponses(value ={
+		@ApiResponse(code = 200, message = "Peticion correcta", response = Visita.class),
+		@ApiResponse(code = 404, message = "Error al obtener la obra"),
+		@ApiResponse(code = 500, message = "Internal server error") })
 	public List<Visita> getVisitaPorObra(Long id)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (id != null) {
@@ -111,6 +124,11 @@ public class VisitaService {
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
+	@ApiOperation(value = "Muestra una visita por su obra",notes = "Devuelve una visita")
+	@ApiResponses(value ={
+		@ApiResponse(code = 200, message = "Peticion correcta", response = Visita.class),
+		@ApiResponse(code = 404, message = "Error al obtener la obra"),
+		@ApiResponse(code = 500, message = "Internal server error") })
 	public List<Visita> getVisitaPorFecha(LocalDate fecha)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (fecha != null) {
@@ -141,6 +159,11 @@ public class VisitaService {
 	 * @throws RecordNotFoundException en caso de que no encuentre el usuario
 	 * @throws NullPointerException    en caso de que algún objeto sea null
 	 */
+	@ApiOperation(value = "Crea o actualiza una visita",notes = "Crea o actualiza una visita")
+	@ApiResponses(value ={
+		@ApiResponse(code = 200, message = "Peticion correcta", response = Visita.class),
+		@ApiResponse(code = 404, message = "Error al obtener la obra"),
+		@ApiResponse(code = 500, message = "Internal server error") })
 	public Visita creaVisita(Visita visita) throws NullPointerException, IllegalArgumentException {
 		if (visita != null) {	
 			if (visita.getId() < 0 && visita!=null) {
@@ -173,6 +196,11 @@ public class VisitaService {
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
+	@ApiOperation(value = "Actualiza una visita",notes = "Actualiza una visita")
+	@ApiResponses(value ={
+		@ApiResponse(code = 200, message = "Peticion correcta", response = Visita.class),
+		@ApiResponse(code = 404, message = "Error al obtener la obra"),
+		@ApiResponse(code = 500, message = "Internal server error") })
 	public Visita actualizaVisita(Visita visita)
 			throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
 		if (visita != null) {
@@ -213,6 +241,11 @@ public class VisitaService {
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
+	@ApiOperation(value = "Borra una visita",notes = "Borra una visita")
+	@ApiResponses(value ={
+		@ApiResponse(code = 200, message = "Peticion correcta", response = Visita.class),
+		@ApiResponse(code = 404, message = "Error al obtener la obra"),
+		@ApiResponse(code = 500, message = "Internal server error") })
 	public void borrarVisita(Long id) throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
 		if (id != null) {
 			Optional<Visita> borrarVisitaDummy = Optional.of(getVisitaPorId(id));

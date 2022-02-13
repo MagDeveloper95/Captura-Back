@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Services.ObraService;
 
-
+@Api(value = "ObraController", description = "Operaciones sobre obras")
 @RestController
 @RequestMapping("/obra")
 public class ObraController {
@@ -31,10 +34,11 @@ public class ObraController {
 	ObraService service;
 	
 	/**
-	 * Método del controlador Crea una obra
+	 * Mï¿½todo del controlador Crea una obra
 	 * @param obra
 	 * @return ResponseEntity
 	 */ 
+	@ApiOperation(value = "Crea una obra", response = Iterable.class, tags = "createObra")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@PostMapping("/guardar")
 	public ResponseEntity<Obra> create(@RequestBody Obra obra) throws ResponseStatusException{
@@ -55,6 +59,7 @@ public class ObraController {
 	 * @param id
 	 * @return
 	 */
+	@ApiOperation(value = "Muestra una obra por su id", response = Obra.class, tags = "getObraById")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/{id}")
 	public ResponseEntity<Obra> listarPorId(@PathVariable(value ="id") Long id) throws ResponseStatusException  {
@@ -76,6 +81,7 @@ public class ObraController {
 	 * @param id
 	 * @return obra
 	 */
+	@ApiOperation(value = "Actualiza una obra por su id", response = Obra.class, tags = "updateObraById")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@PutMapping("/{id}")
 	public ResponseEntity<Obra> update(@RequestBody Obra obraDetails, @PathVariable(value="id")Long id) throws ResponseStatusException{
@@ -102,6 +108,7 @@ public class ObraController {
 	 * @param id
 	 * @return
 	 */
+	@ApiOperation(value = "Borra una obra por su id", response = Obra.class, tags = "deleteObraById")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@DeleteMapping("/{id}")
 	public HttpStatus delete(@PathVariable(value="id")Long id) throws ResponseStatusException{
@@ -128,6 +135,7 @@ public class ObraController {
 	 * @return Lista de Obras
 	 * @throws ResponseStatusException
 	 */
+	@ApiOperation(value = "Muestra todas las obras", response = Iterable.class, tags = "getAllObras")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping
 	public ResponseEntity<List<Obra>> readAll() throws ResponseStatusException{
@@ -149,6 +157,7 @@ public class ObraController {
 	 * @return una obra
 	 * @throws ResponseStatusException
 	 */
+	@ApiOperation(value = "Muestra una obra por su nombre", response = Obra.class, tags = "getObraByNombre")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/nombre/{nombre}")
 	public ResponseEntity<Obra> listarPorNombre(@PathVariable(value ="nombre") String nombre) throws ResponseStatusException{
@@ -168,6 +177,7 @@ public class ObraController {
 	 * @return obras del usuario
 	 * @throws ResponseStatusException
 	 */
+	@ApiOperation(value = "Muestra las obras de un usuario", response = Iterable.class, tags = "getObrasByUserId")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("usuario/{usuarioId}")
 	public ResponseEntity<List<Obra>> listarPorUsuario(@PathVariable(value ="usuarioId") Long id) throws ResponseStatusException{
@@ -190,6 +200,7 @@ public class ObraController {
 	 * @return obra
 	 * @throws ResponseStatusException
 	 */
+	@ApiOperation(value = "Muestra una obra por sus coordenadas", response = Obra.class, tags = "getObraByCoordenadas")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/coordenadas/{latitud}/{longitud}")
 	public ResponseEntity<Obra> listarPorCoordenada(@PathVariable(value="latitud")float latitud,@PathVariable(value="longitud") float longitud) throws ResponseStatusException{
@@ -203,8 +214,5 @@ public class ObraController {
 			return new ResponseEntity<Obra>(new Obra(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
 	
-	}
-	
-	
-	
+	}	
 }

@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import com.iesFrancisco.captura.Model.Usuario;
 import com.iesFrancisco.captura.Services.UsuarioService;
 
-
+@Api(value = "UsuarioController", description = "Operaciones sobre usuarios")
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
@@ -33,10 +36,11 @@ public class UsuarioController {
 	 */
 	
 	/**
-	 * Método del controlador Crea un usuario
+	 * Mï¿½todo del controlador Crea un usuario
 	 * @param usuario
 	 * @return ResponseEntity
 	 */ 
+	@ApiOperation(value = "Crea un usuario", response = Iterable.class, tags = "createUsuario")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@PostMapping("/guardar")
 	public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) throws ResponseStatusException{
@@ -54,11 +58,12 @@ public class UsuarioController {
 	}
 	
 /**
- * Metodo que trae un usuario a través de un ID
+ * Metodo que trae un usuario a travï¿½s de un ID
  * @param id del usuario
  * @return Usuario que contiene la ID
  * @throws ResponseStatusException 
  */
+	@ApiOperation(value = "Trae un usuario a travÃ©s de un ID", response = Iterable.class, tags = "getUsuario")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/{id}")
 	public ResponseEntity<Usuario> listarPorId(@PathVariable(value ="id") Long id) throws ResponseStatusException{
@@ -79,6 +84,7 @@ public class UsuarioController {
 	 * @return Usuario actualizado
 	 * @throws ResponseStatusException
 	 */
+	@ApiOperation(value = "Actualiza un usuario", response = Iterable.class, tags = "updateUsuario")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@PutMapping("/{id}")
 	public ResponseEntity<Usuario> update(@RequestBody Usuario userDetails, @PathVariable(value="id")Long id) throws ResponseStatusException{
@@ -104,6 +110,7 @@ public class UsuarioController {
 	 * @return borra el usuario
 	 * @throws ResponseStatusException
 	 */
+	@ApiOperation(value = "Borra un usuario", response = Iterable.class, tags = "deleteUsuario")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Usuario> delete(@PathVariable(value="id")Long id) throws ResponseStatusException{
@@ -129,6 +136,7 @@ public class UsuarioController {
 	 * @return Lista de usuarios
 	 * @throws ResponseStatusException
 	 */
+	@ApiOperation(value = "Trae una lista de usuarios", response = Iterable.class, tags = "getUsuarios")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping
 	public ResponseEntity<List<Usuario>> readAll() throws ResponseStatusException{
@@ -145,6 +153,7 @@ public class UsuarioController {
 	 * @return usuario
 	 * @throws ResponseStatusException
 	 */
+	@ApiOperation(value = "Busca un usuario a partir de su nombre", response = Iterable.class, tags = "getUsuarioByName")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/nombre/{nombre}")
 	public ResponseEntity<Usuario> listarPorNombre(@PathVariable(value ="nombre") String nombre) throws ResponseStatusException  {

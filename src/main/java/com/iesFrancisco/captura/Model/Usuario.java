@@ -18,23 +18,31 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "usuario")
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	@ApiModelProperty(notes = "Identificador del usuario", name = "id", required = true, value = "1")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private Long id;
+	@ApiModelProperty(notes = "Nombre del usuario", name = "nombre", required = true, value = "Nombre del usuario")
 	@Column(name = "nombre", length = 256)
 	private String nombre;
+	@ApiModelProperty(notes = "Email del usuario", name = "email", required = true, value = "Email del usuario")
 	@Column(name = "email", length = 256)
 	private String email;
+	@ApiModelProperty(notes = "Contraseña del usuario", name = "contrasena", required = true, value = "Contraseña del usuario")
 	@Column(name = "keyLogueo", length = 256)
 	private String key;
+	@ApiModelProperty(notes = "Foto del usuario", name = "Foto", required = true, value = "Foto del usuario")
 	@Column(name = "foto", length = 256)
 	private String foto;
+	@ApiModelProperty(notes = "Datos del usuario", name = "Datos", required = true, value = "Datos del usuario")
 	@Column(name = "datos", length = 256)
 	private String datos;
 	
