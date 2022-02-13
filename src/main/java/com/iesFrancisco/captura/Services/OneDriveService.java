@@ -130,9 +130,9 @@ public class OneDriveService {
 		logger.setLoggingLevel(LoggerLevel.ERROR);
 
 		graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
-		
+		 
 		graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive()
-		.items("01YB5ORGMXQCKRCEY45VG32KVBAZNZQZKK").buildRequest().delete();
+		.items(getFolderId(folderName)).buildRequest().delete();
 	}
 
 	/**
@@ -145,6 +145,24 @@ public class OneDriveService {
 	 * @throws ClientException si el usuario no existe
 	 */
 	public static void borrarVisita(String folderName, String parentFolderId) throws ClientException {
+		
+		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
+				.clientSecret(clientSecret).tenantId(tenant).build();
 
+		authProvider = new TokenCredentialAuthProvider(Arrays.asList("https://graph.microsoft.com/.default"),
+				credential);
+
+		DefaultLogger logger = new DefaultLogger();
+		logger.setLoggingLevel(LoggerLevel.ERROR);
+
+		graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
+
+		DriveItem driveItem = new DriveItem();
+		driveItem.name = LocalDate.now()+folderName;
+		Folder folder = new Folder();
+		driveItem.folder = folder;
+
+		graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().items(getFolderId(parentFolderId)).children()
+				.buildRequest().post(driveItem);
 	}
 }

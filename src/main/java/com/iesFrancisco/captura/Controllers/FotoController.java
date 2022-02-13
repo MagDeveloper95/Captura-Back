@@ -22,10 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 import com.iesFrancisco.captura.Model.Foto;
 import com.iesFrancisco.captura.Services.FotoService;
 
+@Api(value = "FotoController", description = "Operaciones sobre fotos")
 @RestController
 @RequestMapping("/foto")
 public class FotoController {
@@ -39,7 +42,7 @@ public class FotoController {
 	 * @param Foto
 	 * @return ResponseEntity
 	 */
-	
+	@ApiOperation(value = "Muestra todas las fotos dela base de datos", response = Iterable.class, tags = "allFotos")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping()
 	public ResponseEntity<List<Foto>> allFotos() throws ResponseStatusException {
@@ -57,6 +60,7 @@ public class FotoController {
 	 * @param id
 	 * @return ResponseEntity
 	 */
+	@ApiOperation(value = "Muestra una foto por su id", response = Foto.class, tags = "getFotoById")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/{id}")
 	public ResponseEntity<Foto> getFotosById(@PathVariable(value = "id") Long id) throws ResponseStatusException {
@@ -80,6 +84,7 @@ public class FotoController {
 	 * @param fecha
 	 * @return ResponseEntity
 	 */
+	@ApiOperation(value = "Muestra las fotos por fecha", response = Iterable.class, tags = "getFotoByFecha")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/fecha/{fecha}")
 	public ResponseEntity<List<Foto>> getFotosByDate(@RequestParam("fecha") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate fecha) throws ResponseStatusException {
@@ -101,6 +106,7 @@ public class FotoController {
 	 * @param visita
 	 * @return ResponseEntity
 	 */
+	@ApiOperation(value = "Muestra las fotos por visita", response = Iterable.class, tags = "getFotoByVisita")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/{idVisita}")
 	public ResponseEntity<List<Foto>> getFotosByVisita(@PathVariable("idVisita") Long idVisita) throws ResponseStatusException {
@@ -122,6 +128,7 @@ public class FotoController {
 	 * @return foto eliminada
 	 * @throws ResponseStatusException
 	 */
+	@ApiOperation(value = "Borra una foto por su id", response = Foto.class, tags = "deleteFoto")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@DeleteMapping("{id}")
 	public ResponseEntity<Foto> deleteFoto(@PathVariable("id") Long id) throws ResponseStatusException {
@@ -129,7 +136,7 @@ public class FotoController {
 			try {
 				service.borrarFoto(id);
 				return ResponseEntity.ok().build();
-			} catch (ResponseStatusException e) {
+			} catch (ResponseStatusException e) { 
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Foto no encontrada", e);
 			}
 		}else {
@@ -143,6 +150,7 @@ public class FotoController {
 	 * @param id
 	 * @return ResponseEntity
 	 */
+	@ApiOperation(value = "Actualiza una foto por su id", response = Foto.class, tags = "updateFoto")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@PostUpdate
 	public ResponseEntity<Foto> updateFoto(@RequestBody Foto updateFoto, @PathVariable(value = "id") Long id) throws ResponseStatusException {
@@ -165,6 +173,7 @@ public class FotoController {
 
 
 	}
+	@ApiOperation(value = "Muestra las fotos por visita", response = Iterable.class, tags = "getFotoByVisita")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@PostMapping("/add") 
 	public ResponseEntity<Foto> create(@RequestBody  Foto foto) throws ResponseStatusException{
