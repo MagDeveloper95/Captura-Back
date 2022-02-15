@@ -1,5 +1,6 @@
 package com.iesFrancisco.captura.Services;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -9,13 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.iesFrancisco.captura.Exception.RecordNotFoundException;
+import com.iesFrancisco.captura.Model.Foto;
+import com.iesFrancisco.captura.Model.FotoWrapper;
+import com.iesFrancisco.captura.Repositories.FotoRepository;
+
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
-import com.iesFrancisco.captura.Exception.RecordNotFoundException;
-import com.iesFrancisco.captura.Model.Foto;
-import com.iesFrancisco.captura.Repositories.FotoRepository;
 
 @Service
 public class FotoService {
@@ -161,23 +163,50 @@ public class FotoService {
 	 * @return foto creada/actualizada
 	 * @throws RecordNotFoundException en caso de que no encuentre el usuario
 	 * @throws NullPointerException    en caso de que algún objeto sea null
+	 * @throws IOException 
 	 */
 	@ApiOperation(value = "Crea o actualiza una foto",notes = "Crea o actualiza una foto")
 	@ApiResponses(value = { 
 		@ApiResponse(code = 200, message = "Peticion correcta", response = Foto.class),
 		@ApiResponse(code = 404, message = "No se encuentra el recurso"),
 		@ApiResponse(code = 500, message = "Internal server error") })
-	public Foto creaUsuario(Foto foto) throws NullPointerException, IllegalArgumentException {
+	public Foto creaFoto(FotoWrapper foto) throws NullPointerException, IllegalArgumentException, IOException {
 		if (foto != null) {
-			if (foto.getId() < 0 && foto != null) {
+		if (foto.getId() < 0) {
 				try {
+					OneDriveService.uploadFile(
+							foto.getFile().getOriginalFilename(),
+							foto.getVisita().getObra().getNombre(),
+							foto.getVisita().getHeader(),
+						 foto.getFile().getInputStream());
+					logger.info("Foto subida"+foto.getFile().getOriginalFilename());
+					String t=OneDriveService.getUrl(
+							foto.getFile().getOriginalFilename(),
+							foto.getVisita().getObra().getNombre(),
+							foto.getVisita().getHeader());
+					logger.info("URL CREADA->"+t);
+					Foto fotoCreada = new Foto(
+							foto.getId(),
+							OneDriveService.getUrl(
+									foto.getFile().getOriginalFilename(),
+									foto.getVisita().getObra().getNombre(),
+									foto.getVisita().getHeader()),
+							foto.getComentario(),
+							foto.getVisita());
 					logger.info("Consulta exitosa en creaFoto");
-					return foto = repository.save(foto);
+					return fotoCreada = repository.save(fotoCreada);
 				} catch (IllegalArgumentException e) {
 					throw new IllegalArgumentException(e);
 				}
 			} else {
-				return actualizarFoto(foto);
+				Foto fotoCreada = new Foto(
+						foto.getId(),
+						OneDriveService.getUrl(foto.getFile().getName(),
+								foto.getVisita().getObra().getNombre(),
+								foto.getVisita().getHeader()),
+						foto.getComentario(),
+						foto.getVisita());
+				return actualizarFoto(fotoCreada);
 			}
 		} else {
 			logger.error("Error ---> La foto introducida tiene un valor nulo en creaFoto");
@@ -258,4 +287,5 @@ public class FotoService {
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");			
 		}
 	}
+	
 }
