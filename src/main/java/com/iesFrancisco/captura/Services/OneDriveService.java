@@ -228,7 +228,7 @@ public class OneDriveService {
 			UploadSession uploadSession = graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().root()
 					// itemPath like "/Folder/file.txt"
 					// does not need to be a path to an existing item
-					.itemWithPath("Buajalance/22-02-11Mateo"+fileName).createUploadSession(uploadParams).buildRequest().post();
+					.itemWithPath(rootFolderName+"/"+visitaFolderName+"/"+fileName).createUploadSession(uploadParams).buildRequest().post();
 	
 			LargeFileUploadTask<DriveItem> largeFileUploadTask = new LargeFileUploadTask<DriveItem>(uploadSession,
 					graphClient, fileStream, streamSize, DriveItem.class);
