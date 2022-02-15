@@ -151,11 +151,4 @@ public class Visita implements Serializable {
 			return false;
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "Visita [id=" + id + ", header=" + header + ", fecha=" + fecha + ", nota=" + nota + ", fotos=" + fotos
-				+ "]";
-	}
-
 }

@@ -112,7 +112,7 @@ public class ObraController {
 	@CrossOrigin(origins = "http://localhost:8100")
 	@DeleteMapping("/{id}")
 	public HttpStatus delete(@PathVariable(value="id")Long id) throws ResponseStatusException{
-		if(id!=null&&id>-1) {
+		if(id!=null) {
 			try {
 				Optional<Obra> obra = Optional.of(service.getObraById(id));
 				if(obra.isPresent()) {

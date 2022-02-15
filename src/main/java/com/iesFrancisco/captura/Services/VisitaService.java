@@ -65,6 +65,7 @@ public class VisitaService {
 		if (id != null) {
 			try {
 				Optional<Visita> getVisitaDummy = repository.findById(id);
+				System.out.println(getVisitaDummy);
 				if (getVisitaDummy.isPresent()) {
 					logger.info("Consulta exitosa en getVisitaByID");
 					

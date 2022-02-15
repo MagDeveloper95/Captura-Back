@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.PostUpdate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -68,7 +67,7 @@ public class FotoController {
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/{id}")
 	public ResponseEntity<Foto> getFotosById(@PathVariable(value = "id") Long id) throws ResponseStatusException {
-		if(id!=null && id>-1) {
+		if(id!=null) {
 			try {
 				Foto fotoById = service.getFotoPorId(id);
 				return new ResponseEntity<Foto>(fotoById, new HttpHeaders(), HttpStatus.OK);
@@ -112,9 +111,9 @@ public class FotoController {
 	 */
 	@ApiOperation(value = "Muestra las fotos por visita", response = Iterable.class, tags = "getFotoByVisita")
 	@CrossOrigin(origins = "http://localhost:8100")
-	@GetMapping("/{idVisita}")
+	@GetMapping("/visita/{idVisita}")
 	public ResponseEntity<List<Foto>> getFotosByVisita(@PathVariable("idVisita") Long idVisita) throws ResponseStatusException {
-		if(idVisita!=null&&idVisita>-1) {
+		if(idVisita!=null && idVisita>-1) {
 			try {
 				List<Foto> fotoByVisita = service.getFotosPorVisita(idVisita);
 				return new ResponseEntity<List<Foto>>(fotoByVisita, new HttpHeaders(), HttpStatus.OK);
@@ -156,7 +155,7 @@ public class FotoController {
 	 */
 	@ApiOperation(value = "Actualiza una foto por su id", response = Foto.class, tags = "updateFoto")
 	@CrossOrigin(origins = "http://localhost:8100")
-	@PostUpdate
+	@PutMapping("/{id}")
 	public ResponseEntity<Foto> updateFoto(@RequestBody Foto updateFoto, @PathVariable(value = "id") Long id) throws ResponseStatusException {
 		if(updateFoto!=null) {
 			try {

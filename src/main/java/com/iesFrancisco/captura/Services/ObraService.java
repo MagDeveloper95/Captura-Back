@@ -63,10 +63,9 @@ public class ObraService {
 		if(id!=null) {
 			try {
 				Optional<Obra> result = obrasRepository.findById(id);
-				
+				System.out.println(result);
 				/**ObraResponse obraResponse = new ObraResponse();
 				obraResponse.setid(result.get().getId());*/
-				
 				if(result.isPresent()) {
 					logger.info("Consulta exitosa en getObraByID");
 					return result.get();
@@ -177,7 +176,7 @@ public class ObraService {
 		if(id!=null) {
 			Optional<Obra> obra = obrasRepository.findById(id);
 				if(obra.isPresent()) {
-					OneDriveService.borraObra(obra.get().getNombre());
+					//OneDriveService.borraObra(obra.get().getNombre());
 					logger.info("Consulta exitosa en borrarObra");
 					obrasRepository.deleteById(id);
 				} else {

@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Model.Visita;
 import com.iesFrancisco.captura.Services.VisitaService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(value = "VisitaController", description = "Operaciones sobre visitas")
 @RestController
@@ -125,7 +125,7 @@ public class VisitaController {
 	@ApiOperation(value = "Muestra una visita de la base de datos", response = Visita.class, tags = "getVisita")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/fecha/{fecha}")
-	public ResponseEntity<List<Visita>> getVisitaByDate(@PathVariable("fecha")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate fecha)
+	public ResponseEntity<List<Visita>> getVisitaByDate(@PathVariable("fecha")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha)
 			throws ResponseStatusException{
 		if(fecha!=null) {
 			try {
@@ -151,14 +151,14 @@ public class VisitaController {
 	public ResponseEntity<Visita> deleteVisita(@PathVariable("id") Long id) throws ResponseStatusException {
 		try {
 			Optional<Visita> visita = Optional.of(service.getVisitaPorId(id));
-			if(!visita.isPresent()) {
+			if(visita.isPresent()) {
 				service.borrarVisita(id);
-				throw new ResponseStatusException(HttpStatus.OK);
+				return new ResponseEntity<Visita>(HttpStatus.OK);
 			}else {
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La visita no se han podido borrar");
+				return new ResponseEntity<Visita>(HttpStatus.NOT_FOUND);
 			}
 		} catch (ResponseStatusException e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La visita no se han podido borrar",e);
+			return new ResponseEntity<Visita>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	
