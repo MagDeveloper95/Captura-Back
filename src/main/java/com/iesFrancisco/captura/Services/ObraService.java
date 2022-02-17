@@ -1,8 +1,10 @@
 package com.iesFrancisco.captura.Services;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +104,7 @@ public class ObraService {
 		if(obra!=null) {
 			if(obra.getId() == -1) {
 				try {
-					OneDriveService.createObra(obra.getNombre());
+					//OneDriveService.createObra(obra.getNombre());
 					logger.info("Consulta exitosa en creaObra");
 					return obra = obrasRepository.save(obra);
 				} catch (IllegalArgumentException e) {
@@ -173,11 +175,11 @@ public class ObraService {
 			@ApiResponse(code = 200, message = "Peticion correcta", response = Obra.class),
 			@ApiResponse(code = 404, message = "Error al borrar la obra"),
 			@ApiResponse(code = 500, message = "Internal server error") })
-	public void deleteObraById(Long id) throws RecordNotFoundException, NullPointerException{
+	public void deleteObraById(Long id) throws RecordNotFoundException, NullPointerException, SQLException{
 		if(id!=null) {
 			Optional<Obra> obra = obrasRepository.findById(id);
 				if(obra.isPresent()) {
-					OneDriveService.borraObra(obra.get().getNombre());
+					//OneDriveService.borraObra(obra.get().getNombre());
 					logger.info("Consulta exitosa en borrarObra");
 					obrasRepository.deleteById(id);
 				} else {

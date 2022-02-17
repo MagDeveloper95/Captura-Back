@@ -108,7 +108,7 @@ public class FotoController {
 	 */
 	@ApiOperation(value = "Muestra las fotos por visita", response = Iterable.class, tags = "getFotoByVisita")
 	@CrossOrigin(origins = "http://localhost:8100")
-	@GetMapping("/{idVisita}")
+	@GetMapping("/visita/{idVisita}")
 	public ResponseEntity<List<Foto>> getFotosByVisita(@PathVariable("idVisita") Long idVisita) throws ResponseStatusException {
 		if(idVisita!=null&&idVisita>-1) {
 			try {

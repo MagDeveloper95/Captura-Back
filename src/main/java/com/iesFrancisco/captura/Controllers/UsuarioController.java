@@ -90,7 +90,7 @@ public class UsuarioController {
 	public ResponseEntity<Usuario> update(@RequestBody Usuario userDetails, @PathVariable(value="id")Long id) throws ResponseStatusException{
 		if(id!=null) {
 			try {
-				Optional<Usuario> user = Optional.of(service.getUsuarioById(id));
+				Optional<Usuario> user = Optional.of(userDetails);
 				if(!user.isPresent()) {
 					return ResponseEntity.notFound().build();
 				}			

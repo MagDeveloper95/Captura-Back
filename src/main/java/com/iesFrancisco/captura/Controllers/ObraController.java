@@ -1,5 +1,6 @@
 package com.iesFrancisco.captura.Controllers;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -87,7 +88,7 @@ public class ObraController {
 	public ResponseEntity<Obra> update(@RequestBody Obra obraDetails, @PathVariable(value="id")Long id) throws ResponseStatusException{
 		if(obraDetails!=null&&id>-1) {
 			try {
-				Optional<Obra> obra = Optional.of(service.getObraById(id));
+				Optional<Obra> obra = Optional.of(obraDetails);
 				if(!obra.isPresent()) {
 					throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido encontrar");
 				}else {
@@ -107,16 +108,17 @@ public class ObraController {
 	 * Metodo que borra una obra
 	 * @param id
 	 * @return
+	 * @throws SQLException 
 	 */
 	@ApiOperation(value = "Borra una obra por su id", response = Obra.class, tags = "deleteObraById")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@DeleteMapping("/{id}")
-	public HttpStatus delete(@PathVariable(value="id")Long id) throws ResponseStatusException{
+	public HttpStatus delete(@PathVariable(value="id")Long id) throws ResponseStatusException, SQLException{
 		if(id!=null&&id>-1) {
 			try {
 				Optional<Obra> obra = Optional.of(service.getObraById(id));
 				if(obra.isPresent()) {
-					service.deleteObraById(id);	
+					service.deleteObraById(id);
 					return HttpStatus.OK;
 				}else {
 					return HttpStatus.BAD_REQUEST;
