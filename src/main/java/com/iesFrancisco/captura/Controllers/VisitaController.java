@@ -104,10 +104,10 @@ public class VisitaController {
 	@ApiOperation(value = "Muestra una visita de la base de datos", response = Visita.class, tags = "getVisita")
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/obra/{obra}")
-	public ResponseEntity<List<Visita>> getVisitaByObra(@PathVariable("obra") Obra obra) throws ResponseStatusException {
-		if(obra!=null) {
+	public ResponseEntity<List<Visita>> getVisitaByObra(@PathVariable("obra") Long id) throws ResponseStatusException {
+		if(id!=null) {
 			try {
-				List<Visita> visitabyObra = service.getVisitaPorObra(obra.getId());
+				List<Visita> visitabyObra = service.getVisitaPorObra(id);
 				return new ResponseEntity<List<Visita>>(visitabyObra, new HttpHeaders(), HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La visitas de la obra no se han podido encontrar", e);

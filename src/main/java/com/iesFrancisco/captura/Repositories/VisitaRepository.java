@@ -25,7 +25,7 @@ public interface VisitaRepository extends JpaRepository<Visita,Long> {
 	 * @throws RecordOK en caso de que todo vaya correctamente.
 	 */
 	@Query(value= "SELECT * FROM visita where id_obra = ?1", nativeQuery=true)
-	List<Visita> getFotosPorObra(Long id) throws IllegalArgumentException;
+	List<Visita> getVisitaPorObra(Long id) throws IllegalArgumentException;
 	/**
 	 * Método que nos devuelve una lista con los las las visitas  
 	 * introduciendo una fecha.

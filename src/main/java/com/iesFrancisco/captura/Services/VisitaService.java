@@ -100,7 +100,7 @@ public class VisitaService {
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (id != null) {
 			try {
-				Optional<List<Visita>> getVisitasDummy = Optional.of(repository.getFotosPorObra(id));
+				Optional<List<Visita>> getVisitasDummy = Optional.of(repository.getVisitaPorObra(id));
 				if (getVisitasDummy.isPresent()) {
 					logger.info("Consulta exitosa en getVisitaPorObra");
 					return getVisitasDummy.get();
@@ -170,9 +170,6 @@ public class VisitaService {
 			if (visita.getId() < 0 && visita!=null) {
 				try {
 					logger.info("Consulta exitosa en creaVisita");
-					/**
-					registro = new Registro("Ha creado una nueva visita el usuario: "+ idUsuario, LocalDate.now());
-					controlador.creaRegistro(registro);*/
 					OneDriveService.createVisita(visita.getHeader(),visita.getObra().getNombre());
 					return visita = repository.save(visita);
 				} catch (IllegalArgumentException e) {
