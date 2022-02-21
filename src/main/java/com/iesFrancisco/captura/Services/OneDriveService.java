@@ -84,7 +84,7 @@ public class OneDriveService {
 			graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
 	
 			DriveItem driveItem = new DriveItem();
-			driveItem.name = LocalDate.now() + folderName;
+			driveItem.name = LocalDate.now()+folderName;
 			Folder folder = new Folder();
 			driveItem.folder = folder;
 	
@@ -180,12 +180,13 @@ public class OneDriveService {
 			graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
 	
 			DriveItem driveItem = new DriveItem();
-			driveItem.name = LocalDate.now() + folderName;
+			driveItem.name = folderName;
 			Folder folder = new Folder();
 			driveItem.folder = folder;
-	
-			graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().items(getFolderId(parentFolderId)).children()
-					.buildRequest().post(driveItem);
+		
+			graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().root().itemWithPath(parentFolderId+"/"+folderName).buildRequest()
+			.delete();
+			
 		} catch (ClientException e) {
 			throw new ClientException("Error al crear el cliente de OneDrive", e);
 		}
@@ -267,7 +268,7 @@ public class OneDriveService {
 			graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
 			String folderId = getFolderId(rootFolderName);
 			String folderId2 = getFolderId(visitaFolderName);
-			DriveItemCollectionPage me = graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().root().itemWithPath("Bujalance/2022-02-11Mateo")
+			DriveItemCollectionPage me = graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().root().itemWithPath(rootFolderName+"/"+visitaFolderName)
 					.children().buildRequest().get();
 			for (DriveItem di : me.getCurrentPage()) {
 				if (di.name!=null && di.name.equals(fileName)) {

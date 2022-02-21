@@ -179,12 +179,6 @@ public class FotoService {
 							foto.getVisita().getObra().getNombre(),
 							foto.getVisita().getHeader(),
 						 foto.getFile().getInputStream());
-					logger.info("Foto subida"+foto.getFile().getOriginalFilename());
-					String t=OneDriveService.getUrl(
-							foto.getFile().getOriginalFilename(),
-							foto.getVisita().getObra().getNombre(),
-							foto.getVisita().getHeader());
-					logger.info("URL CREADA->"+t);
 					Foto fotoCreada = new Foto(
 							foto.getId(),
 							OneDriveService.getUrl(
@@ -194,7 +188,7 @@ public class FotoService {
 							foto.getComentario(),
 							foto.getVisita());
 					logger.info("Consulta exitosa en creaFoto");
-					return fotoCreada = repository.save(fotoCreada);
+					return repository.save(fotoCreada);
 				} catch (IllegalArgumentException e) {
 					throw new IllegalArgumentException(e);
 				}

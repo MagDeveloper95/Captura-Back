@@ -170,10 +170,11 @@ public class VisitaService {
 			if (visita.getId() < 0 && visita!=null) {
 				try {
 					logger.info("Consulta exitosa en creaVisita");
-					/**
-					registro = new Registro("Ha creado una nueva visita el usuario: "+ idUsuario, LocalDate.now());
-					controlador.creaRegistro(registro);*/
+					
 					OneDriveService.createVisita(visita.getHeader(),visita.getObra().getNombre());
+					visita.setHeader(LocalDate.now()+visita.getHeader());
+					
+					visita.setFecha(LocalDate.now());
 					return visita = repository.save(visita);
 				} catch (IllegalArgumentException e) {
 					logger.error("Error ---> IllegarArgumentException en creaVisita: "+ e);
@@ -209,8 +210,8 @@ public class VisitaService {
 				if (getVisitaDummy.isPresent()) {
 					Visita actualizaVisitaDummy = getVisitaDummy.get();
 					actualizaVisitaDummy.setId(visita.getId());
-					actualizaVisitaDummy.setHeader(visita.getHeader());
-					actualizaVisitaDummy.setFecha(visita.getFecha());
+					actualizaVisitaDummy.setHeader(LocalDate.now()+visita.getHeader());
+					actualizaVisitaDummy.setFecha(LocalDate.now());
 					actualizaVisitaDummy.setNota(visita.getNota());
 					actualizaVisitaDummy.setFotos(visita.getFotos());
 					actualizaVisitaDummy.setObra(visita.getObra());
@@ -252,6 +253,8 @@ public class VisitaService {
 			Optional<Visita> borrarVisitaDummy = Optional.of(getVisitaPorId(id));
 				if (borrarVisitaDummy.isPresent()) {
 					try {
+						OneDriveService.borrarVisita(borrarVisitaDummy.get().getHeader(),
+								borrarVisitaDummy.get().getObra().getNombre());
 						logger.info("Consulta exitosa en borrarVisita");
 						repository.deleteById(id);
 					} catch (IllegalArgumentException e) {
