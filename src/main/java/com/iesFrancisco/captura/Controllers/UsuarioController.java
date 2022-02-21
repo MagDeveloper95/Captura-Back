@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Model.Usuario;
 import com.iesFrancisco.captura.Services.UsuarioService;
 
@@ -166,6 +167,29 @@ public class UsuarioController {
 		}else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El nombre de usuario no es correcto");
 		}
+	}
+	
+	/**
+	 * Metodo que busca los usuarios de una obra
+	 * @param id de la obra
+	 * @return usuarios de la obra
+	 * @throws ResponseStatusException
+	 */
+	@ApiOperation(value = "Muestra los usuarios de una obra", response = Iterable.class, tags = "getUserByObraId")
+	@CrossOrigin(origins = "http://localhost:8100")
+	@GetMapping("obra/{obraId}")
+	public ResponseEntity<List<Usuario>> listarPorObra(@PathVariable(value ="obraId") Long id) throws ResponseStatusException{
+		if(id!=null) {
+			try {
+				return ResponseEntity.status(HttpStatus.OK).body(service.getUserByObra(id));		
+			} catch (ResponseStatusException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se ha podido encontrar la obra de los usuarios", e);
+			}
+
+		}else {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se ha podido encontrar la obra de los usuarios");
+		}
+
 	}
 	
 }

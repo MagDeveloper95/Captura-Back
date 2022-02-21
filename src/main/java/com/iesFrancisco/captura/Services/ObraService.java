@@ -205,7 +205,7 @@ public class ObraService {
 	public List<Obra> getObraByUser(Long id) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
 		if(id!=null) {
 			try {
-				Optional<List<Obra>> lista = Optional.of(obrasRepository.findUsersByObra(id));
+				Optional<List<Obra>> lista = Optional.of(obrasRepository.findObrasByUser(id));
 					if(lista.isPresent()) {
 						logger.info("Consulta exitosa en getObraByUser");
 						return lista.get();

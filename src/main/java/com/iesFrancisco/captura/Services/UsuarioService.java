@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
+import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Model.Usuario;
 import com.iesFrancisco.captura.Repositories.UsuarioRepository;
 
@@ -276,5 +277,40 @@ public class UsuarioService {
 	}else {
 		throw new NullPointerException ("Error: La obra introducida tiene un valor nulo");
 	}
+	}
+	
+	/**
+	 * Metodo que devuelve las obras que tiene un usuario
+	 * @param usuario
+	 * @return una lista de obras
+	 * @throws RecordNotFoundException en caso de que no encuentre la obra
+	 * @throws NullPointerException en caso de que algun objeto sea nulo
+	 * @throws IllegalArgumentException en caso de que sea nulo
+	 */
+	@ApiOperation(value = "Devuelve los usuarios que tiene una obra", notes = "Devuelve los usuarios que tiene una obra")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Peticion correcta", response = List.class),
+			@ApiResponse(code = 404, message = "Error al devolver los usuarios"),
+			@ApiResponse(code = 500, message = "Internal server error") })
+	public List<Usuario> getUserByObra(Long id) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
+		if(id!=null) {
+			try {
+				Optional<List<Usuario>> lista = Optional.of(repository.findUsersByObra(id));
+					if(lista.isPresent()) {
+						logger.info("Consulta exitosa en getUserByObra");
+						return lista.get();
+					}else {
+						logger.error("Error ---> la obra con id: " + id + " no tiene lista de usuarios en getUserByObra");
+						throw new RecordNotFoundException("Los datos son erroneos", id);
+					}			
+			} catch (IllegalArgumentException e) {
+				logger.error("Error ---> IllegarArgumentException en getUserByObra" + e);
+				throw new IllegalArgumentException(e);
+			}						
+		}else {
+			logger.error("Error ---> El usuario introducido tiene un valor nulo getUserByObra");
+			throw new NullPointerException ("Error: El usuario introducido tiene un valor nulo");
+		}
+			
 	}
 }

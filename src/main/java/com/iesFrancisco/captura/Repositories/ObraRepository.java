@@ -30,7 +30,7 @@ public interface ObraRepository extends JpaRepository<Obra,Long> {
 	 */
 	@Query(value="SELECT * FROM obra JOIN usuario_obra ON usuario_obra.id_obra = obra.id "
 			+ "JOIN usuario ON usuario.id = usuario_obra.id_usuario WHERE usuario.id= ?1", nativeQuery = true)
-	List<Obra> findUsersByObra(Long id) throws IllegalArgumentException;
+	List<Obra> findObrasByUser(Long id) throws IllegalArgumentException;
 	
 	/**
 	 * Método que nos devuelve una obra tras introducir las coordendas
