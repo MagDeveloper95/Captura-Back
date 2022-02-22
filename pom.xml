@@ -112,6 +112,22 @@
 					</archive>
 				</configuration>
 			</plugin>
+				<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.6.3</version>
+				<configuration>
+					<fork>true</fork>
+					<mainClass>com.iesFrancisco.captura.AppMain</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>
