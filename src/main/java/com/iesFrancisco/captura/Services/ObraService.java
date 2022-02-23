@@ -12,11 +12,6 @@ import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Repositories.ObraRepository;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-
 @Service
 public class ObraService {
 	
@@ -30,10 +25,6 @@ public class ObraService {
 	 * @return List<Obra> lista de obras
 	 * @throws RecordNotFoundException en caso de que no haya obras en la base de datos
 	 */
-	@ApiOperation(value = "Busca todas las obras", notes = "Devuelve una lista de todas las obras")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Peticion correcta", response = List.class),
-			@ApiResponse(code = 404, message = "Error al obtener las obras"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public List<Obra> getAllObras() throws RecordNotFoundException{
 		List<Obra> result = obrasRepository.findAll();
 		if (result!=null) {
@@ -54,11 +45,6 @@ public class ObraService {
 	 * @throws NullPointerException en caso de que algun objeto sea nulo
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Devuelve una obra por su id", notes = "Devuelve una obra por su id")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Peticion correcta", response = Obra.class),
-			@ApiResponse(code = 404, message = "Error al obtener la obra"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public Obra getObraById(Long id) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
 		if(id!=null) {
 			try {
@@ -92,11 +78,6 @@ public class ObraService {
 	 * @throws NullPointerException sino encuentra el usuario
 	 * @throws IllegalArgumentException si posee algun objeto nulo.
 	 */
-	@ApiOperation(value = "Crea una obra", notes = "Crea una obra")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Peticion correcta", response = Obra.class),
-			@ApiResponse(code = 404, message = "Error al crear la obra"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public Obra creaObra(Obra obra) throws NullPointerException, IllegalArgumentException{
 		if(obra!=null) {
 			if(obra.getId() == -1) {
@@ -125,11 +106,6 @@ public class ObraService {
 	 * @throws NullPointerException en caso de que algun objeto sea nulo
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Actualiza una obra", notes = "Actualiza una obra")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Peticion correcta", response = Obra.class),
-			@ApiResponse(code = 404, message = "Error al actualizar la obra"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public Obra actualizaObra (Obra obra) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
 		if(obra!=null) {
 			Optional<Obra> result = Optional.of(getObraById(obra.getId()));
@@ -167,11 +143,6 @@ public class ObraService {
 	 * @throws NullPointerException en caso de que algun objeto sea nulo
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Borra una obra", notes = "Borra una obra")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Peticion correcta", response = Obra.class),
-			@ApiResponse(code = 404, message = "Error al borrar la obra"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public void deleteObraById(Long id) throws RecordNotFoundException, NullPointerException{
 		if(id!=null) {
 			Optional<Obra> obra = obrasRepository.findById(id);
@@ -197,11 +168,6 @@ public class ObraService {
 	 * @throws NullPointerException en caso de que algun objeto sea nulo
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Devuelve las obras que tiene un usuario", notes = "Devuelve las obras que tiene un usuario")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Peticion correcta", response = List.class),
-			@ApiResponse(code = 404, message = "Error al devolver las obras"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public List<Obra> getObraByUser(Long id) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
 		if(id!=null) {
 			try {
@@ -232,11 +198,6 @@ public class ObraService {
 	 * @throws NullPointerException en caso de que algun objeto sea nulo
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Devuelve una obra por las coordenadas", notes = "Devuelve una obra por las coordenadas")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Peticion correcta", response = Obra.class),
-			@ApiResponse(code = 404, message = "Error al devolver la obra"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public Obra getObraByLoc(float latitud,float longitud) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
 			try {
 				Optional<Obra> obra = Optional.of(obrasRepository.findObraByLatLong(latitud, longitud));
@@ -261,11 +222,6 @@ public class ObraService {
 	 * @throws NullPointerException en caso de que algun objeto sea nulo
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Devuelve una obra por su nombre", notes = "Devuelve una obra por su nombre")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Peticion correcta", response = Obra.class),
-			@ApiResponse(code = 404, message = "Error al devolver la obra"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public Obra getObraByName(String nombre) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if(nombre != null) {
 			try {

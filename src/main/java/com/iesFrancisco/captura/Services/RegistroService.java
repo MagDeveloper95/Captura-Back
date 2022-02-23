@@ -9,10 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Model.Registro;
 import com.iesFrancisco.captura.Repositories.RegistroRepository;
@@ -29,11 +25,6 @@ public class RegistroService {
 	 * @return la lista de los registros 	
 	 * @throws RecordNotFoundException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Muestra todos los registros",notes = "Devuelve todos los registros")
-	@ApiResponses(value ={
-		@ApiResponse(code = 200, message = "Peticion correcta", response = Registro.class),
-		@ApiResponse(code = 404, message = "Error al obtener la obra"),
-		@ApiResponse(code = 500, message = "Internal server error") })
 	public List<Registro> getAllRegistros() throws RecordNotFoundException {
 		List<Registro> result = repository.findAll();
 		if (result != null) {
@@ -52,11 +43,6 @@ public class RegistroService {
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Muestra un registro por su id",notes = "Devuelve un registro")
-	@ApiResponses(value ={
-		@ApiResponse(code = 200, message = "Peticion correcta", response = Registro.class),
-		@ApiResponse(code = 404, message = "Error al obtener la obra"),
-		@ApiResponse(code = 500, message = "Internal server error") })
 	public Registro getRegistroById(Long id)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (id != null) {
@@ -86,11 +72,6 @@ public class RegistroService {
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Muestra los registros de un usuario",notes = "Devuelve los registros de un usuario")
-	@ApiResponses(value ={
-		@ApiResponse(code = 200, message = "Peticion correcta", response = Registro.class),
-		@ApiResponse(code = 404, message = "Error al obtener la obra"),
-		@ApiResponse(code = 500, message = "Internal server error") })
 	public List<Registro> getRegistroPorUsuario(Long id)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (id != null) {
@@ -120,11 +101,6 @@ public class RegistroService {
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Muestra los registros de una fecha",notes = "Devuelve los registros de una fecha")
-	@ApiResponses(value ={
-		@ApiResponse(code = 200, message = "Peticion correcta", response = Registro.class),
-		@ApiResponse(code = 404, message = "Error al obtener la obra"),
-		@ApiResponse(code = 500, message = "Internal server error") })
 	public List<Registro> getRegistroPorFecha(LocalDate fecha)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (fecha != null) {
@@ -153,11 +129,6 @@ public class RegistroService {
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Crea un nuevo registro",notes = "Crea un nuevo registro")
-	@ApiResponses(value ={
-		@ApiResponse(code = 200, message = "Peticion correcta", response = Registro.class),
-		@ApiResponse(code = 404, message = "Error al obtener la obra"),
-		@ApiResponse(code = 500, message = "Internal server error") })
 	 public Registro creaRegistro(Registro registro) throws NullPointerException, IllegalArgumentException {
 		if (registro != null&&registro.getId() < 0) {
 				try {
