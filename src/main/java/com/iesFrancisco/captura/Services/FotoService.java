@@ -15,10 +15,6 @@ import com.iesFrancisco.captura.Model.Foto;
 import com.iesFrancisco.captura.Model.FotoWrapper;
 import com.iesFrancisco.captura.Repositories.FotoRepository;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
 @Service
 public class FotoService {
 	
@@ -32,11 +28,6 @@ public class FotoService {
 	 * 
 	 * @return la lista de fotos
 	 */
-	@ApiOperation(value = "Devuelve todas las fotos",notes = "Devuelve todas las fotos")
-	@ApiResponses(value = { 
-		@ApiResponse(code = 200, message = "Peticion correcta", response = List.class),
-		@ApiResponse(code = 404, message = "No se encuentra el recurso"),
-		@ApiResponse(code = 500, message = "Internal server error") })
 	public List<Foto> getAllFotos() throws RecordNotFoundException {
 		List<Foto> result = repository.findAll();
 		if (result != null) {
@@ -57,11 +48,6 @@ public class FotoService {
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Devuelve una foto por su id",notes = "Devuelve una foto")
-	@ApiResponses(value = { 
-		@ApiResponse(code = 200, message = "Peticion correcta", response = Foto.class),
-		@ApiResponse(code = 404, message = "No se encuentra el recurso"),
-		@ApiResponse(code = 500, message = "Internal server error") })
 	public Foto getFotoPorId(Long id) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (id != null) {
 			try {
@@ -92,11 +78,6 @@ public class FotoService {
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Devuelve una foto por su visita",notes = "Devuelve una foto")
-	@ApiResponses(value = { 
-		@ApiResponse(code = 200, message = "Peticion correcta", response = Foto.class),
-		@ApiResponse(code = 404, message = "No se encuentra el recurso"),
-		@ApiResponse(code = 500, message = "Internal server error") })
 	public List<Foto> getFotosPorVisita(Long id)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (id != null) {
@@ -128,11 +109,6 @@ public class FotoService {
 	 * @throws NullPointerException     en caso de que alg�n objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Devuelve una foto por su fecha",notes = "Devuelve una foto")
-	@ApiResponses(value = { 
-		@ApiResponse(code = 200, message = "Peticion correcta", response = Foto.class),
-		@ApiResponse(code = 404, message = "No se encuentra el recurso"),
-		@ApiResponse(code = 500, message = "Internal server error") })
 	public List<Foto> getFotosPorFecha(LocalDate fecha)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (fecha != null) {
@@ -165,11 +141,7 @@ public class FotoService {
 	 * @throws NullPointerException    en caso de que algún objeto sea null
 	 * @throws IOException 
 	 */
-	@ApiOperation(value = "Crea o actualiza una foto",notes = "Crea o actualiza una foto")
-	@ApiResponses(value = { 
-		@ApiResponse(code = 200, message = "Peticion correcta", response = Foto.class),
-		@ApiResponse(code = 404, message = "No se encuentra el recurso"),
-		@ApiResponse(code = 500, message = "Internal server error") })
+
 	public Foto creaFoto(FotoWrapper foto) throws NullPointerException, IllegalArgumentException, IOException {
 		if (foto != null) {
 		if (foto.getId() < 0) {
@@ -217,11 +189,6 @@ public class FotoService {
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Actualiza una foto",notes = "Actualiza una foto")
-	@ApiResponses(value = { 
-		@ApiResponse(code = 200, message = "Peticion correcta", response = Foto.class),
-		@ApiResponse(code = 404, message = "No se encuentra el recurso"),
-		@ApiResponse(code = 500, message = "Internal server error") })
 	public Foto actualizarFoto(Foto foto)
 			throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
 		if (foto != null) {
@@ -257,11 +224,6 @@ public class FotoService {
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Borra una foto",notes = "Borra una foto")
-	@ApiResponses(value = { 
-		@ApiResponse(code = 200, message = "Peticion correcta"),
-		@ApiResponse(code = 404, message = "No se encuentra el recurso"),
-		@ApiResponse(code = 500, message = "Internal server error") })
 	public void borrarFoto(Long id) throws RecordNotFoundException {
 		if(id!=null) {
 			Optional<Foto> foto = repository.findById(id);

@@ -9,13 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
-import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Model.Usuario;
 import com.iesFrancisco.captura.Repositories.UsuarioRepository;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 @Service
 public class UsuarioService {
@@ -31,11 +27,6 @@ public class UsuarioService {
 	 * 
 	 * @return la lista de usuarios
 	 */
-	@ApiOperation(value = "Devuelve todos los usuarios", notes = "Devuelve todos los usuarios")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Petición correcta", response = Usuario.class),
-			@ApiResponse(code = 404, message = "Error al obtener los usuarios"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public List<Usuario> getAllUsuarios() throws RecordNotFoundException {
 		List<Usuario> getAllUsuariosDummy = repository.findAll();
 		if (getAllUsuariosDummy != null) {
@@ -56,11 +47,6 @@ public class UsuarioService {
 	 * @throws NullPointerException     en caso de que algún objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Devuelve un usuario por id", notes = "Devuelve un usuario por id")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Petición correcta", response = Usuario.class),
-			@ApiResponse(code = 404, message = "Error al obtener el usuario"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public Usuario getUsuarioById(Long id)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (id != null) {
@@ -91,11 +77,6 @@ public class UsuarioService {
 	 * @throws NullPointerException en el caso de algun objeto a NULL
 	 * @throws IllegalArgumentException 
 	 */
-	@ApiOperation(value = "Devuelve un usuario por nombre", notes = "Devuelve un usuario por nombre")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Petición correcta", response = Usuario.class),
-			@ApiResponse(code = 404, message = "Error al obtener el usuario"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public Usuario getUsarioByNombre(String nombre)
 			throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 		if (nombre != null) {
@@ -132,11 +113,6 @@ public class UsuarioService {
 	 * @throws RecordNotFoundException en caso de que no encuentre el usuario
 	 * @throws NullPointerException    en caso de que algún objeto sea null
 	 */
-	@ApiOperation(value = "Crea o actualiza un usuario", notes = "Crea o actualiza un usuario")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Petición correcta", response = Usuario.class),
-			@ApiResponse(code = 404, message = "Error al obtener el usuario"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public Usuario creaUsuario(Usuario usuario) throws NullPointerException, IllegalArgumentException {
 		if (usuario != null) {
 			if (usuario.getId() == -1) {
@@ -165,11 +141,6 @@ public class UsuarioService {
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Actualiza un usuario", notes = "Actualiza un usuario")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Petición correcta", response = Usuario.class),
-			@ApiResponse(code = 404, message = "Error al obtener el usuario"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public Usuario actualizarUsuario(Usuario usuario)
 			throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
 		if (usuario != null) {
@@ -182,8 +153,8 @@ public class UsuarioService {
 					actualizaUsuarioDummy.setKey(usuario.getKey());
 					actualizaUsuarioDummy.setFoto(usuario.getFoto());
 					actualizaUsuarioDummy.setDatos(usuario.getDatos());
-					//actualizaUsuarioDummy.setRegistro(usuario.getRegistro());
-					//actualizaUsuarioDummy.setObra(usuario.getObra());
+					actualizaUsuarioDummy.setRegistro(usuario.getRegistro());
+					actualizaUsuarioDummy.setObra(usuario.getObra());
 					try {
 						logger.info("Consulta exitosa en actualizarUsuario");
 						return repository.save(actualizaUsuarioDummy);
@@ -209,11 +180,6 @@ public class UsuarioService {
 	 * @throws RecordNotFoundException  en caso de que no encuentre el usuario
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Borra un usuario", notes = "Borra un usuario")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Petición correcta", response = Usuario.class),
-			@ApiResponse(code = 404, message = "Error al obtener el usuario"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public void borrarUsuario(Long id) throws NullPointerException, RecordNotFoundException, IllegalArgumentException {
 		if (id != null) {
 			Optional<Usuario> borrarUsuarioDummy = Optional.of(getUsuarioById(id));
@@ -246,11 +212,6 @@ public class UsuarioService {
 	 * @throws NullPointerException en caso de que algún objeto sea null
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Crea o actualiza un usuario", notes = "Crea o actualiza un usuario")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Petición correcta", response = Usuario.class),
-			@ApiResponse(code = 404, message = "Error al obtener el usuario"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public Usuario createOrUpdateUsuario (Usuario usuario) throws RecordNotFoundException, NullPointerException, IllegalArgumentException {
 	if(usuario!=null) {
 		if(usuario.getId()>0) {
@@ -287,11 +248,6 @@ public class UsuarioService {
 	 * @throws NullPointerException en caso de que algun objeto sea nulo
 	 * @throws IllegalArgumentException en caso de que sea nulo
 	 */
-	@ApiOperation(value = "Devuelve los usuarios que tiene una obra", notes = "Devuelve los usuarios que tiene una obra")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Peticion correcta", response = List.class),
-			@ApiResponse(code = 404, message = "Error al devolver los usuarios"),
-			@ApiResponse(code = 500, message = "Internal server error") })
 	public List<Usuario> getUserByObra(Long id) throws RecordNotFoundException, NullPointerException, IllegalArgumentException{
 		if(id!=null) {
 			try {
