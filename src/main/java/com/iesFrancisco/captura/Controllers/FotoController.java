@@ -28,10 +28,10 @@ import com.iesFrancisco.captura.Model.Foto;
 import com.iesFrancisco.captura.Model.FotoWrapper;
 import com.iesFrancisco.captura.Services.FotoService;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
-@Api(value = "FotoController", description = "Operaciones sobre fotos")
 @RestController
 @RequestMapping("/foto")
 public class FotoController {
@@ -45,7 +45,12 @@ public class FotoController {
 	 * @param Foto
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "Muestra todas las fotos dela base de datos", response = Iterable.class, tags = "allFotos")
+	@ApiOperation(value = "Metodo que devuelve todas las fotos",
+		 notes = "Metodo que devuelve todas las fotos de la base de datos", tags = "getAllFotos") 
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operacion exitosa", response = List.class),
+			@ApiResponse(code = 404, message = "Error obtener las fotos", response = ResponseStatusException.class),
+			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping()
 	public ResponseEntity<List<Foto>> allFotos() throws ResponseStatusException {
@@ -63,7 +68,12 @@ public class FotoController {
 	 * @param id
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "Muestra una foto por su id", response = Foto.class, tags = "getFotoById")
+	@ApiOperation(value = "Metodo que devuelve una foto", 
+		notes = "Metodo que devuelve una foto de la base de datos", tags = "getFotoById")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operacion exitosa", response = Foto.class),
+			@ApiResponse(code = 404, message = "Error obtener la foto", response = ResponseStatusException.class),
+			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/{id}")
 	public ResponseEntity<Foto> getFotosById(@PathVariable(value = "id") Long id) throws ResponseStatusException {
@@ -87,7 +97,12 @@ public class FotoController {
 	 * @param fecha
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "Muestra las fotos por fecha", response = Iterable.class, tags = "getFotoByFecha")
+	@ApiOperation(value = "Muestra las fotos por fecha", 
+		notes = "Muestra las fotos por fecha", tags = "getFotosByFecha")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operacion exitosa", response = List.class),
+			@ApiResponse(code = 404, message = "Error obtener las fotos", response = ResponseStatusException.class),
+			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/fecha/{fecha}")
 	public ResponseEntity<List<Foto>> getFotosByDate(@RequestParam("fecha") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate fecha) throws ResponseStatusException {
@@ -109,7 +124,12 @@ public class FotoController {
 	 * @param visita
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "Muestra las fotos por visita", response = Iterable.class, tags = "getFotoByVisita")
+	@ApiOperation(value = "Muestra las fotos asociadas a una visita",
+	 	notes = "Muestra las fotos asociadas a una visita de la base de datos", tags = "getFotosByVisita")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operacion exitosa", response = List.class),
+			@ApiResponse(code = 404, message = "Error obtener las fotos", response = ResponseStatusException.class),
+			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
 	@CrossOrigin(origins = "http://localhost:8100")
 	@GetMapping("/visita/{idVisita}")
 	public ResponseEntity<List<Foto>> getFotosByVisita(@PathVariable("idVisita") Long idVisita) throws ResponseStatusException {
@@ -131,7 +151,12 @@ public class FotoController {
 	 * @return foto eliminada
 	 * @throws ResponseStatusException
 	 */
-	@ApiOperation(value = "Borra una foto por su id", response = Foto.class, tags = "deleteFoto")
+	@ApiOperation(value = "Borrado de una foto", 
+		notes = "Borra una foto de la base de datos", tags = "deleteFotoById")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operacion exitosa", response = Foto.class),
+			@ApiResponse(code = 404, message = "Error borrar la foto", response = ResponseStatusException.class),
+			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
 	@CrossOrigin(origins = "http://localhost:8100")
 	@DeleteMapping("{id}")
 	public ResponseEntity<Foto> deleteFoto(@PathVariable("id") Long id) throws ResponseStatusException {
@@ -153,7 +178,12 @@ public class FotoController {
 	 * @param id
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "Actualiza una foto por su id", response = Foto.class, tags = "updateFoto")
+	@ApiOperation(value = "Actualiza una foto", 
+		notes = "Actualiza una foto de la base de datos", tags = "updateFotoById")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operacion exitosa", response = Foto.class),
+			@ApiResponse(code = 404, message = "Error actualizar la foto", response = ResponseStatusException.class),
+			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
 	@CrossOrigin(origins = "http://localhost:8100")
 	@PutMapping("/{id}")
 	public ResponseEntity<Foto> updateFoto(@RequestBody Foto updateFoto, @PathVariable(value = "id") Long id) throws ResponseStatusException {
@@ -173,7 +203,12 @@ public class FotoController {
 
 
 	}
-	@ApiOperation(value = "Muestra las fotos por visita", response = Iterable.class, tags = "getFotoByVisita")
+	@ApiOperation(value = "Crea una foto", 
+		notes = "Crea una foto en la base de datos y en OneDrive", tags = "createFoto")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operacion exitosa", response = Foto.class),
+			@ApiResponse(code = 404, message = "Error crear la foto", response = ResponseStatusException.class),
+			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
 	@CrossOrigin(origins = "http://localhost:8100")
 	@PostMapping("/add") 
 	public ResponseEntity<Foto> create(@ModelAttribute FotoWrapper foto) throws ResponseStatusException, NullPointerException, IllegalArgumentException, IOException{
