@@ -26,10 +26,10 @@ import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Model.Visita;
 import com.iesFrancisco.captura.Services.VisitaService;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
-@Api(value = "VisitaController", description = "Operaciones sobre visitas")
 @RestController
 @RequestMapping("/visita")
 public class VisitaController {
@@ -41,8 +41,13 @@ public class VisitaController {
 	 * @param visita
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "Muestra todas las visitas dela base de datos", response = Iterable.class, tags = "allVisitas")
-	@CrossOrigin(origins = "http://localhost:8100")
+	@ApiOperation(value = "Muestra todas las visitas dela base de datos", 
+			notes = "Muestra todas las visitas dela base de datos", tags = "muestra todas las visitas")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
+		@ApiResponse(code = 404, message = "Error al mostrar las visitas", response = ResponseStatusException.class),
+		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
 	@GetMapping()
 	public ResponseEntity<List<Visita>> getAllVisitas() throws ResponseStatusException{
 		try {
@@ -59,8 +64,13 @@ public class VisitaController {
 	 * @param id
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "Muestra una visita de la base de datos", response = Visita.class, tags = "getVisita")
-	@CrossOrigin(origins = "http://localhost:8100")
+	@ApiOperation(value = "Muestra una visita de la base de datos", 
+			notes = "Muestra una visita de la base de datos", tags = "muestra una visita")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
+		@ApiResponse(code = 404, message = "Error al mostrar la visita", response = ResponseStatusException.class),
+		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
 	@GetMapping("/{id}")
 	public ResponseEntity<Visita> getVisitaById(@PathVariable("id") Long id) throws ResponseStatusException {
 		if(id!=null&&id>-1) {
@@ -80,8 +90,13 @@ public class VisitaController {
 	 * @param visita
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "Crea una visita en la base de datos", response = Visita.class, tags = "createVisita")
-	@CrossOrigin(origins = "http://localhost:8100")
+	@ApiOperation(value = "Crea una visita en la base de datos", 
+			notes = "Crea una visita en la base de datos", tags = "crea una visita")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
+		@ApiResponse(code = 404, message = "Error al crear la visita", response = ResponseStatusException.class),
+		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
 	@PostMapping("/guardar")
 	public ResponseEntity<Visita> createVisita(@RequestBody Visita visita) throws ResponseStatusException {
 		if(visita!=null) {
@@ -101,8 +116,13 @@ public class VisitaController {
 	 * @param obra
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "Muestra una visita de la base de datos", response = Visita.class, tags = "getVisita")
-	@CrossOrigin(origins = "http://localhost:8100")
+	@ApiOperation(value = "Muestra una visita de la base de datos", 
+			notes = "Muestra una visita de la base de datos", tags = "muestra una visita")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
+		@ApiResponse(code = 404, message = "Error al mostrar la visita", response = ResponseStatusException.class),
+		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
 	@GetMapping("/obra/{obra}")
 	public ResponseEntity<List<Visita>> getVisitaByObra(@PathVariable("obra") Obra obra) throws ResponseStatusException {
 		if(obra!=null) {
@@ -122,8 +142,13 @@ public class VisitaController {
 	 * @param fecha
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "Muestra una visita de la base de datos", response = Visita.class, tags = "getVisita")
-	@CrossOrigin(origins = "http://localhost:8100")
+	@ApiOperation(value = "Muestra una visita de la base de datos", 
+			notes = "Muestra una visita de la base de datos", tags = "muestra una visita")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
+		@ApiResponse(code = 404, message = "Error al mostrar la visita", response = ResponseStatusException.class),
+		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
 	@GetMapping("/fecha/{fecha}")
 	public ResponseEntity<List<Visita>> getVisitaByDate(@PathVariable("fecha")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha)
 			throws ResponseStatusException{
@@ -145,8 +170,13 @@ public class VisitaController {
 	 * @return ResponseEntity
 	 * @throws RecordNotFoundException
 	 */
-	@ApiOperation(value = "Borra una visita de la base de datos", response = Visita.class, tags = "deleteVisita")
-	@CrossOrigin(origins = "http://localhost:8100")
+	@ApiOperation(value = "Borra una visita de la base de datos", 
+			notes = "Borra una visita de la base de datos", tags = "borra una visita")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
+		@ApiResponse(code = 404, message = "Error al borrar la visita", response = ResponseStatusException.class),
+		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Visita> deleteVisita(@PathVariable("id") Long id) throws ResponseStatusException {
 		try {
@@ -168,8 +198,13 @@ public class VisitaController {
 	 * @param id
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "Actualiza una visita de la base de datos", response = Visita.class, tags = "updateVisita")
-	@CrossOrigin(origins = "http://localhost:8100")
+	@ApiOperation(value = "Actualiza una visita de la base de datos", 
+			notes = "Actualiza una visita de la base de datos", tags = "actualiza una visita")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
+		@ApiResponse(code = 404, message = "Error al actualizar la visita", response = ResponseStatusException.class),
+		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
 	@PutMapping("/{id}")
 	public ResponseEntity<Visita> updateVisita(@RequestBody Visita updateVisita, @PathVariable(value = "id") Long id) throws ResponseStatusException {
 		if(updateVisita!=null&&id>-1) {

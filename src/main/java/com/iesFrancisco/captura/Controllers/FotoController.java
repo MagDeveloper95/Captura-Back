@@ -51,7 +51,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = List.class),
 			@ApiResponse(code = 404, message = "Error obtener las fotos", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "http://localhost:8100")
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
 	@GetMapping()
 	public ResponseEntity<List<Foto>> allFotos() throws ResponseStatusException {
 		try {
@@ -74,7 +74,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = Foto.class),
 			@ApiResponse(code = 404, message = "Error obtener la foto", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "http://localhost:8100")
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
 	@GetMapping("/{id}")
 	public ResponseEntity<Foto> getFotosById(@PathVariable(value = "id") Long id) throws ResponseStatusException {
 		if(id!=null) {
@@ -103,7 +103,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = List.class),
 			@ApiResponse(code = 404, message = "Error obtener las fotos", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "http://localhost:8100")
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
 	@GetMapping("/fecha/{fecha}")
 	public ResponseEntity<List<Foto>> getFotosByDate(@RequestParam("fecha") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate fecha) throws ResponseStatusException {
 		if(fecha!=null) {
@@ -130,7 +130,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = List.class),
 			@ApiResponse(code = 404, message = "Error obtener las fotos", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "http://localhost:8100")
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
 	@GetMapping("/visita/{idVisita}")
 	public ResponseEntity<List<Foto>> getFotosByVisita(@PathVariable("idVisita") Long idVisita) throws ResponseStatusException {
 		if(idVisita!=null && idVisita>-1) {
@@ -157,7 +157,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = Foto.class),
 			@ApiResponse(code = 404, message = "Error borrar la foto", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "http://localhost:8100")
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
 	@DeleteMapping("{id}")
 	public ResponseEntity<Foto> deleteFoto(@PathVariable("id") Long id) throws ResponseStatusException {
 		if(id != null && id > -1) {
@@ -184,7 +184,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = Foto.class),
 			@ApiResponse(code = 404, message = "Error actualizar la foto", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "http://localhost:8100")
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
 	@PutMapping("/{id}")
 	public ResponseEntity<Foto> updateFoto(@RequestBody Foto updateFoto, @PathVariable(value = "id") Long id) throws ResponseStatusException {
 		if(updateFoto!=null) {
@@ -209,7 +209,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = Foto.class),
 			@ApiResponse(code = 404, message = "Error crear la foto", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "http://localhost:8100")
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
 	@PostMapping("/add") 
 	public ResponseEntity<Foto> create(@ModelAttribute FotoWrapper foto) throws ResponseStatusException, NullPointerException, IllegalArgumentException, IOException{
 		if(foto!=null) {
