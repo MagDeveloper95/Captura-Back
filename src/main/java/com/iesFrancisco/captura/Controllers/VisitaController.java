@@ -41,7 +41,7 @@ public class VisitaController {
 	 * @param visita
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "VisitaControllerAPI", notes = "Operaciones sobre visitas",
+	@ApiOperation(value = "VisitaControllerAPI", notes = "Nos traemos todas las visitas",
 		 tags = "muestra todas las visitas")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
@@ -64,7 +64,8 @@ public class VisitaController {
 	 * @param id
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "VisitaControllerAPI", notes = "Operaciones sobre visitas", tags = "muestra una visita")
+	@ApiOperation(value = "VisitaControllerAPI", 
+			notes = "Muestra una visita de la base de datos", tags = "muestra una visita")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
 		@ApiResponse(code = 404, message = "Error al mostrar la visita", response = ResponseStatusException.class),
@@ -89,7 +90,8 @@ public class VisitaController {
 	 * @param visita
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "VisitaControllerAPI", notes = "Operaciones sobre visitas", tags = "crea una visita")
+	@ApiOperation(value = "VisitaControllerAPI", 
+			notes = "Crea una visita en la base de datos", tags = "crea una visita")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
 		@ApiResponse(code = 404, message = "Error al crear la visita", response = ResponseStatusException.class),
@@ -114,7 +116,8 @@ public class VisitaController {
 	 * @param obra
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "VisitaControllerAPI", notes = "Operaciones sobre visitas", tags = "muestra una visita")
+	@ApiOperation(value = "VisitaControllerAPI", 
+			notes = "Muestra una visita de la base de datos", tags = "muestra una visita")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
 		@ApiResponse(code = 404, message = "Error al mostrar la visita", response = ResponseStatusException.class),
@@ -139,7 +142,8 @@ public class VisitaController {
 	 * @param fecha
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "VisitaControllerAPI", notes = "Operaciones sobre visitas", tags = "muestra una visita")
+	@ApiOperation(value = "VisitaControllerAPI", 
+			notes = "Muestra una visita de la base de datos", tags = "muestra una visita")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
 		@ApiResponse(code = 404, message = "Error al mostrar la visita", response = ResponseStatusException.class),
@@ -166,7 +170,8 @@ public class VisitaController {
 	 * @return ResponseEntity
 	 * @throws RecordNotFoundException
 	 */
-	@ApiOperation(value = "VisitaControllerAPI", notes = "Operaciones sobre visitas", tags = "borra una visita")
+	@ApiOperation(value = "VisitaControllerAPI", 
+			notes = "Borra una visita de la base de datos", tags = "borra una visita")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
 		@ApiResponse(code = 404, message = "Error al borrar la visita", response = ResponseStatusException.class),
@@ -193,7 +198,8 @@ public class VisitaController {
 	 * @param id
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "VisitaControllerAPI", notes = "Operaciones sobre visitas", tags = "actualiza una visita")
+	@ApiOperation(value = "VisitaControllerAPI", 
+			notes = "Actualiza una visita de la base de datos", tags = "actualiza una visita")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
 		@ApiResponse(code = 404, message = "Error al actualizar la visita", response = ResponseStatusException.class),
