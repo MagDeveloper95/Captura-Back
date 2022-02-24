@@ -116,7 +116,7 @@ public class VisitaController {
 	 * @param obra
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "Muestra una visita de la base de datos", 
+	@ApiOperation(value = "Muestra una visita de la base de datos por la obra", 
 			notes = "Muestra una visita de la base de datos", tags = "muestra una visita")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
@@ -142,7 +142,7 @@ public class VisitaController {
 	 * @param fecha
 	 * @return ResponseEntity
 	 */
-	@ApiOperation(value = "Muestra una visita de la base de datos", 
+	@ApiOperation(value = "Muestra una visita de la base de datos por fecha", 
 			notes = "Muestra una visita de la base de datos", tags = "muestra una visita")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
