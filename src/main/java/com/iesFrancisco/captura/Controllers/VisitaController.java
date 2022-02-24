@@ -26,12 +26,14 @@ import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Model.Visita;
 import com.iesFrancisco.captura.Services.VisitaService;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/visita")
+@Api(value = "VisitaControllerAPI", description = "Operaciones sobre visitas")
 public class VisitaController {
 
 	@Autowired
