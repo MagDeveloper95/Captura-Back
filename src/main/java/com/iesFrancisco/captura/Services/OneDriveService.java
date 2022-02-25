@@ -275,8 +275,6 @@ public class OneDriveService {
 		logger.setLoggingLevel(LoggerLevel.ERROR);
 		try {
 			graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
-			String folderId = getFolderId(rootFolderName);
-			String folderId2 = getFolderId(visitaFolderName);
 			DriveItemCollectionPage me = graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().root().itemWithPath(rootFolderName+"/"+visitaFolderName)
 					.children().buildRequest().get();
 			for (DriveItem di : me.getCurrentPage()) {

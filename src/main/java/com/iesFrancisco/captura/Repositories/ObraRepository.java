@@ -12,9 +12,9 @@ import com.iesFrancisco.captura.Model.Obra;
 @Repository
 public interface ObraRepository extends JpaRepository<Obra,Long> {
 	
-	//Aqui van métodos que no estén en el CRUD básico
+	//Aqui van mï¿½todos que no estï¿½n en el CRUD bï¿½sico
 	/**
-	 * Método que devuelve una obra por un nombre
+	 * Mï¿½todo que devuelve una obra por un nombre
 	 * @param nombre por la que queremos las obras
 	 * @return lista de obras con ese nombre
 	 * @throws IllegalArgumentException
@@ -23,7 +23,7 @@ public interface ObraRepository extends JpaRepository<Obra,Long> {
 	Obra findByName(String nombre) throws IllegalArgumentException;
 	
 	/**
-	 * Método que devuelve las obras que tiene un usuario
+	 * Mï¿½todo que devuelve las obras que tiene un usuario
 	 * @param id del usuario para devolver sus obras
 	 * @return lista de obras que tiene ese usuario
 	 * @throws IllegalArgumentException
@@ -33,14 +33,16 @@ public interface ObraRepository extends JpaRepository<Obra,Long> {
 	List<Obra> findObrasByUser(Long id) throws IllegalArgumentException;
 	
 	/**
-	 * Método que nos devuelve una obra tras introducir las coordendas
+	 * Mï¿½todo que nos devuelve una obra tras introducir las coordendas
 	 * @param coordenadas de la obra
-	 * @return obra donde están las coordenadas
+	 * @return obra donde estï¿½n las coordenadas
 	 * @throws IllegalArgumentException
 	 */
 	@Query(value="SELECT * From obra WHERE obra.latitud = ?1 AND obra.longitud =?2 ", nativeQuery = true)
 	Obra findObraByLatLong(float latitud, float longitud) throws IllegalArgumentException;
-	
-	
+
+	//crea una obra con un usuario asociado atacando a la tabla usuario_obra
+	@Query(value="INSERT INTO usuario_obra (id_usuario, id_obra) VALUES (?1, ?2)", nativeQuery = true)
+	Obra insertarUsuarioObra(Long idUsuario, Long idObra);
 }
 
