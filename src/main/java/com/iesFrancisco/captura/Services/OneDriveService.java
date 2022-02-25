@@ -148,10 +148,15 @@ public class OneDriveService {
 		DefaultLogger logger = new DefaultLogger();
 		logger.setLoggingLevel(LoggerLevel.ERROR);
 		try {
-			graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
-	
-			graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().items(getFolderId(folderName)).buildRequest()
-					.delete();
+			//si getFolderId devuelve null es que no existe la carpeta nos salimos del metodo
+			if(getFolderId(folderName)==null) {
+				return;
+			}else{
+				graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
+		
+				graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().items(getFolderId(folderName)).buildRequest()
+						.delete();
+			}
 		}catch (ClientException e) {
 			throw new ClientException("Error al crear el cliente de OneDrive", e);
 		}
@@ -177,16 +182,20 @@ public class OneDriveService {
 		DefaultLogger logger = new DefaultLogger();
 		logger.setLoggingLevel(LoggerLevel.ERROR);
 		try {
-			graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
-	
-			DriveItem driveItem = new DriveItem();
-			driveItem.name = folderName;
-			Folder folder = new Folder();
-			driveItem.folder = folder;
+			//sino existe la ruta nos salimos del metodo
+			if(getFolderId(folderName)==null && getFolderId(parentFolderId)==null) {
+				return;
+			}else{
+				graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
 		
-			graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().root().itemWithPath(parentFolderId+"/"+folderName).buildRequest()
-			.delete();
+				DriveItem driveItem = new DriveItem();
+				driveItem.name = folderName;
+				Folder folder = new Folder();
+				driveItem.folder = folder;
 			
+				graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().root().itemWithPath(parentFolderId+"/"+folderName).buildRequest()
+				.delete();
+			}
 		} catch (ClientException e) {
 			throw new ClientException("Error al crear el cliente de OneDrive", e);
 		}
@@ -280,5 +289,31 @@ public class OneDriveService {
 			throw new ClientException("Error al crear el cliente de OneDrive", e);
 		}
 		
+	}
+	/**
+	 * Metodo que updatea el nombre de la carpeta que queremos editar
+	 * @param folderName Nombre de la carpeta que queremos editar
+	 * @param newFolderName Nuevo nombre de la carpeta que queremos editar
+	 * @throws ClientException en caso de que no se pueda editar la carpeta
+	 */
+	public static void updateFolderName(String newFolderName,String oldFolderName) {
+		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
+		.clientSecret(clientSecret).tenantId(tenant).build();
+		
+		authProvider = new TokenCredentialAuthProvider(Arrays.asList("https://graph.microsoft.com/.default"),
+		credential);
+		
+		DefaultLogger logger = new DefaultLogger();
+		logger.setLoggingLevel(LoggerLevel.ERROR);
+		try {
+		graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
+			DriveItem driveItem = new DriveItem();
+			driveItem.name = newFolderName;
+			graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().items(getFolderId(oldFolderName))
+			.buildRequest()
+			.patch(driveItem);
+		}catch (ClientException e) {
+			throw new ClientException("Error al crear el cliente de OneDrive", e);
+		}
 	}
 }

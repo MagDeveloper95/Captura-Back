@@ -12,6 +12,7 @@ import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Repositories.ObraRepository;
 
+
 @Service
 public class ObraService {
 	
@@ -19,7 +20,7 @@ public class ObraService {
 	
 	@Autowired
 	ObraRepository obrasRepository;
-	
+
 	/**
 	 * Metodo que devuelve todas las obras de la base de datos 
 	 * @return List<Obra> lista de obras
@@ -29,6 +30,7 @@ public class ObraService {
 		List<Obra> result = obrasRepository.findAll();
 		if (result!=null) {
 			logger.info("Consulta exitosa en getAllObras");
+			//RegistroService.creaRegistro(new Registro("GET ALL OBRAS"));
 			return result;
 		} else {
 			logger.error("No hay Obras en la base de datos, en getAllObras");
@@ -110,6 +112,7 @@ public class ObraService {
 		if(obra!=null) {
 			Optional<Obra> result = Optional.of(getObraById(obra.getId()));
 					if(result.isPresent()) {
+						OneDriveService.updateFolderName(obra.getNombre(),result.get().getNombre());
 						Obra newObra = result.get();
 						newObra.setId(obra.getId());
 						newObra.setNombre(obra.getNombre());

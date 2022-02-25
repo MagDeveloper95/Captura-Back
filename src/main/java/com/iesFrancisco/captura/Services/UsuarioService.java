@@ -1,5 +1,6 @@
 package com.iesFrancisco.captura.Services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
+import com.iesFrancisco.captura.Model.Registro;
 import com.iesFrancisco.captura.Model.Usuario;
 import com.iesFrancisco.captura.Repositories.UsuarioRepository;
 
@@ -31,6 +33,7 @@ public class UsuarioService {
 		List<Usuario> getAllUsuariosDummy = repository.findAll();
 		if (getAllUsuariosDummy != null) {
 			logger.info("Consulta exitosa en getAllUsuarios");
+			//RegistroService.creaRegistro(new Registro("GET ALL OBRAS", LocalDate.now()));
 			return getAllUsuariosDummy;
 		} else {
 			logger.error("No hay usuarios en la base de datos en getAllUsuarios");
@@ -54,6 +57,7 @@ public class UsuarioService {
 				Optional<Usuario> getUsuarioDummy = repository.findById(id);
 				if (getUsuarioDummy.isPresent()) {
 					logger.info("Consulta exitosa en getUsuarioByID");
+					//RegistroService.creaRegistro(new Registro("GET ALL OBRAS", LocalDate.now(), getUsuarioDummy.get()));
 					return getUsuarioDummy.get();
 				} else {
 					logger.error("Error ---> El usuario con id: " + id + " no existe en getUsuarioByID");
