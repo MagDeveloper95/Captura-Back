@@ -50,7 +50,6 @@ public class ObraController {
 	public ResponseEntity<Obra> create(@RequestBody Obra obra) throws ResponseStatusException{
 		if(obra!=null) {
 			try {
-				//si la obra existe en one Drive no la crea
 				if(OneDriveService.getFolderId(obra.getNombre())!=null) {
 					throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra ya existe");
 				}else{
@@ -141,9 +140,15 @@ public class ObraController {
 		if(id!=null) {
 			try {
 				Optional<Obra> obra = Optional.of(service.getObraById(id));
+				//si la obra no existe en One Drive entonces no se puede borrar
+
 				if(obra.isPresent()) {
-					service.deleteObraById(id);	
-					return HttpStatus.OK;
+					if(OneDriveService.getFolderId(obra.get().getNombre())!=null) {
+						service.deleteObraById(id);	
+						return HttpStatus.OK;
+					}else {
+						throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido borrar");
+					}
 				}else {
 					return HttpStatus.BAD_REQUEST;
 				}
