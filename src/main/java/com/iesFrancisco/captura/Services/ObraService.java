@@ -87,7 +87,6 @@ public class ObraService {
 					OneDriveService.createObra(obra.getNombre());
 					logger.info("Consulta exitosa en creaObra");
 					obrasRepository.save(obra);
-					obrasRepository.insertarUsuarioObra(((Obra) obra.getUsuario()).getId(),obra.getId());
 					return obra;
 				} catch (IllegalArgumentException e) {
 					logger.error("Error ---> IllegarArgumentException en creaObra: "+ e);

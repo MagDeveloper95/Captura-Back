@@ -3,16 +3,22 @@ package com.iesFrancisco.captura.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import io.swagger.annotations.ApiModelProperty;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table (name="obra")
@@ -38,40 +44,21 @@ public class Obra implements Serializable {
 	private String datos;
 	
 	@JsonIgnoreProperties(value="obra", allowSetters = true)
-	@ManyToMany(mappedBy = "obra")
+	@ManyToMany(    cascade = {
+	        CascadeType.PERSIST, 
+	        CascadeType.MERGE
+	    })
+	@JoinTable(
+			name = "usuarioObra",
+			joinColumns = @JoinColumn(name = "idObra", nullable = false),
+			inverseJoinColumns = @JoinColumn(name="idUsuario", nullable = false)
+			)
 	private List<Usuario> usuario;
 	
-	
-	//Comportamiento Eager
 	@JsonIgnoreProperties(value="obra", allowSetters=true)
 	@OneToMany(mappedBy ="obra"/** cascade = {CascadeType.ALL},orphanRemoval = true*/)
 	private List<Visita> visitas;
-
-/**	
-    public void addVisita(Visita visita){
-        if(this.visita == null){
-            this.visita = new ArrayList<>();
-        }
-        this.visita.add(visita);
-        visita.setObra(this);
-    }
-    public void removeVisita(Visita visita) {
-    	this.visita.remove(visita);
-    	visita.setObra(null);
-    }
-    
-    public void addUsuario(Usuario usuario){
-        if(this.usuario == null){
-            this.usuario = new ArrayList<>();
-        }       
-        this.usuario.add(usuario);
-    }
-    
-    public void removeUsuario(Usuario usuario) {
-    	this.usuario.remove(usuario);
-    	usuario.setObra(null);
-    }*/
-
+	
 	private Obra(Long id, String nombre, float latitud, float longitud, String datos, List<Usuario> usuarios,
 			List<Visita> visitas) {
 		super();
@@ -83,18 +70,6 @@ public class Obra implements Serializable {
 		this.usuario = usuarios;
 		this.visitas = visitas;
 	}
-
-
-	/**public Obra(Long id, String nombre, float latitud, float longitud, String datos) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.latitud = latitud;
-		this.longitud = longitud;
-		this.datos = datos;
-		this.usuario = new ArrayList<Usuario>();
-		this.visitas = new ArrayList<Visita>();
-	}*/
 
 	public Obra() {
 		this(-1L,"Por defecto",-1,-1,"Por defecto",new ArrayList<Usuario>(), new ArrayList<Visita>());
