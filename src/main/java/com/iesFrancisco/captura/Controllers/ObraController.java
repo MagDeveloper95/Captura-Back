@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiResponses;
 
 import com.iesFrancisco.captura.Model.Obra;
 import com.iesFrancisco.captura.Services.ObraService;
+import com.iesFrancisco.captura.Services.OneDriveService;
 
 @RestController
 @RequestMapping("/obra")
@@ -49,7 +50,12 @@ public class ObraController {
 	public ResponseEntity<Obra> create(@RequestBody Obra obra) throws ResponseStatusException{
 		if(obra!=null) {
 			try {
+				//si la obra existe en one Drive no la crea
+				if(OneDriveService.getFolderId(obra.getNombre())!=null) {
+					throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra ya existe");
+				}else{
 				return ResponseEntity.status(HttpStatus.CREATED).body(service.creaObra(obra));
+				}
 			} catch (ResponseStatusException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La obra no se ha podido crear", e);
 			}
