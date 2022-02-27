@@ -49,7 +49,7 @@ public class VisitaController {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
 		@ApiResponse(code = 404, message = "Error al mostrar las visitas", response = ResponseStatusException.class),
 		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@GetMapping()
 	public ResponseEntity<List<Visita>> getAllVisitas() throws ResponseStatusException{
 		try {
@@ -72,7 +72,7 @@ public class VisitaController {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
 		@ApiResponse(code = 404, message = "Error al mostrar la visita", response = ResponseStatusException.class),
 		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@GetMapping("/{id}")
 	public ResponseEntity<Visita> getVisitaById(@PathVariable("id") Long id) throws ResponseStatusException {
 		if(id!=null&&id>-1) {
@@ -98,7 +98,7 @@ public class VisitaController {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
 		@ApiResponse(code = 404, message = "Error al crear la visita", response = ResponseStatusException.class),
 		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@PostMapping("/guardar")
 	public ResponseEntity<Visita> createVisita(@RequestBody Visita visita) throws ResponseStatusException {
 		if(visita!=null) {
@@ -124,7 +124,7 @@ public class VisitaController {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
 		@ApiResponse(code = 404, message = "Error al mostrar la visita", response = ResponseStatusException.class),
 		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@GetMapping("/obra/{obra}")
 	public ResponseEntity<List<Visita>> getVisitaByObra(@PathVariable("obra") Obra obra) throws ResponseStatusException {
 		if(obra!=null) {
@@ -150,7 +150,7 @@ public class VisitaController {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
 		@ApiResponse(code = 404, message = "Error al mostrar la visita", response = ResponseStatusException.class),
 		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@GetMapping("/fecha/{fecha}")
 	public ResponseEntity<List<Visita>> getVisitaByDate(@PathVariable("fecha")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha)
 			throws ResponseStatusException{
@@ -178,7 +178,7 @@ public class VisitaController {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
 		@ApiResponse(code = 404, message = "Error al borrar la visita", response = ResponseStatusException.class),
 		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Visita> deleteVisita(@PathVariable("id") Long id) throws ResponseStatusException {
 		try {
@@ -206,7 +206,7 @@ public class VisitaController {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
 		@ApiResponse(code = 404, message = "Error al actualizar la visita", response = ResponseStatusException.class),
 		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@PutMapping("/{id}")
 	public ResponseEntity<Visita> updateVisita(@RequestBody Visita updateVisita, @PathVariable(value = "id") Long id) throws ResponseStatusException {
 		if(updateVisita!=null&&id>-1) {

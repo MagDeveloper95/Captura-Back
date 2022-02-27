@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -51,7 +52,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = List.class),
 			@ApiResponse(code = 404, message = "Error obtener las fotos", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@GetMapping()
 	public ResponseEntity<List<Foto>> allFotos() throws ResponseStatusException {
 		try {
@@ -74,7 +75,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = Foto.class),
 			@ApiResponse(code = 404, message = "Error obtener la foto", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@GetMapping("/{id}")
 	public ResponseEntity<Foto> getFotosById(@PathVariable(value = "id") Long id) throws ResponseStatusException {
 		if(id!=null) {
@@ -103,7 +104,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = List.class),
 			@ApiResponse(code = 404, message = "Error obtener las fotos", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@GetMapping("/fecha/{fecha}")
 	public ResponseEntity<List<Foto>> getFotosByDate(@RequestParam("fecha") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate fecha) throws ResponseStatusException {
 		if(fecha!=null) {
@@ -130,7 +131,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = List.class),
 			@ApiResponse(code = 404, message = "Error obtener las fotos", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@GetMapping("/visita/{idVisita}")
 	public ResponseEntity<List<Foto>> getFotosByVisita(@PathVariable("idVisita") Long idVisita) throws ResponseStatusException {
 		if(idVisita!=null && idVisita>-1) {
@@ -157,7 +158,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = Foto.class),
 			@ApiResponse(code = 404, message = "Error borrar la foto", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@DeleteMapping("{id}")
 	public ResponseEntity<Foto> deleteFoto(@PathVariable("id") Long id) throws ResponseStatusException {
 		if(id != null && id > -1) {
@@ -184,7 +185,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = Foto.class),
 			@ApiResponse(code = 404, message = "Error actualizar la foto", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@PutMapping("/{id}")
 	public ResponseEntity<Foto> updateFoto(@RequestBody Foto updateFoto, @PathVariable(value = "id") Long id) throws ResponseStatusException {
 		if(updateFoto!=null) {
@@ -209,7 +210,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = Foto.class),
 			@ApiResponse(code = 404, message = "Error crear la foto", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@PostMapping("/add") 
 	public ResponseEntity<Foto> create(@ModelAttribute FotoWrapper foto) throws ResponseStatusException, NullPointerException, IllegalArgumentException, IOException{
 		if(foto!=null) {

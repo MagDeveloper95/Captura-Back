@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -46,7 +47,7 @@ public class UsuarioController {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Usuario.class),
 		@ApiResponse(code = 404, message = "Error crear la obra", response = ResponseStatusException.class),
 		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@PostMapping("/guardar")
 	public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) throws ResponseStatusException{
 		if(usuario!=null){
@@ -74,7 +75,7 @@ public class UsuarioController {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Usuario.class),
 		@ApiResponse(code = 404, message = "Error crear la obra", response = ResponseStatusException.class),
 		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@GetMapping("/{id}")
 	public ResponseEntity<Usuario> listarPorId(@PathVariable(value ="id") Long id) throws ResponseStatusException{
 		if(id!=null) {
@@ -131,7 +132,7 @@ public class UsuarioController {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Usuario.class),
 		@ApiResponse(code = 404, message = "Error crear la obra", response = ResponseStatusException.class),
 		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Usuario> delete(@PathVariable(value="id")Long id) throws ResponseStatusException{
 		if(id!=null) {
@@ -162,7 +163,7 @@ public class UsuarioController {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Usuario.class),
 		@ApiResponse(code = 404, message = "Error crear la obra", response = ResponseStatusException.class),
 		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@GetMapping
 	public ResponseEntity<List<Usuario>> readAll() throws ResponseStatusException{
 		try {
@@ -184,7 +185,7 @@ public class UsuarioController {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Usuario.class),
 		@ApiResponse(code = 404, message = "Error crear la obra", response = ResponseStatusException.class),
 		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@GetMapping("/nombre/{nombre}")
 	public ResponseEntity<Usuario> listarPorNombre(@PathVariable(value ="nombre") String nombre) throws ResponseStatusException  {
 		if(nombre!=null&&nombre.length()>0) {
@@ -210,7 +211,7 @@ public class UsuarioController {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Usuario.class),
 		@ApiResponse(code = 404, message = "Error crear la obra", response = ResponseStatusException.class),
 		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@GetMapping("obra/{obraId}")
 	public ResponseEntity<List<Usuario>> listarPorObra(@PathVariable(value ="obraId") Long id) throws ResponseStatusException{
 		if(id!=null) {
