@@ -51,7 +51,6 @@ public class ObraService {
 		if(id!=null) {
 			try {
 				Optional<Obra> result = obrasRepository.findById(id);
-				System.out.println(result);
 				/**ObraResponse obraResponse = new ObraResponse();
 				obraResponse.setid(result.get().getId());*/
 				if(result.isPresent()) {
