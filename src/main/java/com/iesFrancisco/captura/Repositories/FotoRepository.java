@@ -16,7 +16,7 @@ import com.iesFrancisco.captura.Model.Foto;
 @Repository
 public interface FotoRepository extends JpaRepository<Foto,Long> {
 	/**
-	 * Método que nos devuelve una lista con los las fotos  
+	 * Metodo que nos devuelve una lista con los las fotos  
 	 * introduciendo una Visita.
 	 * @param vista por la que queremos las fotos
 	 * @return La lista de las fotos filtrando por visitas
@@ -27,7 +27,7 @@ public interface FotoRepository extends JpaRepository<Foto,Long> {
 	@Query(value= "SELECT * FROM foto where foto.id_visita = ?1", nativeQuery=true)
 	List<Foto> getFotosPorVisita(Long id) throws IllegalArgumentException;
 	/**
-	 * Método que nos devuelve una lista con los las fotos  
+	 * Metodo que nos devuelve una lista con los las fotos  
 	 * introduciendo una fecha.
 	 * @param fecha por la que queremos el las fotos
 	 * @return La lista de las fotos filtrando por día
