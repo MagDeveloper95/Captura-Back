@@ -14,7 +14,6 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import io.swagger.annotations.ApiModelProperty;
 
 
 @Entity
@@ -22,18 +21,14 @@ import io.swagger.annotations.ApiModelProperty;
 public class Foto implements Serializable {
 	
     private static final long serialVersionUID = 1L;
-	@ApiModelProperty(notes ="Identificador de la foto",name = "id", required = true, value = "1")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id", nullable = false)
     private Long id;
-	@ApiModelProperty(notes ="URL de la foto",name = "URL", required = true, value = "URL de la foto")
     @Column(name = "url", length = 256)
     private String url;
-	@ApiModelProperty(notes ="Descripcion de la foto",name = "descripcion", required = true, value = "Descripcion de la foto")
     @Column(name = "comentario", length = 256)
     private String comentario;
-	@ApiModelProperty(notes ="Visita de la foto",name = "visita", required = true, value = "Visita de la foto")
     @JsonIgnoreProperties(value="fotos", allowSetters = true)
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idVisita")

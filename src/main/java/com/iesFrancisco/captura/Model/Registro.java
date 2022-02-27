@@ -16,22 +16,18 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table (name="registro")
 public class Registro implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	@ApiModelProperty(notes ="Identificador del registro",name = "id", required = true, value = "1")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id", nullable = false)
 	private Long id;
-	@ApiModelProperty(notes ="Comentario del registro",name = "comentario", required = true, value = "Comentario del registro")
 	@Column(name="descripcion", length = 256)
 	private String descripcion;
-	@ApiModelProperty(notes ="Fecha del registro",name = "fecha", required = true, value = "Fecha del registro")
 	@Column(name="fecha")
 	private LocalDate fecha;
 	

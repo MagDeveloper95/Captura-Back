@@ -19,29 +19,22 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import io.swagger.annotations.ApiModelProperty;
-
 
 @Entity
 @Table(name = "visita")
 public class Visita implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	@ApiModelProperty(notes = "Identificador de la visita", name = "id", required = true, value = "1")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private Long id;
-	@ApiModelProperty(notes = "Header/nombre de la visita", name = "Header", required = true, value = "Header/nombre de la visita")
 	@Column(name = "header", length = 256)
 	private String header;
-	@ApiModelProperty(notes = "Fecha de la visita", name = "fecha", required = true, value = "Fecha de la visita")
 	@Column(name = "fecha")
 	private LocalDate fecha;
-	@ApiModelProperty(notes = "Nota de la visita", name = "Nota", required = true, value = "Nota de la visita")
 	@Column(name = "nota", length = 256)
 	private String nota;
-	
 	@JsonIgnoreProperties(value = "visita",allowSetters = true)
 	@OneToMany(mappedBy = "visita", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Foto> fotos;

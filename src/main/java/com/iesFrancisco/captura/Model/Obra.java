@@ -18,28 +18,22 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table (name="obra")
 public class Obra implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	@ApiModelProperty(notes = "Identificador de la obra",name = "id", required = true, value = "1")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
-	private Long id;
-	@ApiModelProperty(notes = "Nombre de la obra",name = "nombre", required = true, value = "La obra de la que se trata")	
+	private Long id;	
 	@Column(name = "nombre", length = 256)
 	private String nombre;
-	@ApiModelProperty(notes = "latitud e la obra",name = "latitud", required = true, value = "latitud de la obra")
 	@Column(name = "latitud", length = 256)
 	private float latitud;
-	@ApiModelProperty(notes = "longitud de la obra",name = "longitud", required = true, value = "longitud de la obra")
 	@Column(name = "longitud", length = 256)
 	private float longitud;
-	@ApiModelProperty(notes = "Descripcion de la obra",name = "descripcion", required = true, value = "descripcion de la obra")
 	@Column(name = "datos", length = 256)
 	private String datos;
 	
