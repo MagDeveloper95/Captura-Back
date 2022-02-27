@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -48,7 +49,7 @@ public class VisitaController {
 		@ApiResponse(code = 200, message = "Operacion exitosa", response = Visita.class),
 		@ApiResponse(code = 404, message = "Error al mostrar las visitas", response = ResponseStatusException.class),
 		@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/")
+	@CrossOrigin(origins = "https://frozen-crag-51318.herokuapp.com/", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@GetMapping()
 	public ResponseEntity<List<Visita>> getAllVisitas() throws ResponseStatusException{
 		try {
