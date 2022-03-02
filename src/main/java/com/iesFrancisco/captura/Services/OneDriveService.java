@@ -314,4 +314,20 @@ public class OneDriveService {
 			throw new ClientException("Error al crear el cliente de OneDrive", e);
 		}
 	}
+	public static void deleteFile(String Url){
+		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
+		.clientSecret(clientSecret).tenantId(tenant).build();
+		
+		authProvider = new TokenCredentialAuthProvider(Arrays.asList("https://graph.microsoft.com/.default"),
+		credential);
+		
+		DefaultLogger logger = new DefaultLogger();
+		logger.setLoggingLevel(LoggerLevel.ERROR);
+		try {
+		graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
+		graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().items(getFolderId(Url)).buildRequest().delete();
+		}catch (ClientException e) {
+			throw new ClientException("Error al crear el cliente de OneDrive", e);
+		}
+	}
 }
