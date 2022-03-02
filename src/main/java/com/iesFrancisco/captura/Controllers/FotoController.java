@@ -210,7 +210,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = Foto.class),
 			@ApiResponse(code = 404, message = "Error crear la foto", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
+	@CrossOrigin(origins= "http://localhost:8100",methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@PostMapping("/add") 
 	public ResponseEntity<Foto> create(@ModelAttribute FotoWrapper foto) throws ResponseStatusException, NullPointerException, IllegalArgumentException, IOException{
 		if(foto!=null) {
