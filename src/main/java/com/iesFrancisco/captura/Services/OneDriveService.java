@@ -314,7 +314,8 @@ public class OneDriveService {
 			throw new ClientException("Error al crear el cliente de OneDrive", e);
 		}
 	}
-	public static void deleteFile(String Url){
+	/** 
+	public static void deleteFile(String name){
 		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
 		.clientSecret(clientSecret).tenantId(tenant).build();
 		
@@ -325,9 +326,9 @@ public class OneDriveService {
 		logger.setLoggingLevel(LoggerLevel.ERROR);
 		try {
 		graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
-		graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().items(getFolderId(Url)).buildRequest().delete();
+		graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().items(getFolderId(name)).buildRequest().delete();
 		}catch (ClientException e) {
 			throw new ClientException("Error al crear el cliente de OneDrive", e);
 		}
-	}
+	}*/
 }

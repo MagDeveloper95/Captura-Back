@@ -229,8 +229,7 @@ public class FotoService {
 			Optional<Foto> foto = repository.findById(id);
 			try {
 				if (foto.isPresent()) {
-					//Borramos la foto en OneDrive
-					OneDriveService.deleteFile(foto.get().getUrl());
+					//OneDriveService.deleteFile(foto.get().getId());
 					logger.info("Consulta exitosa en borrarFoto");
 					repository.deleteById(id);
 				} else {
