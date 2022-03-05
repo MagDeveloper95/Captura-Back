@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.azure.core.annotation.Headers;
 import com.iesFrancisco.captura.Model.Foto;
 import com.iesFrancisco.captura.Model.FotoWrapper;
 import com.iesFrancisco.captura.Services.FotoService;
@@ -52,7 +53,10 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = List.class),
 			@ApiResponse(code = 404, message = "Error obtener las fotos", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
+	@CrossOrigin(
+		origins = "*",
+		methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
+	@Headers({"Content-Type: application/json", "Accept: application/json"})
 	@GetMapping()
 	public ResponseEntity<List<Foto>> allFotos() throws ResponseStatusException {
 		try {
