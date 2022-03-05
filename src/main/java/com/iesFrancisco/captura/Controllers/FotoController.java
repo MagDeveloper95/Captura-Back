@@ -56,7 +56,12 @@ public class FotoController {
 	@CrossOrigin(
 		origins = "*",
 		methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
-	@Headers({"Content-Type: application/json", "Accept: application/json"})
+	@Headers({"Content-Type: application/json", "Accept: application/json",
+				"Access-Control-Allow-Origin: *",
+				"Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS",
+				"Access-Control-Allow-Headers: Content-Type, Accept, X-Requested-With, remember-me"})
+	//autorizacion para todos los metodos de la clase para que se puedan hacer peticiones desde cualquier origen a one drive
+
 	@GetMapping()
 	public ResponseEntity<List<Foto>> allFotos() throws ResponseStatusException {
 		try {
