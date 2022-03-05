@@ -59,9 +59,10 @@ public class FotoController {
 	@Headers({"Content-Type: application/json", "Accept: application/json",
 				"Access-Control-Allow-Origin: *",
 				"Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS",
-				"Access-Control-Allow-Headers: Content-Type, Accept, X-Requested-With, remember-me"})
-	//autorizacion para todos los metodos de la clase para que se puedan hacer peticiones desde cualquier origen a one drive
+				"Access-Control-Allow-Headers: Content-Type, Accept, X-Requested-With, remember-me",
+				"Access-Control-Allow-Credentials: true"})
 
+	//autorizacion para todos los metodos de la clase para que se puedan hacer peticiones desde cualquier origen a one drive
 	@GetMapping()
 	public ResponseEntity<List<Foto>> allFotos() throws ResponseStatusException {
 		try {
