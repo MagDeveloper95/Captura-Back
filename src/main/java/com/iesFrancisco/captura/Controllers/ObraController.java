@@ -47,9 +47,6 @@ public class ObraController {
 			@ApiResponse(code = 404, message = "Error crear la obra", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
 	@CrossOrigin(
-		allowedHeaders = "*",
-		allowCredentials = "true",
-		origins = "*",					
 		methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@PostMapping("/guardar")
 	
@@ -81,9 +78,7 @@ public class ObraController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = Obra.class),
 			@ApiResponse(code = 404, message = "Error al buscar la obra", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-	@CrossOrigin(
-		allowedHeaders = "*",
-		origins = "*",	
+	@CrossOrigin(	
 		methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@GetMapping("/{id}")
 	public ResponseEntity<Obra> listarPorId(@PathVariable(value ="id") Long id) throws ResponseStatusException  {
