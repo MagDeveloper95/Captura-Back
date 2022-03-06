@@ -48,7 +48,8 @@ public class ObraController {
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
 	@CrossOrigin(
 		allowedHeaders = "*",
-		origins = "*",	
+		allowCredentials = "true",
+		origins = "*",					
 		methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 	@PostMapping("/guardar")
 	
