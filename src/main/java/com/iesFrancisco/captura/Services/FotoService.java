@@ -146,6 +146,7 @@ public class FotoService {
 		if (foto != null) {
 		if (foto.getId() < 0) {
 				try {
+					System.out.println(foto.toString());
 					OneDriveService.uploadFile(
 							foto.getFile().getOriginalFilename(),
 							foto.getVisita().getObra().getNombre(),
