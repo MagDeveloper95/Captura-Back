@@ -92,8 +92,6 @@ public class FotoController {
 		}else {
 			return new ResponseEntity<Foto>(new Foto(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
-
-
 	}
 
 	/**

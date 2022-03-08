@@ -63,4 +63,11 @@ public class FotoWrapper {
     public void setFile(MultipartFile file) {
         this.file = file;
     }
+
+	@Override
+	public String toString() {
+		return "FotoWrapper [id=" + id + ", url=" + url + ", comentario=" + comentario + ", visita=" + visita
+				+ ", file=" + file + "]";
+	}
+    
 }
