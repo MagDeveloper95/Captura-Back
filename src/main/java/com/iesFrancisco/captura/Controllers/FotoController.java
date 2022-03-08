@@ -218,7 +218,7 @@ public class FotoController {
 			@ApiResponse(code = 200, message = "Operacion exitosa", response = Foto.class),
 			@ApiResponse(code = 404, message = "Error crear la foto", response = ResponseStatusException.class),
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
-			@CrossOrigin(origins = "http://localhost:8100/",
+			@CrossOrigin(origins = "*",
 				methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 
 	@PostMapping("/add") 
