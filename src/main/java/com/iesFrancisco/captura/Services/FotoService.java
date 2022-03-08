@@ -9,11 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Model.Foto;
 import com.iesFrancisco.captura.Model.FotoWrapper;
 import com.iesFrancisco.captura.Repositories.FotoRepository;
+import com.microsoft.graph.core.Multipart;
 
 @Service
 public class FotoService {
@@ -142,16 +144,17 @@ public class FotoService {
 	 * @throws IOException 
 	 */
 
-	public Foto creaFoto(FotoWrapper foto) throws NullPointerException, IllegalArgumentException, IOException {
+	public Foto creaFoto(FotoWrapper foto,MultipartFile file) throws NullPointerException, IllegalArgumentException, IOException {
 		if (foto != null) {
 		if (foto.getId() < 0) {
 				try {
 					System.out.println(foto.toString());
+					System.out.println(file);
 					OneDriveService.uploadFile(
-							foto.getFile().getOriginalFilename(),
+							file.getOriginalFilename(),
 							foto.getVisita().getObra().getNombre(),
 							foto.getVisita().getHeader(),
-						 foto.getFile().getInputStream());
+						 	file.getInputStream());
 					Foto fotoCreada = new Foto(
 							foto.getId(),
 							OneDriveService.getUrl(

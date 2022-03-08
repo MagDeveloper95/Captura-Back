@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.azure.core.annotation.Headers;
@@ -220,10 +221,10 @@ public class FotoController {
 				methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
 
 	@PostMapping("/add") 
-	public ResponseEntity<Foto> create(@ModelAttribute FotoWrapper foto) throws ResponseStatusException, NullPointerException, IllegalArgumentException, IOException{
+	public ResponseEntity<Foto> create(@ModelAttribute FotoWrapper foto,@RequestParam("file") MultipartFile file) throws ResponseStatusException, NullPointerException, IllegalArgumentException, IOException{
 		if(foto!=null) {
 			try {
-				return ResponseEntity.status(HttpStatus.CREATED).body(service.creaFoto(foto));
+				return ResponseEntity.status(HttpStatus.CREATED).body(service.creaFoto(foto,file));
 			} catch (ResponseStatusException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la foto no se ha podido guardar", e);
 			}
