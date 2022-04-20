@@ -219,7 +219,7 @@ public class FotoController {
 			@ApiResponse(code = 500, message = "Internal server error", response = ResponseStatusException.class)})
 			@CrossOrigin(origins = "*",
 				methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE})
-
+  
 	@PostMapping("/add") 
 	public ResponseEntity<Foto> create(@ModelAttribute FotoWrapper foto,@RequestParam("file") MultipartFile file) throws ResponseStatusException, NullPointerException, IllegalArgumentException, IOException{
 		if(foto!=null) {
