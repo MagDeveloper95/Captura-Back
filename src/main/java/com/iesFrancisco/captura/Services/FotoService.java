@@ -250,7 +250,8 @@ public class FotoService {
 	}
 	
 	public byte[] getPhoto(String url) {
-		return OneDriveService.getPhoto(url);
+		
+		return new OneDriveService().getPhoto(url);
 	}
 	
 }
