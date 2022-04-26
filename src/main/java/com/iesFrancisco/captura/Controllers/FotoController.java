@@ -1,6 +1,8 @@
 package com.iesFrancisco.captura.Controllers;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.rmi.server.ServerCloneException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -41,6 +44,7 @@ public class FotoController {
 	
 	@Autowired
 	FotoService service;
+	
 
 	/**
 	 * Nos traemos todas las Fotos
@@ -232,5 +236,8 @@ public class FotoController {
 			return new ResponseEntity<Foto>(new Foto(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-}
+	@GetMapping("/imagen/{url}")
+	public @ResponseBody byte[] cargarImagen(@PathVariable("url") String url) throws IOException{
+		return service.getPhoto(url);
+	}
+ }

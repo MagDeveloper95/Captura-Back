@@ -20,7 +20,8 @@ import com.microsoft.graph.requests.DriveItemCollectionPage;
 import com.microsoft.graph.requests.GraphServiceClient;
 import com.microsoft.graph.tasks.IProgressCallback;
 import com.microsoft.graph.tasks.LargeFileUploadTask;
-
+import org.apache.commons.*;
+import org.apache.commons.io.IOUtils;
 public class OneDriveService {
 
 	static String clientId = "e26f46cb-16f5-4fab-9859-99c2290e3f62";
@@ -313,6 +314,27 @@ public class OneDriveService {
 		}catch (ClientException e) {
 			throw new ClientException("Error al crear el cliente de OneDrive", e);
 		}
+	}
+	public byte[] getPhoto(String url) {
+		byte[] result=null;
+		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
+				.clientSecret(clientSecret).tenantId(tenant).build();
+				
+				authProvider = new TokenCredentialAuthProvider(Arrays.asList("https://graph.microsoft.com/.default"),
+				credential);
+				
+				DefaultLogger logger = new DefaultLogger();
+				logger.setLoggingLevel(LoggerLevel.ERROR);
+				try {
+				graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
+				InputStream in= getClass().getResourceAsStream(url);
+				result=IOUtils.toByteArray(in);
+				}catch (ClientException e) {
+					throw new ClientException("Error al crear el cliente de OneDrive", e);
+				} catch (IOException e) {
+					throw new ClientException("Error al crear el cliente de OneDrive", e);
+				}
+				return result;
 	}
 	/** 
 	public static void deleteFile(String name){
