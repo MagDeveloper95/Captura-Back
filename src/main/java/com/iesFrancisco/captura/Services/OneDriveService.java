@@ -30,13 +30,7 @@ public class OneDriveService {
 	private static GraphServiceClient<okhttp3.Request> graphClient = null;
 	private static TokenCredentialAuthProvider authProvider = null;
 
-	/**
-	 * Metodo que usaremos para crear una carpeta en OneDrive con el nombre que le
-	 * pasemos de la obra el cual usaremos para crear las carpetas de las obras
-	 * 
-	 * @param folderName Nombre de la carpeta que queremos crear en OneDrive
-	 * @throws ClientException si el usuario no existe
-	 */
+	
 	public static void createObra(String folderName) {
 
 		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
@@ -62,15 +56,7 @@ public class OneDriveService {
 		}
 	}
 
-	/**
-	 * Metodo que usaremos para crear una carpeta en OneDrive con el nombre que le
-	 * pasemos de la visita y el nombre de la obra para guardar la carpeta de la
-	 * visita dentro de la capeta de la obra correspondeiente
-	 * 
-	 * @param folderName     nomre de la carpeta que queremos crear en OneDrive
-	 * @param parentFolderId Id de la carpeta padre de la carpeta que queremos crear
-	 * @throws ClientException si el usuario no existe
-	 */
+	
 	public static void createVisita(String folderName, String parentFolderName) {
 
 		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
@@ -97,14 +83,7 @@ public class OneDriveService {
 
 	}
 
-	/**
-	 * Metodo que usaremos para obtener el id de la carpeta pasando el nombre de la
-	 * carpeta
-	 * 
-	 * @param folderName Nombre de la carpeta que queremos obtener
-	 * @return Id de la carpeta
-	 * @throws ClientException si el usuario no existe
-	 */
+	
 	public static String getFolderId(String folderName) {
 
 		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
@@ -131,13 +110,7 @@ public class OneDriveService {
 		return null;
 	}
 
-	/**
-	 * Metodo que usaremos para borra una carpeta de One Drive introduciendo el
-	 * nombre de la carpeta
-	 * 
-	 * @param folderName Nombre de la carpeta que queremos borrar
-	 * @throws ClientException si el usuario no existe
-	 */
+	
 	public static void borraObra(String folderName) {
 
 		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
@@ -163,15 +136,7 @@ public class OneDriveService {
 		}
 	}
 
-	/**
-	 * Metodo que usaremos para borrar una carpeta de One Drive introduciendo el
-	 * nombre de la carpeta y el id de la carpeta padre
-	 * 
-	 * @param folderName     Nombre de la carpeta que queremos borrar
-	 * @param parentFolderId Id de la carpeta padre de la carpeta que queremos
-	 *                       borrar
-	 * @throws ClientException si el usuario no existe
-	 */
+	
 	public static void borrarVisita(String folderName, String parentFolderId) {
 
 		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
@@ -201,15 +166,7 @@ public class OneDriveService {
 			throw new ClientException("Error al crear el cliente de OneDrive", e);
 		}
 	}
-	/**
-	 * Metodo que usaremos para subir un fichero a OneDrive con el nombre que le pasemos de la visita y el
-	 * nombre de la obra para guardar la carpeta de la visita dentro de la capeta de la obra correspondeiente
-	 * @param fileName Nombre del fichero que queremos subir
-	 * @param rootFolderName Nombre de la carpeta padre de la carpeta que queremos subir 
-	 * @param visitaFolderName Nombre de la carpeta que queremos subir
-	 * @param file Fichero que queremos subir
-	 * @throws IOException
-	 */
+	
 	public static void uploadFile(String fileName, String rootFolderName, String visitaFolderName, InputStream file) {
 		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
 				.clientSecret(clientSecret).tenantId(tenant).build();
@@ -258,13 +215,7 @@ public class OneDriveService {
 			ex.printStackTrace();
 		}
 	}
-	/**
-	 * Metodo que devuelve la url de la imagen que queremos subir
-	 * @param fileName Nombre del fichero que queremos subir
-	 * @param rootFolderName Nombre de la carpeta padre de la carpeta que queremos subir
-	 * @param visitaFolderName Nombre de la carpeta que queremos subir
-	 * @return url de la imagen que queremos subir
-	 */
+
 	public static String getUrl(String fileName, String rootFolderName, String visitaFolderName) {
 		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
 				.clientSecret(clientSecret).tenantId(tenant).build();
@@ -289,12 +240,7 @@ public class OneDriveService {
 		}
 		
 	}
-	/**
-	 * Metodo que updatea el nombre de la carpeta que queremos editar
-	 * @param folderName Nombre de la carpeta que queremos editar
-	 * @param newFolderName Nuevo nombre de la carpeta que queremos editar
-	 * @throws ClientException en caso de que no se pueda editar la carpeta
-	 */
+
 	public static void updateFolderName(String newFolderName,String oldFolderName) {
 		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
 		.clientSecret(clientSecret).tenantId(tenant).build();
@@ -336,21 +282,5 @@ public class OneDriveService {
 				}
 				return result;
 	}
-	/** 
-	public static void deleteFile(String name){
-		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
-		.clientSecret(clientSecret).tenantId(tenant).build();
-		
-		authProvider = new TokenCredentialAuthProvider(Arrays.asList("https://graph.microsoft.com/.default"),
-		credential);
-		
-		DefaultLogger logger = new DefaultLogger();
-		logger.setLoggingLevel(LoggerLevel.ERROR);
-		try {
-		graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
-		graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().items(getFolderId(name)).buildRequest().delete();
-		}catch (ClientException e) {
-			throw new ClientException("Error al crear el cliente de OneDrive", e);
-		}
-	}*/
+	
 }
