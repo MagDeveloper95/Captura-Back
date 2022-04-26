@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -236,7 +237,10 @@ public class FotoController {
 			return new ResponseEntity<Foto>(new Foto(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	@GetMapping("/imagen/{url}")
+	@GetMapping(
+			value = "/imagen/{url}",
+			produces = MediaType.IMAGE_JPEG_VALUE
+			)
 	public @ResponseBody byte[] cargarImagen(@PathVariable("url") String url) throws IOException{
 		return service.getPhoto(url);
 	}
