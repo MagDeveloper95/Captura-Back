@@ -2,6 +2,7 @@ package com.iesFrancisco.captura.Services;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -272,8 +273,7 @@ public class OneDriveService {
 				logger.setLoggingLevel(LoggerLevel.ERROR);
 				try {
 				graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
-				
-				InputStream in= getClass().getResourceAsStream(url);
+				URL in= getClass().getResource(url);
 				if(in!=null)
 					result=IOUtils.toByteArray(in);
 					logger.logError(url, null);
