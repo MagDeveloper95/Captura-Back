@@ -277,6 +277,7 @@ public class OneDriveService {
 				InputStream in= getClass().getResourceAsStream(urla);
 				if(in!=null)
 					result=IOUtils.toByteArray(in);
+					System.out.println(result);
 				}catch (ClientException e) {
 					throw new ClientException("Error al crear el cliente de OneDrive", e);
 				} catch (IOException e) {
