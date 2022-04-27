@@ -262,6 +262,8 @@ public class OneDriveService {
 	}
 	public byte[] getPhoto(String url) {
 		byte[] result=null;
+		url = "https://cdn.pixabay.com/photo/2016/10/26/19/00/domain-names-1772242_960_720.jpg";
+		/**
 		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
 				.clientSecret(clientSecret).tenantId(tenant).build();
 				
@@ -280,7 +282,15 @@ public class OneDriveService {
 					throw new ClientException("Error al crear el cliente de OneDrive", e);
 				} catch (IOException e) {
 					throw new ClientException("Error al crear el cliente de OneDrive", e);
-				}
+				}*/
+		InputStream in= getClass().getResourceAsStream(url);
+		try {
+			result=IOUtils.toByteArray(in);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return result;
 	}
 	
