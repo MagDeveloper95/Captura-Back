@@ -261,7 +261,7 @@ public class OneDriveService {
 		}
 	}
 	public byte[] getPhoto(String url) {
-		url = "https%3A%2F%2Fs55pk-my.sharepoint.com%2Fpersonal%2Fadministrador_s55pk_onmicrosoft_com%2FDocuments%2FPiscinaFN%2F2022-02-28Lunes%2F1650450029385.png";
+		url = "https://s55pk-my.sharepoint.com/personal/administrador_s55pk_onmicrosoft_com/Documents/PiscinaFN/2022-02-28Lunes/1650450029385.png";
 		byte[] result=null;
 		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
 				.clientSecret(clientSecret).tenantId(tenant).build();
