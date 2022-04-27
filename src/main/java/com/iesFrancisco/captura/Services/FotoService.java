@@ -249,9 +249,9 @@ public class FotoService {
 		}
 	}
 	
-	public byte[] getPhoto(String url) {
+	public byte[] getPhoto() {
 		
-		return new OneDriveService().getPhoto(url);
+		return new OneDriveService().getPhoto();
 	}
 	
 }

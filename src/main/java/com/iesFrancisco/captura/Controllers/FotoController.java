@@ -1,8 +1,6 @@
 package com.iesFrancisco.captura.Controllers;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.rmi.server.ServerCloneException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -241,7 +239,7 @@ public class FotoController {
 			value = "/imagen/{url}",
 			produces = MediaType.IMAGE_JPEG_VALUE
 			)
-	public @ResponseBody byte[] cargarImagen(@PathVariable("url") String url) throws IOException{
-		return service.getPhoto(url);
+	public @ResponseBody byte[] cargarImagen() throws IOException{
+		return service.getPhoto();
 	}
  }
