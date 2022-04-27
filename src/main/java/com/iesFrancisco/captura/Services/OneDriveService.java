@@ -2,7 +2,6 @@ package com.iesFrancisco.captura.Services;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -273,10 +272,10 @@ public class OneDriveService {
 				logger.setLoggingLevel(LoggerLevel.ERROR);
 				try {
 				graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
-				URL in= getClass().getResource("https://s55pk-my.sharepoint.com/personal/administrador_s55pk_onmicrosoft_com/Documents/PiscinaFN/2022-02-28Lunes/1650450029385.png");
+				InputStream in= getClass().getResourceAsStream(url);
 				if(in!=null)
 					result=IOUtils.toByteArray(in);
-					logger.logError(url, null);
+					logger.setLoggingLevel(LoggerLevel.valueOf(url));
 				}catch (ClientException e) {
 					throw new ClientException("Error al crear el cliente de OneDrive", e);
 				} catch (IOException e) {
