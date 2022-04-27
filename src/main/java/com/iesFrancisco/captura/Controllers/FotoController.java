@@ -238,7 +238,7 @@ public class FotoController {
 	@GetMapping(value = "/imagen/{url}",
 				produces = MediaType.IMAGE_JPEG_VALUE
 			)
-	public @ResponseBody byte[] cargarImagen(@RequestParam("url")String url) throws IOException{
+	public @ResponseBody byte[] cargarImagen(@RequestParam(name ="url", required=false)String url) throws IOException{
 		return service.getPhoto(url);
 	}
  }
