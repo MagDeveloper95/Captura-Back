@@ -236,7 +236,7 @@ public class FotoController {
 		}
 	}
 	@GetMapping(
-			value = "/imagen/{url}",
+			value = "/imagen",
 			produces = MediaType.IMAGE_JPEG_VALUE
 			)
 	public @ResponseBody byte[] cargarImagen() throws IOException{
