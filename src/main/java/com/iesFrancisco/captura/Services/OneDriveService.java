@@ -273,7 +273,7 @@ public class OneDriveService {
 				logger.setLoggingLevel(LoggerLevel.ERROR);
 				try {
 				graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
-				URL in= getClass().getResource(url);
+				URL in= getClass().getResource("https://s55pk-my.sharepoint.com/personal/administrador_s55pk_onmicrosoft_com/Documents/PiscinaFN/2022-02-28Lunes/1650450029385.png");
 				if(in!=null)
 					result=IOUtils.toByteArray(in);
 					logger.logError(url, null);
