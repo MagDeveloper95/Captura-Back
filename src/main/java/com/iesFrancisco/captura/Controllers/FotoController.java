@@ -239,7 +239,7 @@ public class FotoController {
 			value = "/imagen",
 			produces = MediaType.IMAGE_JPEG_VALUE
 			)
-	public @ResponseBody byte[] cargarImagen() throws IOException{
-		return service.getPhoto();
+	public @ResponseBody byte[] cargarImagen(String url) throws IOException{
+		return service.getPhoto(url);
 	}
  }

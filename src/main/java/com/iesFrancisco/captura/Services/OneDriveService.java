@@ -260,8 +260,8 @@ public class OneDriveService {
 			throw new ClientException("Error al crear el cliente de OneDrive", e);
 		}
 	}
-	public byte[] getPhoto() {
-		String urla = "https://s55pk-my.sharepoint.com/personal/administrador_s55pk_onmicrosoft_com/Documents/PiscinaFN/2022-02-28Lunes/1650450029385.png";
+	public byte[] getPhoto(String url) {
+		url = "https%3A%2F%2Fs55pk-my.sharepoint.com%2Fpersonal%2Fadministrador_s55pk_onmicrosoft_com%2FDocuments%2FPiscinaFN%2F2022-02-28Lunes%2F1650450029385.png";
 		byte[] result=null;
 		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
 				.clientSecret(clientSecret).tenantId(tenant).build();
@@ -274,16 +274,15 @@ public class OneDriveService {
 				try {
 				graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
 				
-				InputStream in= getClass().getResourceAsStream(urla);
+				InputStream in= getClass().getResourceAsStream(url);
 				if(in!=null)
 					result=IOUtils.toByteArray(in);
-					System.out.println(result);
 				}catch (ClientException e) {
 					throw new ClientException("Error al crear el cliente de OneDrive", e);
 				} catch (IOException e) {
 					throw new ClientException("Error al crear el cliente de OneDrive", e);
 				}
-				return result;
+		return result;
 	}
 	
 }

@@ -15,7 +15,6 @@ import com.iesFrancisco.captura.Exception.RecordNotFoundException;
 import com.iesFrancisco.captura.Model.Foto;
 import com.iesFrancisco.captura.Model.FotoWrapper;
 import com.iesFrancisco.captura.Repositories.FotoRepository;
-import com.microsoft.graph.core.Multipart;
 
 @Service
 public class FotoService {
@@ -249,9 +248,9 @@ public class FotoService {
 		}
 	}
 	
-	public byte[] getPhoto() {
+	public byte[] getPhoto(String url) {
 		
-		return new OneDriveService().getPhoto();
+		return new OneDriveService().getPhoto(url);
 	}
 	
 }
