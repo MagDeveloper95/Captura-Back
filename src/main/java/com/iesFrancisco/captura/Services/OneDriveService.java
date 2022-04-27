@@ -272,8 +272,10 @@ public class OneDriveService {
 				logger.setLoggingLevel(LoggerLevel.ERROR);
 				try {
 				graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
+				
 				InputStream in= getClass().getResourceAsStream(url);
-				result=IOUtils.toByteArray(in);
+				if(in!=null)
+					result=IOUtils.toByteArray(in);
 				}catch (ClientException e) {
 					throw new ClientException("Error al crear el cliente de OneDrive", e);
 				} catch (IOException e) {
