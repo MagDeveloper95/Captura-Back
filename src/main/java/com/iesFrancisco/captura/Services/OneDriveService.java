@@ -48,7 +48,7 @@ public class OneDriveService {
 			Folder folder = new Folder();
 			driveItem.folder = folder;
 	
-			graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().root().children().buildRequest()
+			graphClient.users("e26f46cb-16f5-4fab-9859-99c2290e3f62").drive().root().children().buildRequest()
 					.post(driveItem);
 		} catch (ClientException e) {
 			throw new ClientException("Error al crear el cliente de OneDrive", e);
@@ -74,7 +74,7 @@ public class OneDriveService {
 			Folder folder = new Folder();
 			driveItem.folder = folder;
 	
-			graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().items(getFolderId(parentFolderName))
+			graphClient.users("e26f46cb-16f5-4fab-9859-99c2290e3f62").drive().items(getFolderId(parentFolderName))
 					.children().buildRequest().post(driveItem);
 		} catch (ClientException e) {
 			throw new ClientException("Error al crear el cliente de OneDrive", e);
@@ -96,7 +96,7 @@ public class OneDriveService {
 		try {
 			graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
 	
-			DriveItemCollectionPage me = graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().root().children()
+			DriveItemCollectionPage me = graphClient.users("e26f46cb-16f5-4fab-9859-99c2290e3f62").drive().root().children()
 					.buildRequest().get();
 			for (DriveItem di : me.getCurrentPage()) {
 				if (di.name.equals(folderName)) {
@@ -127,7 +127,7 @@ public class OneDriveService {
 			}else{
 				graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
 		
-				graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().items(getFolderId(folderName)).buildRequest()
+				graphClient.users("e26f46cb-16f5-4fab-9859-99c2290e3f62").drive().items(getFolderId(folderName)).buildRequest()
 						.delete();
 			}
 		}catch (ClientException e) {
@@ -158,7 +158,7 @@ public class OneDriveService {
 				Folder folder = new Folder();
 				driveItem.folder = folder;
 			
-				graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().root().itemWithPath(parentFolderId+"/"+folderName).buildRequest()
+				graphClient.users("e26f46cb-16f5-4fab-9859-99c2290e3f62").drive().root().itemWithPath(parentFolderId+"/"+folderName).buildRequest()
 				.delete();
 			}
 		} catch (ClientException e) {
@@ -192,7 +192,7 @@ public class OneDriveService {
 					.withItem(new DriveItemUploadableProperties()).build();
 			
 			// Create an upload session
-			UploadSession uploadSession = graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().root()
+			UploadSession uploadSession = graphClient.users("e26f46cb-16f5-4fab-9859-99c2290e3f62").drive().root()
 					// itemPath like "/Folder/file.txt"
 					// does not need to be a path to an existing item
 					.itemWithPath(rootFolderName+"/"+visitaFolderName+"/"+fileName).createUploadSession(uploadParams).buildRequest().post();
@@ -226,7 +226,7 @@ public class OneDriveService {
 		logger.setLoggingLevel(LoggerLevel.ERROR);
 		try {
 			graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
-			DriveItemCollectionPage me = graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().root().itemWithPath(rootFolderName+"/"+visitaFolderName)
+			DriveItemCollectionPage me = graphClient.users("e26f46cb-16f5-4fab-9859-99c2290e3f62").drive().root().itemWithPath(rootFolderName+"/"+visitaFolderName)
 					.children().buildRequest().get();
 			for (DriveItem di : me.getCurrentPage()) {
 				if (di.name!=null && di.name.equals(fileName)) {
@@ -253,45 +253,12 @@ public class OneDriveService {
 		graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
 			DriveItem driveItem = new DriveItem();
 			driveItem.name = newFolderName;
-			graphClient.users("b9e1d304-a6b1-4d09-aa66-ece2bd6fb7b6").drive().items(getFolderId(oldFolderName))
+			graphClient.users("e26f46cb-16f5-4fab-9859-99c2290e3f62").drive().items(getFolderId(oldFolderName))
 			.buildRequest()
 			.patch(driveItem);
 		}catch (ClientException e) {
 			throw new ClientException("Error al crear el cliente de OneDrive", e);
 		}
-	}
-	public byte[] getPhoto(String url) {
-		byte[] result=null;
-		url = "https://cdn.pixabay.com/photo/2016/10/26/19/00/domain-names-1772242_960_720.jpg";
-		/**
-		ClientSecretCredential credential = new ClientSecretCredentialBuilder().clientId(clientId)
-				.clientSecret(clientSecret).tenantId(tenant).build();
-				
-				authProvider = new TokenCredentialAuthProvider(Arrays.asList("https://graph.microsoft.com/.default"),
-				credential);
-				
-				DefaultLogger logger = new DefaultLogger();
-				logger.setLoggingLevel(LoggerLevel.ERROR);
-				try {
-				graphClient = GraphServiceClient.builder().authenticationProvider(authProvider).logger(logger).buildClient();
-				InputStream in= getClass().getResourceAsStream(url);
-				if(in!=null)
-					result=IOUtils.toByteArray(in);
-					logger.setLoggingLevel(LoggerLevel.valueOf(url));
-				}catch (ClientException e) {
-					throw new ClientException("Error al crear el cliente de OneDrive", e);
-				} catch (IOException e) {
-					throw new ClientException("Error al crear el cliente de OneDrive", e);
-				}*/
-		InputStream in= getClass().getResourceAsStream(url);
-		try {
-			result=IOUtils.toByteArray(in);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return result;
 	}
 	
 }

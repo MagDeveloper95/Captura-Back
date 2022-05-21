@@ -235,10 +235,4 @@ public class FotoController {
 			return new ResponseEntity<Foto>(new Foto(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	@GetMapping(value = "/imagen/{url}",
-				produces = MediaType.IMAGE_JPEG_VALUE
-			)
-	public @ResponseBody byte[] cargarImagen(@RequestParam(name ="url", required=false)String url) throws IOException{
-		return service.getPhoto(url);
-	}
  }

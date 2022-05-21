@@ -246,11 +246,5 @@ public class FotoService {
 			logger.error("Error ---> La foto introducida tiene un valor nulo en borrarFoto");
 			throw new NullPointerException("Error ---> El id introducido tiene un valor nulo");			
 		}
-	}
-	
-	public byte[] getPhoto(String url) {
-		
-		return new OneDriveService().getPhoto(url);
-	}
-	
+	}	
 }
