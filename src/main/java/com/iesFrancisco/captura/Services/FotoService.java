@@ -159,7 +159,7 @@ public class FotoService {
 					Map<?, ?> result = CloudinaryService.upload(file,foto.getVisita().getObra().getNombre(),foto.getVisita().getHeader());
 					Foto fotoCreada = new Foto(
 						foto.getId(),
-						(String) result.get("url"),
+						result.get("url").toString(),
 						foto.getComentario(),
 						foto.getVisita());
 					logger.info("Consulta exitosa en creaFoto");
