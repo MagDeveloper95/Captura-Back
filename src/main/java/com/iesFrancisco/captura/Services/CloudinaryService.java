@@ -10,8 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.iesFrancisco.captura.Model.FotoWrapper;
-import com.microsoft.graph.core.Multipart;
+
 
 @Service
 public class CloudinaryService {
@@ -36,9 +35,9 @@ public class CloudinaryService {
 		return file;
 	}
 
-	public Map upload(MultipartFile foto, String obra, String visita) throws IOException {
+	public Map upload(MultipartFile foto) throws IOException {
 		File file = convert(foto);
-		Map resulMap = cloudinary.uploader().upload(file, ObjectUtils.asMap("public_id", obra + "-" + visita));
+		Map resulMap = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
 		file.delete();
 		return resulMap;
 	}

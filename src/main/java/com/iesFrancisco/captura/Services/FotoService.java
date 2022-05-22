@@ -156,7 +156,7 @@ public class FotoService {
 							foto.getVisita().getObra().getNombre(),
 							foto.getVisita().getHeader(),
 						 	file.getInputStream());
-					Map<?, ?> result = CloudinaryService.upload(file,foto.getVisita().getObra().getNombre(),foto.getVisita().getHeader());
+					Map<?, ?> result = CloudinaryService.upload(file);
 					Foto fotoCreada = new Foto(
 						foto.getId(),
 						result.get("url").toString(),
@@ -168,7 +168,7 @@ public class FotoService {
 					throw new IllegalArgumentException(e);
 				}
 			} else {
-				Map<?, ?> result = CloudinaryService.upload(file,foto.getVisita().getObra().getNombre(),foto.getVisita().getHeader());
+				Map<?, ?> result = CloudinaryService.upload(file);
 				Foto fotoCreada = new Foto(
 						foto.getId(),
 						result.get("url").toString(),
