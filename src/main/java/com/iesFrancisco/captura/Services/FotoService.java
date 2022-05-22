@@ -168,11 +168,10 @@ public class FotoService {
 					throw new IllegalArgumentException(e);
 				}
 			} else {
+				Map<?, ?> result = CloudinaryService.upload(file,foto.getVisita().getObra().getNombre(),foto.getVisita().getHeader());
 				Foto fotoCreada = new Foto(
 						foto.getId(),
-						OneDriveService.getUrl(foto.getFile().getName(),
-								foto.getVisita().getObra().getNombre(),
-								foto.getVisita().getHeader()),
+						result.get("url").toString(),
 						foto.getComentario(),
 						foto.getVisita());
 				return actualizarFoto(fotoCreada);
