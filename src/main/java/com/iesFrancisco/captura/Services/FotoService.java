@@ -3,6 +3,7 @@ package com.iesFrancisco.captura.Services;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -20,6 +21,9 @@ import com.iesFrancisco.captura.Repositories.FotoRepository;
 public class FotoService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(FotoService.class);
+
+	@Autowired
+	CloudinaryService CloudinaryService;
 
 	@Autowired // instanciar el repositorio
 	FotoRepository repository;
@@ -147,21 +151,17 @@ public class FotoService {
 		if (foto != null) {
 		if (foto.getId() < 0) {
 				try {
-					System.out.println(foto.toString());
-					System.out.println(file);
 					OneDriveService.uploadFile(
 							file.getOriginalFilename(),
 							foto.getVisita().getObra().getNombre(),
 							foto.getVisita().getHeader(),
 						 	file.getInputStream());
+					Map<?, ?> result = CloudinaryService.upload(file,foto.getVisita().getObra().getNombre(),foto.getVisita().getHeader());
 					Foto fotoCreada = new Foto(
-							foto.getId(),
-							OneDriveService.getUrl(
-									foto.getFile().getOriginalFilename(),
-									foto.getVisita().getObra().getNombre(),
-									foto.getVisita().getHeader()),
-							foto.getComentario(),
-							foto.getVisita());
+						foto.getId(),
+						(String) result.get("url"),
+						foto.getComentario(),
+						foto.getVisita());
 					logger.info("Consulta exitosa en creaFoto");
 					return repository.save(fotoCreada);
 				} catch (IllegalArgumentException e) {
